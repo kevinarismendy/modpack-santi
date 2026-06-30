@@ -64,39 +64,33 @@ if not defined JAVA_CMD (
     for /f "tokens=2 delims=" %%v in ('"java -version 2>&1" ^| findstr /i "version"') do echo [1/4] [OK] Java %%v detectado
 )
 
-REM --- TLauncher (no-premium) ---
-echo [2/4] Verificando TLauncher...
-if exist "%LOCALAPPDATA%\TLauncher\tlauncher.exe" goto :tlauncher_ok
-if exist "%LOCALAPPDATA%\Programs\TLauncher\tlauncher.exe" goto :tlauncher_ok
-if exist "C:\Program Files\TLauncher\tlauncher.exe" goto :tlauncher_ok
-echo       Descargando TLauncher (~26 MB, desde GitHub)...
-set "TLAUNCHER_SETUP=%TEMP%\TLauncher-Setup.exe"
-curl.exe -L -o "%TLAUNCHER_SETUP%" "https://github.com/kevinarismendy/modpack-santi/releases/download/tlauncher-v1/TLauncher-Setup.exe" --max-time 180
-if errorlevel 1 goto :tlauncher_fail
-echo       Ejecutando instalador (espera a que termine, puede tardar 1-2 min)...
-start /wait "" "%TLAUNCHER_SETUP%" /quiet
-if exist "%LOCALAPPDATA%\TLauncher\tlauncher.exe" goto :tlauncher_ok
-if exist "%LOCALAPPDATA%\Programs\TLauncher\tlauncher.exe" goto :tlauncher_ok
-if exist "C:\Program Files\TLauncher\tlauncher.exe" goto :tlauncher_ok
-:tlauncher_fail
-echo       [WARN] Descarga/instalacion fallo. Baja TLauncher desde:
-echo       https://tlauncher.org/en/
-goto :tlauncher_done
-:tlauncher_ok
-echo       [OK] TLauncher listo
-:tlauncher_done
+REM --- HMCL (auto via winget) ---
+echo [2/4] Verificando HMCL...
+if exist "%LOCALAPPDATA%\HMCL\HMCL.exe" goto :hmcl_ok
+if exist "%LOCALAPPDATA%\Programs\HMCL\HMCL.exe" goto :hmcl_ok
+if exist "C:\Program Files\HMCL\HMCL.exe" goto :hmcl_ok
+echo       Instalando HMCL con winget (~1 min)...
+winget install --exact --id HMCL.HMCL.Stable --accept-package-agreements --accept-source-agreements --silent
+if exist "%LOCALAPPDATA%\HMCL\HMCL.exe" goto :hmcl_ok
+if exist "%LOCALAPPDATA%\Programs\HMCL\HMCL.exe" goto :hmcl_ok
+if exist "C:\Program Files\HMCL\HMCL.exe" goto :hmcl_ok
+echo       [WARN] winget fallo. Instala HMCL manualmente desde:
+echo       https://hmcl.huangyuhui.net/download/
+goto :hmcl_done
+:hmcl_ok
+echo       [OK] HMCL listo
+:hmcl_done
 
-REM --- Crear instancia de TLauncher automaticamente ---
-echo [3/4] Creando instancia "Servidor Amiguos" en TLauncher...
-set "TLAUNCHER_ROOT=%APPDATA%\.tlauncher"
-if not exist "%TLAUNCHER_ROOT%" set "TLAUNCHER_ROOT=%LOCALAPPDATA%\Programs\TLauncher"
-if not exist "%TLAUNCHER_ROOT%" goto :skip_instance
+REM --- Crear instancia de HMCL automaticamente ---
+echo [3/4] Creando instancia "Servidor Amiguos" en HMCL...
+set "HMCL_ROOT=%APPDATA%\.hmcl"
+if not exist "%HMCL_ROOT%" goto :skip_instance
 if not exist "%BOOTSTRAP_JAR%" (
     echo       Descargando bootstrap...
     curl.exe -L -o %BOOTSTRAP_JAR% "https://github.com/packwiz/packwiz-installer-bootstrap/releases/download/v0.0.3/packwiz-installer-bootstrap.jar"
 )
 if not exist "%BOOTSTRAP_JAR%" goto :skip_instance
-set "INSTANCE=%TLAUNCHER_ROOT%\instances\Servidor Amiguos"
+set "INSTANCE=%HMCL_ROOT%\instances\Servidor Amiguos"
 set "MODS_TEMP=%TEMP%\santicraft-mods"
 if exist "%INSTANCE%" goto :skip_instance
 echo       Bajando mods (91 MB) a %MODS_TEMP%...

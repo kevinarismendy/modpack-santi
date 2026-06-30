@@ -1,0 +1,13 @@
+name = "Simple TPA"
+filename = "simpletpa-neoforge-1.21.1-1.3.0.jar"
+side = "both"
+
+[download]
+hash-format = "sha1"
+hash = "feb193b95c58da7bc393d7afcc5b4270f6c70137"
+mode = "metadata:curseforge"
+
+[update]
+[update.curseforge]
+file-id = 8250784
+project-id = 1491817

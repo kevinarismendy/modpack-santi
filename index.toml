@@ -1,12 +1,20 @@
 hash-format = "sha256"
 
 [[files]]
+file = "dist-tlauncher/TLauncher-Setup.exe"
+hash = "0619bd07d3183a8ae0cb1be408c6ad32295d47ddd666b2d51edd4d5f5d211227"
+
+[[files]]
+file = "dist-tlauncher/TLauncher.zip"
+hash = "c61b76a968976ce8ba7b31f3884712542c4de813ca0c6f324194af50b9cb456f"
+
+[[files]]
 file = "dist/README.md"
 hash = "8f2e709c158be4ae834faf46a38727005496f807bc7e57c5cfbc6918f6a5123b"
 
 [[files]]
 file = "dist/README.txt"
-hash = "f50ca9e7bec85c87b99bea1732a68c607d5f5bb7951fcbd35985bcd535b30d15"
+hash = "d4e763c37e3418d1deb0d9943869ac3b278cc52c96e830d598fc392d9ea18c2f"
 
 [[files]]
 file = "dist/docs/seeds.md"
@@ -14,11 +22,11 @@ hash = "6a6f15482bfc4680af8d72a59f5e99faf3bc2982068a1b71d68827c10d22677a"
 
 [[files]]
 file = "dist/install.bat"
-hash = "73e8a82ef3d817024d36a5f253bc66fe4b1f4ed7e85ea995352163cabf5ae6b6"
+hash = "2bdb4bf60e6a98b5f88ad147010e986d7296bef1ff25b314a1ca2d3015860e73"
 
 [[files]]
 file = "dist/install.sh"
-hash = "162338ca28aa392470d2014f510cd02bb1816939001809e13f4085cdbefec2ca"
+hash = "c0deca27597521782e6f479685a92b708168cea14af86c12b7083c20213b517b"
 
 [[files]]
 file = "dist/launcher.bat"
@@ -27,6 +35,11 @@ hash = "12e3852a6e114251a99284dbad519442a3f3382dd6bf1724abc34902a7b9eb59"
 [[files]]
 file = "dist/launcher.sh"
 hash = "52ee2d70a82968fb0e05ccfe6f332883bc5787ba384b2893983f7bdde2dc617a"
+
+[[files]]
+file = "mods/accessories.pw.toml"
+hash = "19cbfb37dc29169b50599dfa328fe12a0ec9caaec8ac02627b5846f3bd9d1425"
+metafile = true
 
 [[files]]
 file = "mods/alexs-mobs(1.21.1).pw.toml"
@@ -40,7 +53,7 @@ metafile = true
 
 [[files]]
 file = "mods/architectury-api.pw.toml"
-hash = "6d3a1c92eee4dd671253c41ec000ae48064a33c45263d6adce5cad466395169d"
+hash = "ea336d25c3e21ef168aec20e1ea470c96949ad29632646ee8e8ab0d74b4bbfc9"
 metafile = true
 
 [[files]]
@@ -70,7 +83,7 @@ metafile = true
 
 [[files]]
 file = "mods/corpse.pw.toml"
-hash = "e2edf339c98dbdcf04f46a15276e9b1b5bbdeee0f1ac8b7d9bddb1ee8e54b9a1"
+hash = "8e671fbd3a5460a61073cced391ec08efc6b67d765e49015eea45a1f1db159a0"
 metafile = true
 
 [[files]]
@@ -94,13 +107,8 @@ hash = "73360e397134d238ee8fd21d33fd7f9275e9441f74f8f1b6ed92278877c0b9f1"
 metafile = true
 
 [[files]]
-file = "mods/ftb-essentials.pw.toml"
-hash = "aaa5d15a2ebf6ae368561fc49d7994ffa5084138942095cb4ded4c8921189437"
-metafile = true
-
-[[files]]
-file = "mods/ftb-library-forge.pw.toml"
-hash = "5fb287ddb204cc2460dc51984099b0010462f781d00b2d6ed2a37046accf2560"
+file = "mods/flan.pw.toml"
+hash = "c30988ad811e3a1e25b6827dd2a1ca99b2aa0d5c8504dee0091b491f46a25b41"
 metafile = true
 
 [[files]]
@@ -154,6 +162,11 @@ hash = "6bc414cc0f2d4c078fe83f384d786343f701f371d657c5279b5b0df1595804bd"
 metafile = true
 
 [[files]]
+file = "mods/mousetweaks-x-accessories-fix.pw.toml"
+hash = "e5e98cd5b63adeec29a60e22ea5699c28118daef8e69fce99dd7dbe150c48f3b"
+metafile = true
+
+[[files]]
 file = "mods/paper-plane.pw.toml"
 hash = "3c52223cdf1376c4c4dd80ac40b35580091ae05ca10628bf6e5fb83c4b70e745"
 metafile = true
@@ -161,6 +174,11 @@ metafile = true
 [[files]]
 file = "mods/security-craft.pw.toml"
 hash = "6da6b2be309785e5ab8e575010b4f30d66a717ace60b10748271333c09aba523"
+metafile = true
+
+[[files]]
+file = "mods/simple-tpa.pw.toml"
+hash = "232b30041f3a381413dd9f5a9f0c71a8fdcc893901d42b8f155677559d663bf9"
 metafile = true
 
 [[files]]
@@ -191,11 +209,6 @@ metafile = true
 [[files]]
 file = "mods/waystones.pw.toml"
 hash = "6469e09b6d02aa3f1aeb653c9e33ec948e2bd9d09cabc60a834552783120c018"
-metafile = true
-
-[[files]]
-file = "mods/when-dungeons-arise.pw.toml"
-hash = "7e6948368276f2c49d5bccf52cbf80930d0daca75b4dfbc5530479f1d3f95cf8"
 metafile = true
 
 [[files]]

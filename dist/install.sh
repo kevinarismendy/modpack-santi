@@ -58,27 +58,27 @@ if [ -z "$JAVA_CMD" ]; then
     fi
 fi
 
-# --- TLauncher (no-premium) ---
-echo "[2/4] Verificando TLauncher..."
-TLAUNCHER_DIR="$HOME/.local/share/TLauncher"
+# --- HMCL (no-premium, soporta NeoForge) ---
+echo "[2/4] Verificando HMCL..."
+HMCL_DIR="$HOME/.local/share/HMCL"
 if [ "$(uname)" = "Darwin" ]; then
-    TLAUNCHER_DIR="$HOME/Library/Application Support/TLauncher"
+    HMCL_DIR="$HOME/Library/Application Support/HMCL"
 fi
-if [ -f "$TLAUNCHER_DIR/tlauncher" ] || [ -f "$TLAUNCHER_DIR/tlauncher.exe" ]; then
-    echo "      [OK] TLauncher ya instalado en $TLAUNCHER_DIR"
+if [ -f "$HMCL_DIR/HMCL" ] || [ -f "$HMCL_DIR/HMCL.exe" ]; then
+    echo "      [OK] HMCL ya instalado en $HMCL_DIR"
 else
-    echo "      Descargando TLauncher (~26 MB, desde GitHub)..."
-    mkdir -p "$TLAUNCHER_DIR"
-    TLAUNCHER_ZIP="/tmp/tlauncher.zip"
-    curl -L --progress-bar -o "$TLAUNCHER_ZIP" "https://github.com/kevinarismendy/modpack-santi/releases/download/tlauncher-v1/TLauncher.zip" --max-time 180
-    if [ -s "$TLAUNCHER_ZIP" ]; then
-        unzip -q -o "$TLAUNCHER_ZIP" -d "$TLAUNCHER_DIR"
-        chmod +x "$TLAUNCHER_DIR/tlauncher" 2>/dev/null
-        rm "$TLAUNCHER_ZIP"
-        echo "      [OK] TLauncher instalado en $TLAUNCHER_DIR"
+    echo "      Descargando HMCL (~26 MB, desde GitHub)..."
+    mkdir -p "$HMCL_DIR"
+    HMCL_ZIP="/tmp/hmcl.zip"
+    curl -L --progress-bar -o "$HMCL_ZIP" "https://github.com/kevinarismendy/modpack-santi/releases/download/prismlauncher-v1/HMCL-3.15.2.zip" --max-time 180
+    if [ -s "$HMCL_ZIP" ]; then
+        unzip -q -o "$HMCL_ZIP" -d "$HMCL_DIR"
+        chmod +x "$HMCL_DIR/HMCL" 2>/dev/null
+        rm "$HMCL_ZIP"
+        echo "      [OK] HMCL instalado en $HMCL_DIR"
     else
-        echo "      [WARN] Descarga fallo. Baja TLauncher desde:"
-        echo "      https://tlauncher.org/en/"
+        echo "      [WARN] Descarga fallo. Baja HMCL desde:"
+        echo "      https://hmcl.huangyuhui.net/download/"
     fi
 fi
 
@@ -88,10 +88,10 @@ if [ ! -f "$BOOTSTRAP_JAR" ]; then
     curl -L -sS -o "$BOOTSTRAP_JAR" "https://github.com/packwiz/packwiz-installer-bootstrap/releases/download/v0.0.3/packwiz-installer-bootstrap.jar"
 fi
 
-# --- Crear instancia de TLauncher automaticamente ---
+# --- Crear instancia de HMCL automaticamente ---
 echo "[4/4] Creando instancia 'Servidor Amiguos'..."
-if [ -d "$TLAUNCHER_DIR/instances" ] && [ ! -d "$TLAUNCHER_DIR/instances/Servidor Amiguos" ]; then
-    INSTANCE="$TLAUNCHER_DIR/instances/Servidor Amiguos"
+if [ -d "$HMCL_DIR/instances" ] && [ ! -d "$HMCL_DIR/instances/Servidor Amiguos" ]; then
+    INSTANCE="$HMCL_DIR/instances/Servidor Amiguos"
     MODS_TEMP="/tmp/santicraft-mods"
     echo "      Bajando mods a $MODS_TEMP..."
     mkdir -p "$MODS_TEMP"
@@ -110,13 +110,13 @@ EOF
         echo "      [WARN] No se pudieron bajar los mods. Crea la instancia manual."
     fi
 else
-    if [ -d "$TLAUNCHER_DIR/instances/Servidor Amiguos" ]; then
+    if [ -d "$HMCL_DIR/instances/Servidor Amiguos" ]; then
         echo "      Instancia ya existe."
     fi
 fi
 
-# --- Instalar mods (solo si no hay instancia de TLauncher) ---
-if [ ! -d "$TLAUNCHER_DIR/instances/Servidor Amiguos" ]; then
+# --- Instalar mods (solo si no hay instancia de HMCL) ---
+if [ ! -d "$HMCL_DIR/instances/Servidor Amiguos" ]; then
     echo "      Instalando mods en .minecraft/ default..."
     $JAVA_CMD -jar "$BOOTSTRAP_JAR" -g "$BOOTSTRAP_URL"
 fi
