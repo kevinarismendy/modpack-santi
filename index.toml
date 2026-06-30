@@ -1,261 +1,202 @@
-hash-format = "sha256"
+﻿hash-format = "sha256"
 
 [[files]]
-file = "dist-hmcl/HMCL-3.15.2.deb"
-hash = "eb4ccc1cc536ecc39bda2f28f3484af6a62e9834fe32c7e92031cb34d8ff46e0"
-
-[[files]]
-file = "dist-hmcl/HMCL-3.15.2.jar"
-hash = "ad3f91aee2cccff0d395848e32fe03e9908e56ddfa8aacb1e36bfc79ae1749d3"
-
-[[files]]
-file = "dist-hmcl/HMCL-3.15.2.sh"
-hash = "e9aafb9ce51629d7773dc4357550936ad6d836f0630b72c644eabce4e382af40"
-
-[[files]]
-file = "dist-hmcl/HMCL-3.15.2.zip"
-hash = "adee297d29a3ee8276917d27e507abccf3bd6d0ced8f31f25800148443dba6ed"
-
-[[files]]
-file = "dist-tlauncher/TLauncher-Setup.exe"
-hash = "0619bd07d3183a8ae0cb1be408c6ad32295d47ddd666b2d51edd4d5f5d211227"
-
-[[files]]
-file = "dist-tlauncher/TLauncher.zip"
-hash = "c61b76a968976ce8ba7b31f3884712542c4de813ca0c6f324194af50b9cb456f"
-
-[[files]]
-file = "dist/README.md"
-hash = "8f2e709c158be4ae834faf46a38727005496f807bc7e57c5cfbc6918f6a5123b"
-
-[[files]]
-file = "dist/README.txt"
-hash = "9394c42c3f6937b199ba101e73250348f693916ec7266842fbb62a598cae7b44"
-
-[[files]]
-file = "dist/docs/seeds.md"
-hash = "6a6f15482bfc4680af8d72a59f5e99faf3bc2982068a1b71d68827c10d22677a"
-
-[[files]]
-file = "dist/install.bat"
-hash = "6405f85483b627b981b27ec5dc5df5bd686b7755277f93ca562cf64793bdf0ac"
-
-[[files]]
-file = "dist/install.sh"
-hash = "7395239213ff4d82dc0a2b8597de26d0484631872709959d633d9b4d3750f169"
-
-[[files]]
-file = "dist/launcher.bat"
-hash = "12e3852a6e114251a99284dbad519442a3f3382dd6bf1724abc34902a7b9eb59"
-
-[[files]]
-file = "dist/launcher.sh"
-hash = "52ee2d70a82968fb0e05ccfe6f332883bc5787ba384b2893983f7bdde2dc617a"
-
-[[files]]
-file = "mods/accessories.pw.toml"
+file = "accessories.pw.toml"
 hash = "19cbfb37dc29169b50599dfa328fe12a0ec9caaec8ac02627b5846f3bd9d1425"
 metafile = true
 
 [[files]]
-file = "mods/alexs-mobs(1.21.1).pw.toml"
+file = "alexs-mobs(1.21.1).pw.toml"
 hash = "fb53bc6c0d543cd7e88a5faba1e3235dca6c556e0cf8c1a534bbdec581c3c2f8"
 metafile = true
 
 [[files]]
-file = "mods/appleskin.pw.toml"
+file = "appleskin.pw.toml"
 hash = "716d930feff599bf9ce732e05979fbae8025dc8a3c13ccf4f1cb207a70883bc6"
 metafile = true
 
 [[files]]
-file = "mods/architectury-api.pw.toml"
+file = "architectury-api.pw.toml"
 hash = "ea336d25c3e21ef168aec20e1ea470c96949ad29632646ee8e8ab0d74b4bbfc9"
 metafile = true
 
 [[files]]
-file = "mods/balm.pw.toml"
+file = "balm.pw.toml"
 hash = "76122ac2bb341daceebb19cd69e1f3bf19efea88fa59010865c1b8f02ea1d759"
 metafile = true
 
 [[files]]
-file = "mods/carry-on.pw.toml"
+file = "carry-on.pw.toml"
 hash = "c5e47d922e39c1556dc2e8c94bfe852cf16de14f65b99eb3e054e41745dddad0"
 metafile = true
 
 [[files]]
-file = "mods/chunky.pw.toml"
+file = "chunky.pw.toml"
 hash = "1d5cc2b6dcfd1fc3adba4566b1c29b57ff1175316678c1f22e63cbc3e28a5ba0"
 metafile = true
 
 [[files]]
-file = "mods/citadel-(1.21.1-port).pw.toml"
+file = "citadel-(1.21.1-port).pw.toml"
 hash = "80d7af83c244304212b8d95ab2e3525b3eeae02f31e41474c2cdec2f4d370723"
 metafile = true
 
 [[files]]
-file = "mods/comforts.pw.toml"
+file = "comforts.pw.toml"
 hash = "36f2f6e74b7dbeccb504572d47006582207544fa234a095093b97adfc7ecd5ac"
 metafile = true
 
 [[files]]
-file = "mods/corpse.pw.toml"
+file = "corpse.pw.toml"
 hash = "8e671fbd3a5460a61073cced391ec08efc6b67d765e49015eea45a1f1db159a0"
 metafile = true
 
 [[files]]
-file = "mods/customskinloader.pw.toml"
+file = "customskinloader.pw.toml"
 hash = "aec1df84ab0edd3ab36d80a08765ab0ae3754c2bdbb4e9f568e979f01f470234"
 metafile = true
 
 [[files]]
-file = "mods/embeddium.pw.toml"
+file = "dungeons-arise.pw.toml"
+hash = "5b2bc544add0cdada771536423454be00290c347f9c6ce56359a70240f300536"
+metafile = true
+
+[[files]]
+file = "embeddium.pw.toml"
 hash = "778c42263b2ba7c9e73553bdcd70f48a3e485ba52b6a83474160d48be696b71f"
 metafile = true
 
 [[files]]
-file = "mods/farmers-delight.pw.toml"
+file = "farmers-delight.pw.toml"
 hash = "9aab64fbec4cc794817026caf84e7d0dff14ba3892da94aa0e00d23c84560499"
 metafile = true
 
 [[files]]
-file = "mods/ferrite-core.pw.toml"
+file = "ferrite-core.pw.toml"
 hash = "73360e397134d238ee8fd21d33fd7f9275e9441f74f8f1b6ed92278877c0b9f1"
 metafile = true
 
 [[files]]
-file = "mods/flan.pw.toml"
-hash = "c30988ad811e3a1e25b6827dd2a1ca99b2aa0d5c8504dee0091b491f46a25b41"
+file = "flan.pw.toml"
+hash = "b218147f9203c9947f8c4e437847f047ff83caf00131fe08e5bb5b8ea3c8cd12"
 metafile = true
 
 [[files]]
-file = "mods/inventory-tweaks-refoxed.pw.toml"
+file = "inventory-tweaks-refoxed.pw.toml"
 hash = "23a6d125c91c8f4257c4e73fe320ce81f0b2a0c1d6316664296edca6b41acb70"
 metafile = true
 
 [[files]]
-file = "mods/jade.pw.toml"
+file = "jade.pw.toml"
 hash = "b6e0a61fea06f8d6d8e1672cf07b682625c4b74efd548d5093cd9c1fed167eec"
 metafile = true
 
 [[files]]
-file = "mods/kiwi.pw.toml"
+file = "kiwi.pw.toml"
 hash = "c8467cb6639000d1be9e801702e028fd2ce9c0dce6f35e1be4c9264667c9efe6"
 metafile = true
 
 [[files]]
-file = "mods/lootr.pw.toml"
+file = "lootr.pw.toml"
 hash = "141584f0498f59dc445d163b82e148b339a7948927e476c6183b40da19c05799"
 metafile = true
 
 [[files]]
-file = "mods/lychee.pw.toml"
+file = "lychee.pw.toml"
 hash = "ff62f0893c2c861bf2ca842e503802791d8fec497b3197dcc4bcba4c99cc55f9"
 metafile = true
 
 [[files]]
-file = "mods/macaws-furniture.pw.toml"
+file = "macaws-furniture.pw.toml"
 hash = "52019f01292cb860fa135485f941fff42f97910267bf122f2f797e31109bb93f"
 metafile = true
 
 [[files]]
-file = "mods/modernfix.pw.toml"
+file = "modernfix.pw.toml"
 hash = "983d6ab9d9a7d40031f1789f5ae018cccb889832ac8ce741df60a9d8e5f42817"
 metafile = true
 
 [[files]]
-file = "mods/moonlight.pw.toml"
+file = "moonlight.pw.toml"
 hash = "018eeaa17d34a6010be48e946ad26973e24e125cfdf6f87cbd79f0cd7d5901ce"
 metafile = true
 
 [[files]]
-file = "mods/mouse-tweaks.pw.toml"
+file = "mouse-tweaks.pw.toml"
 hash = "6bc414cc0f2d4c078fe83f384d786343f701f371d657c5279b5b0df1595804bd"
 metafile = true
 
 [[files]]
-file = "mods/mousetweaks-x-accessories-fix.pw.toml"
+file = "mousetweaks-x-accessories-fix.pw.toml"
 hash = "e5e98cd5b63adeec29a60e22ea5699c28118daef8e69fce99dd7dbe150c48f3b"
 metafile = true
 
 [[files]]
-file = "mods/paper-plane.pw.toml"
+file = "paper-plane.pw.toml"
 hash = "3c52223cdf1376c4c4dd80ac40b35580091ae05ca10628bf6e5fb83c4b70e745"
 metafile = true
 
 [[files]]
-file = "mods/security-craft.pw.toml"
+file = "security-craft.pw.toml"
 hash = "98ac007465eca5728fdcfda196966022ea8ca288e631b631861b5208b9a94562"
 metafile = true
 
 [[files]]
-file = "mods/simple-voice-chat.pw.toml"
+file = "simple-voice-chat.pw.toml"
 hash = "369617869e9c8224e9c5e875d70677c491bc4282919b32705d096d253e2ffecd"
 metafile = true
 
 [[files]]
-file = "mods/sophisticated-backpacks.pw.toml"
+file = "sophisticated-backpacks.pw.toml"
 hash = "ac48b7bbd2382eedee5a3c61f88c1418d297b3fb903fbe9ac483dda0fbbfd433"
 metafile = true
 
 [[files]]
-file = "mods/sophisticated-core.pw.toml"
+file = "sophisticated-core.pw.toml"
 hash = "3f7cef7e3aaadd163f8505cdc372e6f1957b59937d2b96a4cdf38473bce20f47"
 metafile = true
 
 [[files]]
-file = "mods/supplementaries.pw.toml"
+file = "supplementaries.pw.toml"
 hash = "039a71011f455c24c9ccc7b38ef6f01561992a77a5d0c21f75dc01f70b42b1e2"
 metafile = true
 
 [[files]]
-file = "mods/terralith.pw.toml"
+file = "terralith.pw.toml"
 hash = "da7ee99189ad35aac094919fe33cac647d98533b23c228f10d4811f08989e2b8"
 metafile = true
 
 [[files]]
-file = "mods/travelersbackpack.pw.toml"
+file = "travelersbackpack.pw.toml"
 hash = "51792be52a28307d13f582e7791add6d5974a9fc18ad2679f715c3ab10a9bc8b"
 metafile = true
 
 [[files]]
-file = "mods/waystones.pw.toml"
+file = "waystones.pw.toml"
 hash = "6469e09b6d02aa3f1aeb653c9e33ec948e2bd9d09cabc60a834552783120c018"
 metafile = true
 
 [[files]]
-file = "mods/xaeros-minimap.pw.toml"
+file = "xaeros-minimap.pw.toml"
 hash = "3f9e51bfceabca41c537e58b8767bdb4273fdafe9f08bc472ebc255554617ad2"
 metafile = true
 
 [[files]]
-file = "mods/xaeros-world-map.pw.toml"
+file = "xaeros-world-map.pw.toml"
 hash = "67121835339ff35bc213b2ede0375d10de4c1fc9f40c7579a47ebc1a3d050648"
 metafile = true
 
 [[files]]
-file = "mods/yungs-api.pw.toml"
+file = "yungs-api.pw.toml"
 hash = "d9c0c9209bac0b693af2a7c1e47ffb28d366bad19c91df31dc6d345fa75250a1"
 metafile = true
 
 [[files]]
-file = "mods/yungs-better-dungeons.pw.toml"
-hash = "4c2830674a08ec9f10af13e4d259aa60158bd306a3996d935e678281ec0cb5fd"
+file = "yungs-better-dungeons.pw.toml"
+hash = "31537ae848df136efbafa2b624c4848edb2db91185939735387b91ec3ecb05b2"
 metafile = true
 
 [[files]]
-file = "mods/yungs-better-mineshafts.pw.toml"
-hash = "0cc13a86488cf89d2989edc1636fa63c7efa2fe819246d42af35113458d5ba5b"
+file = "yungs-better-mineshafts.pw.toml"
+hash = "67f8ef9f92f244db61a4d02453eae05a4c3f2e844fc59bb4291921ddb4d6db7d"
 metafile = true
 
-[[files]]
-file = "packwiz-installer-bootstrap.jar"
-hash = "a8fbb24dc604278e97f4688e82d3d91a318b98efc08d5dbfcbcbcab6443d116c"
-
-[[files]]
-file = "resourcepacks/reeses-sodium-options-chinese-translation.pw.toml"
-hash = "25780ee2596e0c36c0a9e9fa98b2b5b4f5bcb0b1c7bca1c0fb417cf15dd3dd77"
-metafile = true
-
-[[files]]
-file = "version.txt"
-hash = "ded1b601e81d31ca1f65c4f3ccf2ebd7992b6390e37bc2a86f3837282f1e00cf"
