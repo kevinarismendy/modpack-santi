@@ -5,6 +5,8 @@ MIN_JAVA=21
 JDK_DIR="$HOME/.jdk21"
 EXTRACT_DIR="/tmp/jdk_extract_temp"
 BOOTSTRAP_URL="https://cdn.jsdelivr.net/gh/kevinarismendy/modpack-santi@main/pack.toml"
+LAUNCHER_URL="https://raw.githubusercontent.com/kevinarismendy/modpack-santi/main/dist/launcher.sh"
+HMCL_URL="https://github.com/kevinarismendy/modpack-santi/releases/download/hmcl-v1/HMCL-3.15.2.zip"
 BOOTSTRAP_JAR="packwiz-installer-bootstrap.jar"
 PRISM_URL="https://github.com/kevinarismendy/modpack-santi/releases/download/prismlauncher-v1/PrismLauncher-Linux.tar.gz"
 PRISM_INSTALLED=0
@@ -70,7 +72,7 @@ else
     echo "      Descargando HMCL (~26 MB, desde GitHub)..."
     mkdir -p "$HMCL_DIR"
     HMCL_ZIP="/tmp/hmcl.zip"
-    curl -L --progress-bar -o "$HMCL_ZIP" "https://github.com/kevinarismendy/modpack-santi/releases/download/prismlauncher-v1/HMCL-3.15.2.zip" --max-time 180
+    curl -L --progress-bar -o "$HMCL_ZIP" "$HMCL_URL" --max-time 180
     if [ -s "$HMCL_ZIP" ]; then
         unzip -q -o "$HMCL_ZIP" -d "$HMCL_DIR"
         chmod +x "$HMCL_DIR/HMCL" 2>/dev/null

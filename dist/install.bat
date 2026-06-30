@@ -9,7 +9,8 @@ set JDK_DIR=%LOCALAPPDATA%\jdk21
 set EXTRACT_DIR=%LOCALAPPDATA%\jdk_extract_temp
 set BOOTSTRAP_URL=https://cdn.jsdelivr.net/gh/kevinarismendy/modpack-santi@main/pack.toml
 set BOOTSTRAP_JAR=packwiz-installer-bootstrap.jar
-set LAUNCHER_URL=https://github.com/kevinarismendy/modpack-santi/releases/download/hmcl-v1/HMCL-3.15.2.jar
+set LAUNCHER_URL=https://raw.githubusercontent.com/kevinarismendy/modpack-santi/main/dist/launcher.bat
+set HMCL_URL=https://github.com/kevinarismendy/modpack-santi/releases/download/hmcl-v1/HMCL-3.15.2.zip
 set SERVER=amiguos.holy.gg
 
 echo ============================================
