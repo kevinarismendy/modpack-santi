@@ -5,6 +5,8 @@ RUN apk add --no-cache nginx git
 # Force fresh clone (defeats Docker layer cache)
 ARG CACHE_BUST=1
 RUN git clone --depth 1 https://github.com/kevinarismendy/modpack-santi.git /tmp/repo && \
+    # Force LF (strip CR) on text files to match local hashes
+    find /tmp/repo -type f \( -name "*.toml" -o -name "*.bat" -o -name "*.sh" -o -name "*.ps1" -o -name "*.md" -o -name "*.txt" -o -name "*.conf" \) -exec sed -i 's/\r$//' {} \; && \
     mkdir -p /www/mods && \
     cp /tmp/repo/pack.toml /tmp/repo/index.toml /tmp/repo/packwiz-installer-bootstrap.jar /www/ && \
     cp -r /tmp/repo/mods/* /www/mods/ && \
