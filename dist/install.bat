@@ -67,18 +67,16 @@ if not defined JAVA_CMD (
 REM --- PrismLauncher (auto via winget) ---
 echo [2/4] Verificando PrismLauncher...
 where PrismLauncher.exe >nul 2>nul
-if not errorlevel 1 (
-    echo       [OK] PrismLauncher ya instalado
-) else (
-    echo       Instalando PrismLauncher con winget (~1 min)...
-    winget install --exact --id PrismLauncher.PrismLauncher --accept-package-agreements --accept-source-agreements --silent
-    if errorlevel 1 (
-        echo       [WARN] winget fallo. Si tenes problemas, instalalo manualmente desde:
-        echo       https://prismlauncher.org/choose/
-    ) else (
-        echo       [OK] PrismLauncher instalado
-    )
-)
+if %errorlevel%==0 goto :prism_ok
+echo       Instalando PrismLauncher con winget (~1 min)...
+winget install --exact --id PrismLauncher.PrismLauncher --accept-package-agreements --accept-source-agreements --silent
+if %errorlevel%==0 goto :prism_ok
+echo       [WARN] winget fallo. Instala PrismLauncher manualmente desde:
+echo       https://prismlauncher.org/choose/
+goto :prism_done
+:prism_ok
+echo       [OK] PrismLauncher listo
+:prism_done
 
 REM --- Bootstrap jar ---
 if not exist %BOOTSTRAP_JAR% (
