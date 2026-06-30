@@ -12,6 +12,8 @@ set BOOTSTRAP_JAR=packwiz-installer-bootstrap.jar
 set LAUNCHER_URL=https://raw.githubusercontent.com/kevinarismendy/modpack-santi/main/dist/launcher.bat
 set TLAUNCHER_URL=https://github.com/kevinarismendy/modpack-santi/releases/download/tlauncher-v1/TLauncher-Setup.exe
 set SERVER=amiguos.holy.gg
+set INSTANCE_NAME=Servidor Amiguos
+set TLAUNCHER_EXE=
 
 echo ============================================
 echo   Servidor Amiguos - Modpack Installer
@@ -23,16 +25,40 @@ REM --- [Pre] Auto-actualizar el launcher para la proxima corrida ---
 echo [Pre] Verificando actualizaciones del launcher...
 set "TEMP_LAUNCHER=%TEMP%\santicraft_launcher_%RANDOM%.bat"
 curl.exe -L -sS -o "%TEMP_LAUNCHER%" "%LAUNCHER_URL%" 2>nul
-if not exist "%TEMP_LAUNCHER%" goto :launcher_done
-fc /b "%~dp0launcher.bat" "%TEMP_LAUNCHER%" >nul 2>nul
-if errorlevel 1 (
-    echo       Launcher actualizado. La proxima corrida usara la version nueva.
-    copy /y "%TEMP_LAUNCHER%" "%~dp0launcher.bat" >nul 2>nul
+if exist "%TEMP_LAUNCHER%" (
+    fc /b "%~dp0launcher.bat" "%TEMP_LAUNCHER%" >nul 2>nul
+    if errorlevel 1 (
+        echo       Launcher actualizado. La proxima corrida usara la version nueva.
+        copy /y "%TEMP_LAUNCHER%" "%~dp0launcher.bat" >nul 2>nul
+    ) else (
+        echo       Launcher al dia.
+    )
+    del "%TEMP_LAUNCHER%" 2>nul
 ) else (
     echo       Launcher al dia.
 )
-del "%TEMP_LAUNCHER%" 2>nul
-:launcher_done
+echo.
+
+REM --- Localizar TLauncher existente (15+ paths) ---
+call :find_tlauncher
+if defined TLAUNCHER_EXE (
+    echo [1/5] [OK] TLauncher detectado: !TLAUNCHER_EXE!
+) else (
+    echo [1/5] [!] TLauncher no encontrado. Descargando...
+    call :install_tlauncher
+    if errorlevel 1 (
+        echo       [ERROR] No se pudo instalar TLauncher. Bajalo de https://tlauncher.org/en/ y volve a correr.
+        pause
+        exit /b 1
+    )
+    call :find_tlauncher
+    if not defined TLAUNCHER_EXE (
+        echo       [ERROR] TLauncher instalado pero no detectado.
+        pause
+        exit /b 1
+    )
+    echo       [OK] TLauncher instalado: !TLAUNCHER_EXE!
+)
 echo.
 
 REM --- Localizar Java 21+ ---
@@ -45,13 +71,14 @@ if not errorlevel 1 (
         )
     )
 )
-
-if not defined JAVA_CMD (
+if defined JAVA_CMD (
+    for /f "tokens=2 delims=" %%v in ('"java -version 2>&1" ^| findstr /i "version"') do echo [2/5] [OK] Java %%v detectado
+) else (
     if exist "%JDK_DIR%\bin\java.exe" (
-        echo [1/4] [OK] Usando JDK portable en %JDK_DIR%
+        echo [2/5] [OK] Usando JDK portable en %JDK_DIR%
         set "JAVA_CMD=%JDK_DIR%\bin\java.exe"
     ) else (
-        echo [1/4] [!] Java %MIN_JAVA%+ no encontrado. Instalando portable...
+        echo [2/5] [!] Java %MIN_JAVA%+ no encontrado. Instalando portable...
         call :install_jdk_windows
         if errorlevel 1 (
             echo [ERROR] No se pudo instalar Java automaticamente.
@@ -61,175 +88,149 @@ if not defined JAVA_CMD (
         )
         set "JAVA_CMD=%JDK_DIR%\bin\java.exe"
     )
-) else (
-    for /f "tokens=2 delims=" %%v in ('"java -version 2>&1" ^| findstr /i "version"') do echo [1/4] [OK] Java %%v detectado
 )
+echo.
 
-REM --- TLauncher (auto descarga) ---
-echo [2/4] Verificando TLauncher...
-if exist "%APPDATA%\.tlauncher\tlauncher.exe" goto :tlauncher_ok
-if exist "%APPDATA%\.tlauncher\TLauncher.exe" goto :tlauncher_ok
-if exist "%LOCALAPPDATA%\Programs\TLauncher\tlauncher.exe" goto :tlauncher_ok
-if exist "%LOCALAPPDATA%\Programs\TLauncher\TLauncher.exe" goto :tlauncher_ok
-if exist "%LOCALAPPDATA%\TLauncher\tlauncher.exe" goto :tlauncher_ok
-if exist "%LOCALAPPDATA%\TLauncher\TLauncher.exe" goto :tlauncher_ok
-if exist "C:\Program Files\TLauncher\tlauncher.exe" goto :tlauncher_ok
-if exist "C:\Program Files\TLauncher\TLauncher.exe" goto :tlauncher_ok
-if exist "%APPDATA%\.minecraft\TLauncher.exe" goto :tlauncher_ok
-if exist "%APPDATA%\.minecraft\TLauncher32bit.exe" goto :tlauncher_ok
-where tlauncher >nul 2>&1 goto :tlauncher_ok
-echo       Descargando TLauncher (~26 MB)...
-curl.exe -L -o "%TEMP%\TLauncher-Setup.exe" "%TLAUNCHER_URL%" --max-time 180
-if errorlevel 1 goto :tlauncher_fail
-echo       Ejecutando instalador (puede tardar 1-2 min)...
-start /wait "" "%TEMP%\TLauncher-Setup.exe" /quiet
-del "%TEMP%\TLauncher-Setup.exe" 2>nul
-if exist "%APPDATA%\.tlauncher\tlauncher.exe" goto :tlauncher_ok
-if exist "%APPDATA%\.tlauncher\TLauncher.exe" goto :tlauncher_ok
-if exist "%LOCALAPPDATA%\Programs\TLauncher\tlauncher.exe" goto :tlauncher_ok
-if exist "%LOCALAPPDATA%\Programs\TLauncher\TLauncher.exe" goto :tlauncher_ok
-if exist "%LOCALAPPDATA%\TLauncher\tlauncher.exe" goto :tlauncher_ok
-if exist "%LOCALAPPDATA%\TLauncher\TLauncher.exe" goto :tlauncher_ok
-if exist "C:\Program Files\TLauncher\tlauncher.exe" goto :tlauncher_ok
-if exist "C:\Program Files\TLauncher\TLauncher.exe" goto :tlauncher_ok
-if exist "%APPDATA%\.minecraft\TLauncher.exe" goto :tlauncher_ok
-if exist "%APPDATA%\.minecraft\TLauncher32bit.exe" goto :tlauncher_ok
-:tlauncher_fail
-echo       [WARN] Descarga/instalacion fallo. Baja TLauncher desde:
-echo       https://tlauncher.org/en/
-goto :tlauncher_done
-:tlauncher_ok
-echo       [OK] TLauncher listo
-:tlauncher_done
-
-REM --- Crear instancia de TLauncher automaticamente ---
-echo [3/4] Creando instancia "Servidor Amiguos" en TLauncher...
-set "TLAUNCHER_ROOT=%APPDATA%\.tlauncher"
-if not exist "%TLAUNCHER_ROOT%" set "TLAUNCHER_ROOT=%LOCALAPPDATA%\Programs\TLauncher"
-if not exist "%TLAUNCHER_ROOT%" goto :skip_instance
-if not exist "%BOOTSTRAP_JAR%" (
-    echo       Descargando bootstrap...
-    curl.exe -L -o %BOOTSTRAP_JAR% "https://github.com/packwiz/packwiz-installer-bootstrap/releases/download/v0.0.3/packwiz-installer-bootstrap.jar"
-)
-if not exist "%BOOTSTRAP_JAR%" goto :skip_instance
-set "INSTANCE=%TLAUNCHER_ROOT%\instances\Servidor Amiguos"
-set "MODS_TEMP=%TEMP%\santicraft-mods"
-if exist "%INSTANCE%" goto :skip_instance
-echo       Bajando mods (49) a %MODS_TEMP%...
-mkdir "%MODS_TEMP%"
-"%JAVA_CMD%" -jar %BOOTSTRAP_JAR% -g %BOOTSTRAP_URL%
-if exist "%MODS_TEMP%\minecraft\mods" (
-    mkdir "%INSTANCE%\.minecraft\mods"
-    xcopy /E /Y "%MODS_TEMP%\minecraft\mods\*" "%INSTANCE%\.minecraft\mods\" >nul
-    copy /Y "%BOOTSTRAP_JAR%" "%INSTANCE%\.minecraft\packwiz-installer-bootstrap.jar" >nul 2>&1
-    (
-        echo InstanceType=OneSix
-        echo name=Servidor Amiguos
-        echo iconKey=grass_block
-    ) > "%INSTANCE%\instance.cfg"
-    echo       [OK] Instancia creada en %INSTANCE%
-) else (
-    echo       [WARN] No se pudieron bajar los mods. La instancia tendra que crearse manual.
-)
-:skip_instance
-
-REM --- Crear instancia de HMCL automaticamente ---
-echo [3/4] Creando instancia "Servidor Amiguos" en HMCL...
-set "HMCL_ROOT=%APPDATA%\.hmcl"
-if not exist "%HMCL_ROOT%" goto :skip_instance
-if not exist "%BOOTSTRAP_JAR%" (
-    echo       Descargando bootstrap...
-    curl.exe -L -o %BOOTSTRAP_JAR% "https://github.com/packwiz/packwiz-installer-bootstrap/releases/download/v0.0.3/packwiz-installer-bootstrap.jar"
-)
-if not exist "%BOOTSTRAP_JAR%" goto :skip_instance
-set "INSTANCE=%HMCL_ROOT%\instances\Servidor Amiguos"
-set "MODS_TEMP=%TEMP%\santicraft-mods"
-if exist "%INSTANCE%" goto :skip_instance
-echo       Bajando mods (91 MB) a %MODS_TEMP%...
-mkdir "%MODS_TEMP%"
-"%JAVA_CMD%" -jar %BOOTSTRAP_JAR% -g %BOOTSTRAP_URL%
-if exist "%MODS_TEMP%\minecraft\mods" (
-    mkdir "%INSTANCE%\.minecraft\mods"
-    xcopy /E /Y "%MODS_TEMP%\minecraft\mods\*" "%INSTANCE%\.minecraft\mods\" >nul
-    copy /Y "%BOOTSTRAP_JAR%" "%INSTANCE%\.minecraft\packwiz-installer-bootstrap.jar" >nul 2>&1
-    (
-        echo InstanceType=OneSix
-        echo name=Servidor Amiguos
-        echo iconKey=grass_block
-    ) > "%INSTANCE%\instance.cfg"
-    echo       [OK] Instancia creada en %INSTANCE%
-) else (
-    echo       [WARN] No se pudieron bajar los mods. La instancia tendra que crearse manual.
-)
-:skip_instance
-
-REM --- Bootstrap jar ---
+REM --- Descargar bootstrap si hace falta ---
 if not exist %BOOTSTRAP_JAR% (
-    echo [3/4] Descargando bootstrap...
+    echo [3/5] Descargando packwiz bootstrap...
     curl.exe -L -sS -o %BOOTSTRAP_JAR% "https://github.com/packwiz/packwiz-installer-bootstrap/releases/download/v0.0.3/packwiz-installer-bootstrap.jar"
+    if errorlevel 1 (
+        echo [ERROR] No se pudo descargar el bootstrap.
+        pause
+        exit /b 1
+    )
 )
+echo [3/5] [OK] Bootstrap listo
+echo.
 
-REM --- Instalar mods ---
-echo [4/4] Instalando mods desde el repo oficial...
-echo       (primera vez puede tardar varios minutos, ~91 MB)
-echo.
-if exist "%INSTANCE%\.minecraft\mods" (
-    echo       Mods ya en la instancia de HMCL. Re-ejecuta el launcher para actualizarlos.
-    "%JAVA_CMD%" -jar %BOOTSTRAP_JAR% -g %BOOTSTRAP_URL% 2>nul
+REM --- Crear/actualizar instancia de TLauncher ---
+echo [4/5] Configurando instancia "%INSTANCE_NAME%" en TLauncher...
+call :find_tlauncher_root
+if defined TLAUNCHER_ROOT (
+    set "INSTANCE=!TLAUNCHER_ROOT!\instances\%INSTANCE_NAME%"
+    set "MODS_TEMP=%TEMP%\santicraft-mods-%RANDOM%"
+    mkdir "!MODS_TEMP!" 2>nul
+    echo       Bajando mods a !MODS_TEMP!\minecraft\mods ...
+    pushd "!MODS_TEMP!"
+    "!JAVA_CMD!" -jar "%~dp0%BOOTSTRAP_JAR%" -g %BOOTSTRAP_URL%
+    set BOOTSTRAP_RC=!errorlevel!
+    popd
+    if !BOOTSTRAP_RC! neq 0 (
+        echo       [WARN] Bootstrap fallo. Los mods se descargaran cuando abras TLauncher.
+    ) else (
+        if exist "!MODS_TEMP!\minecraft\mods" (
+            if not exist "!INSTANCE!" mkdir "!INSTANCE!\.minecraft\mods" 2>nul
+            if exist "!INSTANCE!\.minecraft\mods" (
+                xcopy /E /Y /Q "!MODS_TEMP!\minecraft\mods\*" "!INSTANCE!\.minecraft\mods\" >nul 2>&1
+            )
+            if not exist "!INSTANCE!\instance.cfg" (
+                (
+                    echo InstanceType=OneSix
+                    echo name=%INSTANCE_NAME%
+                    echo iconKey=grass_block
+                ) > "!INSTANCE!\instance.cfg"
+            )
+            copy /Y "%~dp0%BOOTSTRAP_JAR%" "!INSTANCE!\.minecraft\packwiz-installer-bootstrap.jar" >nul 2>&1
+            echo       [OK] Instancia: !INSTANCE!
+        ) else (
+            echo       [WARN] No se encontraron mods descargados.
+        )
+    )
+    rmdir /s /q "!MODS_TEMP!" 2>nul
 ) else (
-    "%JAVA_CMD%" -jar %BOOTSTRAP_JAR% -g %BOOTSTRAP_URL%
+    echo       [WARN] TLauncher no detectado, instancia no creada. Crealo manual en TLauncher.
 )
 echo.
+
+REM --- Accesos directos ---
+echo [5/5] Creando accesos directos en el escritorio...
+powershell -NoProfile -ExecutionPolicy Bypass -Command ^
+    "$ws = New-Object -ComObject WScript.Shell; ^
+     $sc = $ws.CreateShortcut([Environment]::GetFolderPath('Desktop') + '\Servidor Amiguos - TLauncher.lnk'); ^
+     $sc.TargetPath = '%TLAUNCHER_EXE%'; ^
+     $sc.WorkingDirectory = '%TLAUNCHER_DIR%'; ^
+     $sc.Save(); ^
+     $su = $ws.CreateShortcut([Environment]::GetFolderPath('Desktop') + '\Servidor Amiguos - Actualizar.lnk'); ^
+     $su.TargetPath = '%~dp0launcher.bat'; ^
+     $su.WorkingDirectory = '%~dp0'; ^
+     $su.IconLocation = '%TLAUNCHER_EXE%'; ^
+     $su.Save()"
+echo       [OK] Accesos directos creados
+echo.
+
 echo ============================================
-echo   Listo.
-echo   1) Abre TLauncher desde el acceso directo del escritorio
-echo   2) Click "Entrar al juego" o "Login"
-echo      (escribe cualquier username, sin password)
-echo   3) Click "+" o "Add Instance":
-echo      Name: Servidor Amiguos
-echo      Version: 1.21.1
-echo      Loader: Fabric
-echo      Loader version: 0.16.5
+echo   Listo. Ya podes jugar.
+echo.
+echo   1) Abre TLauncher desde el escritorio
+echo   2) Login con cualquier username (no-premium)
+echo   3) Selecciona la instancia "%INSTANCE_NAME%" (ya creada)
+echo      Si no aparece: "+" o "Add Instance" -^> 1.21.1 + Fabric 0.16.5
 echo   4) Conectate a: %SERVER%
 echo ============================================
 echo.
-echo   Los mods y Java ya estan listos.
+echo   Para actualizar mods: corre "Servidor Amiguos - Actualizar"
 echo.
-echo   Para buscar updates: doble-click "Servidor Amiguos - Actualizar"
-echo   o vuelve a correr launcher.bat desde esta carpeta.
-echo.
-
-REM --- Crear accesos directos en el escritorio ---
-if exist "%TLAUNCHER_DIR%\tlauncher.exe" (
-    echo   Creando accesos directos en el escritorio...
-    powershell -NoProfile -ExecutionPolicy Bypass -Command ^
-        "$ws = New-Object -ComObject WScript.Shell; ^
-         $sc = $ws.CreateShortcut([Environment]::GetFolderPath('Desktop') + '\Servidor Amiguos - TLauncher.lnk'); ^
-         $sc.TargetPath = '%TLAUNCHER_DIR%\tlauncher.exe'; ^
-         $sc.WorkingDirectory = '%TLAUNCHER_DIR%'; ^
-         $sc.Save(); ^
-         $su = $ws.CreateShortcut([Environment]::GetFolderPath('Desktop') + '\Servidor Amiguos - Actualizar.lnk'); ^
-         $su.TargetPath = '%~dp0launcher.bat'; ^
-         $su.WorkingDirectory = '%~dp0'; ^
-         $su.IconLocation = '%TLAUNCHER_DIR%\tlauncher.exe'; ^
-         $su.Save()"
-    echo   [OK] Accesos directos creados en el escritorio
-) else (
-    echo   [WARN] TLauncher no detectado, no se crearon accesos directos
-)
-echo.
+pause
 exit /b 0
 
-REM ========== Instalador portable de JDK 21 ==========
+REM ========== Subrutinas ==========
+
+:find_tlauncher
+set "TLAUNCHER_EXE="
+set "TLAUNCHER_DIR="
+set "TLAUNCHER_ROOT="
+set "CANDIDATE="
+for %%P in (
+    "%APPDATA%\.tlauncher\tlauncher.exe"
+    "%APPDATA%\.tlauncher\TLauncher.exe"
+    "%LOCALAPPDATA%\Programs\TLauncher\tlauncher.exe"
+    "%LOCALAPPDATA%\Programs\TLauncher\TLauncher.exe"
+    "%LOCALAPPDATA%\TLauncher\tlauncher.exe"
+    "%LOCALAPPDATA%\TLauncher\TLauncher.exe"
+    "C:\Program Files\TLauncher\tlauncher.exe"
+    "C:\Program Files\TLauncher\TLauncher.exe"
+    "%APPDATA%\.minecraft\TLauncher.exe"
+    "%APPDATA%\.minecraft\tlauncher.exe"
+    "%APPDATA%\.minecraft\TLauncher32bit.exe"
+    "C:\TLauncher\tlauncher.exe"
+    "C:\TLauncher\TLauncher.exe"
+) do (
+    if exist "%%~P" if not defined TLAUNCHER_EXE (
+        set "TLAUNCHER_EXE=%%~P"
+        set "TLAUNCHER_DIR=%%~dpP"
+    )
+)
+exit /b 0
+
+:find_tlauncher_root
+set "TLAUNCHER_ROOT="
+if exist "%APPDATA%\.tlauncher" set "TLAUNCHER_ROOT=%APPDATA%\.tlauncher"
+if exist "%LOCALAPPDATA%\Programs\TLauncher" if not defined TLAUNCHER_ROOT set "TLAUNCHER_ROOT=%LOCALAPPDATA%\Programs\TLauncher"
+if exist "%LOCALAPPDATA%\TLauncher" if not defined TLAUNCHER_ROOT set "TLAUNCHER_ROOT=%LOCALAPPDATA%\TLauncher"
+if not defined TLAUNCHER_ROOT if exist "%APPDATA%\.minecraft\TLauncher.exe" set "TLAUNCHER_ROOT=%APPDATA%\.minecraft"
+if not defined TLAUNCHER_ROOT if exist "%APPDATA%\.minecraft\tlauncher.exe" set "TLAUNCHER_ROOT=%APPDATA%\.minecraft"
+exit /b 0
+
+:install_tlauncher
+set "TLAUNCHER_SETUP=%TEMP%\TLauncher-Setup.exe"
+echo       Descargando TLauncher (~26 MB)...
+curl.exe -L -o "%TLAUNCHER_SETUP%" "%TLAUNCHER_URL%" --max-time 180
+if errorlevel 1 exit /b 1
+echo       Ejecutando instalador silencioso (1-2 min)...
+REM Usar PowerShell Start-Process -Wait para evitar que el instalador cierre nuestra consola
+powershell -NoProfile -Command "Start-Process -FilePath '%TLAUNCHER_SETUP%' -ArgumentList '/S' -Wait -NoNewWindow"
+set "PS_RC=%errorlevel%"
+del "%TLAUNCHER_SETUP%" 2>nul
+if not "%PS_RC%"=="0" exit /b 1
+exit /b 0
+
 :install_jdk_windows
 set "JDK_ZIP=%TEMP%\servidor_amigos_jdk.zip"
 set "JDK_URL=https://api.adoptium.net/v3/binary/latest/21/ga/windows/x64/jdk/hotspot/normal/eclipse"
 echo Descargando JDK 21 (portable) desde Adoptium...
 curl.exe -L -sS -o "%JDK_ZIP%" "%JDK_URL%"
-if errorlevel 1 (
-    echo [ERROR] No se pudo descargar JDK.
-    exit /b 1
-)
+if errorlevel 1 exit /b 1
 echo Extrayendo JDK ...
 if exist "%JDK_DIR%" rmdir /s /q "%JDK_DIR%"
 if exist "%EXTRACT_DIR%" rmdir /s /q "%EXTRACT_DIR%"
@@ -242,9 +243,6 @@ for /d %%D in ("%EXTRACT_DIR%\*") do (
     )
 )
 rmdir "%EXTRACT_DIR%" 2>nul
-if not exist "%JDK_DIR%\bin\java.exe" (
-    echo [ERROR] No se encontro java.exe despues de extraer.
-    exit /b 1
-)
+if not exist "%JDK_DIR%\bin\java.exe" exit /b 1
 echo [OK] JDK 21 instalado en %JDK_DIR%
 exit /b 0
