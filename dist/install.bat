@@ -122,7 +122,7 @@ echo [4/4] Instalando mods desde el repo oficial...
 echo       (primera vez puede tardar varios minutos, ~91 MB)
 echo.
 if exist "%INSTANCE%\.minecraft\mods" (
-    echo       Mods ya en la instancia de TLauncher. Re-ejecuta el launcher para actualizarlos.
+    echo       Mods ya en la instancia de HMCL. Re-ejecuta el launcher para actualizarlos.
     "%JAVA_CMD%" -jar %BOOTSTRAP_JAR% -g %BOOTSTRAP_URL% 2>nul
 ) else (
     "%JAVA_CMD%" -jar %BOOTSTRAP_JAR% -g %BOOTSTRAP_URL%
