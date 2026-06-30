@@ -4,14 +4,6 @@ setlocal EnableExtensions EnableDelayedExpansion
 title Servidor Amiguos - Modpack Installer
 cd /d "%~dp0"
 
-REM --- Auto-elevar a admin (necesario para instalar TLauncher) ---
-net session >nul 2>&1
-if errorlevel 1 (
-    echo [Setup] Re-ejecutando como Administrador (UAC)...
-    powershell -NoProfile -Command "Start-Process -FilePath '%~f0' -Verb RunAs -WorkingDirectory '%~dp0'"
-    exit /b
-)
-
 set MIN_JAVA=21
 set JDK_DIR=%LOCALAPPDATA%\jdk21
 set EXTRACT_DIR=%LOCALAPPDATA%\jdk_extract_temp

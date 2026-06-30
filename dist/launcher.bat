@@ -10,6 +10,14 @@ echo   Bajando codigo desde GitHub...
 echo ============================================
 echo.
 
+REM --- Auto-elevar a admin si hace falta (el instalador necesita UAC) ---
+net session >nul 2>&1
+if errorlevel 1 (
+    echo [Setup] Requiriendo permisos de Administrador (UAC)...
+    powershell -NoProfile -Command "Start-Process -FilePath '%~f0' -Verb RunAs -WorkingDirectory '%~dp0'"
+    exit /b 0
+)
+
 curl.exe -L -sS -o "%SCRIPT%" "%SCRIPT_URL%" || goto :error
 
 call "%SCRIPT%"
