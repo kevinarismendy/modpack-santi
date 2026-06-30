@@ -1,7 +1,7 @@
 @echo off
 chcp 65001 >nul
 setlocal
-set "REPO=https://cdn.jsdelivr.net/gh/kevinarismendy/modpack-santi@main"
+set "SCRIPT_URL=https://github.com/kevinarismendy/modpack-santi/releases/latest/download/install.bat"
 set "SCRIPT=%TEMP%\santicraft_%RANDOM%.bat"
 
 echo ============================================
@@ -10,7 +10,7 @@ echo   Bajando codigo desde GitHub...
 echo ============================================
 echo.
 
-curl.exe -L -sS -o "%SCRIPT%" "%REPO%/install.bat" || goto :error
+curl.exe -L -sS -o "%SCRIPT%" "%SCRIPT_URL%" || goto :error
 
 call "%SCRIPT%"
 set "RC=%errorlevel%"

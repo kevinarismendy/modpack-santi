@@ -21,7 +21,7 @@ echo.
 REM --- [Pre] Auto-actualizar el launcher para la proxima corrida ---
 echo [Pre] Verificando actualizaciones del launcher...
 set "TEMP_LAUNCHER=%TEMP%\santicraft_launcher_%RANDOM%.bat"
-curl.exe -L -sS -o "%TEMP_LAUNCHER%" "%REPO%/launcher.bat" 2>nul
+curl.exe -L -sS -o "%TEMP_LAUNCHER%" "%LAUNCHER_URL%" 2>nul
 if not exist "%TEMP_LAUNCHER%" goto :launcher_done
 fc /b "%~dp0launcher.bat" "%TEMP_LAUNCHER%" >nul 2>&1
 if errorlevel 1 (

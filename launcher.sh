@@ -1,6 +1,6 @@
 #!/bin/bash
 cd "$(dirname "$0")"
-REPO="https://cdn.jsdelivr.net/gh/kevinarismendy/modpack-santi@main"
+SCRIPT_URL="https://github.com/kevinarismendy/modpack-santi/releases/latest/download/install.sh"
 SCRIPT="/tmp/santicraft_$$.sh"
 
 echo "============================================"
@@ -9,7 +9,7 @@ echo "  Bajando codigo desde GitHub..."
 echo "============================================"
 echo ""
 
-curl -L -sS -o "$SCRIPT" "$REPO/install.sh" || { echo "[ERROR] No se pudo conectar a GitHub."; exit 1; }
+curl -L -sS -o "$SCRIPT" "$SCRIPT_URL" || { echo "[ERROR] No se pudo conectar a GitHub."; exit 1; }
 chmod +x "$SCRIPT"
 
 bash "$SCRIPT"
