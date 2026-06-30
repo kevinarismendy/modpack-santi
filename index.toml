@@ -1,34 +1,6 @@
 hash-format = "sha256"
 
 [[files]]
-file = "README.md"
-hash = "17dea23703de39c3e636a3a17802eb80c9a92f8037a31b06cce58d69670fcc60"
-
-[[files]]
-file = "README.txt"
-hash = "8a1e6c054fb59561f550c43c1cddd4a9df7d23e8257e9859d18dd4686505522e"
-
-[[files]]
-file = "docs/seeds.md"
-hash = "6a6f15482bfc4680af8d72a59f5e99faf3bc2982068a1b71d68827c10d22677a"
-
-[[files]]
-file = "install.bat"
-hash = "8ec5944f48878b66e5a3d15aecc287c3c7f6c9f9b31bdabb4032dc2adfdff20f"
-
-[[files]]
-file = "install.sh"
-hash = "658cf06f3f33b20cc759e7f82f3065d95da467cfd20ee8b0ea6273b7517c969e"
-
-[[files]]
-file = "launcher.bat"
-hash = "14e818185cf098e52a91ce81a86fe2d97bbf683a048988b108336a6955241560"
-
-[[files]]
-file = "launcher.sh"
-hash = "38f0e94fbc36ca0c5d3d5bc4b40aac44dc1d7455efc1184503ede39e2d75db5d"
-
-[[files]]
 file = "mods/alexs-mobs(1.21.1).pw.toml"
 hash = "fb53bc6c0d543cd7e88a5faba1e3235dca6c556e0cf8c1a534bbdec581c3c2f8"
 metafile = true
@@ -226,3 +198,8 @@ metafile = true
 [[files]]
 file = "packwiz-installer-bootstrap.jar"
 hash = "a8fbb24dc604278e97f4688e82d3d91a318b98efc08d5dbfcbcbcab6443d116c"
+
+[[files]]
+file = "version.txt"
+hash = "ded1b601e81d31ca1f65c4f3ccf2ebd7992b6390e37bc2a86f3837282f1e00cf"
+
