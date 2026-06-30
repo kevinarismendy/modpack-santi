@@ -123,9 +123,13 @@ fi
 echo ""
 echo "============================================"
 echo "  Listo."
-echo "  1) Abre TLauncher (Windows: escritorio, Mac/Linux: $HOME/.local/share/TLauncher/tlauncher)"
+if [ "$(uname)" = "Darwin" ]; then
+    echo "  1) Abre TLauncher: ~/Library/Application Support/TLauncher/TLauncher.command"
+else
+    echo "  1) Abre TLauncher: $HOME/.local/share/TLauncher/tlauncher"
+fi
 echo "  2) Login con cualquier username (sin password)"
-echo "  3) Crea instancia 1.21.1 + NeoForge 21.1.234"
+echo "  3) Crea instancia 1.21.1 + NeoForge 21.1.234 (o usa la que ya creo el script)"
 echo "  4) Conectate a: $SERVER"
 echo "============================================"
 echo ""
