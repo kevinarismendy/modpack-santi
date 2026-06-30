@@ -2,10 +2,10 @@ FROM alpine:3.19
 
 RUN apk add --no-cache nginx git
 
-# Force fresh clone (defeats Docker layer cache)
+# Add a changing line to force fresh clone every build
 ARG CACHE_BUST=1
-RUN git clone --depth 1 https://github.com/kevinarismendy/modpack-santi.git /tmp/repo && \
-    # Force LF (strip CR) on text files to match local hashes
+RUN echo "Build ID: ${CACHE_BUST}-$(date +%s)" && \
+    git clone --depth 1 https://github.com/kevinarismendy/modpack-santi.git /tmp/repo && \
     find /tmp/repo -type f \( -name "*.toml" -o -name "*.bat" -o -name "*.sh" -o -name "*.ps1" -o -name "*.md" -o -name "*.txt" -o -name "*.conf" \) -exec sed -i 's/\r$//' {} \; && \
     mkdir -p /www/mods && \
     cp /tmp/repo/pack.toml /tmp/repo/index.toml /tmp/repo/packwiz-installer-bootstrap.jar /www/ && \
@@ -13,7 +13,6 @@ RUN git clone --depth 1 https://github.com/kevinarismendy/modpack-santi.git /tmp
     rm -rf /etc/nginx/http.d/default.conf && \
     rm -rf /tmp/repo
 
-# Inline nginx.conf
 RUN cat > /etc/nginx/http.d/default.conf <<'EOF'
 server {
     listen 80;
