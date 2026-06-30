@@ -141,7 +141,6 @@ echo   Cuando quieras buscar actualizaciones, ejecuta:
 echo     "Servidor Amiguos - Actualizar" del escritorio
 echo   O vuelve a correr launcher.bat desde la carpeta.
 echo.
-pause
 exit /b 0
 
 REM ========== Instalador portable de JDK 21 ==========

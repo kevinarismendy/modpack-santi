@@ -76,6 +76,8 @@ if !RC! neq 0 (
 )
 echo ============================================
 echo.
-echo Presiona cualquier tecla para cerrar...
-pause >nul
+echo ==========================================
+echo   >>>>>>  Presiona ENTER para cerrar  <<<<<<
+echo ==========================================
+pause
 exit /b !RC!
