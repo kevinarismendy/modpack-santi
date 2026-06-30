@@ -1,4 +1,4 @@
-name = "Servidor Amiguos"
+﻿name = "Servidor Amiguos"
 author = "Santiago"
 version = "1.0.0"
 pack-format = "packwiz:1.1.0"
@@ -6,11 +6,13 @@ pack-format = "packwiz:1.1.0"
 [index]
 file = "index.toml"
 hash-format = "sha256"
-hash = "4a894f5ba3c051aeefc67f93363ff6022cb6be4f334774a648a7655df3b5d840"
+hash = "f70683f5b8f484d9e3626b89ce750ff7dcce1d25104f4f1f229a470d1ed3697a"
 
 [versions]
 minecraft = "1.21.1"
-neoforge = "21.1.234"
+fabric = "0.16.5"
 
 [options]
 acceptable-game-versions = ["1.21.1"]
+clientside-mods = true
+serverside-mods = false
