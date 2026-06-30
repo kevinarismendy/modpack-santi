@@ -6,7 +6,9 @@ cd /d "%~dp0"
 set MIN_JAVA=21
 set JDK_DIR=%LOCALAPPDATA%\jdk21
 set EXTRACT_DIR=%LOCALAPPDATA%\jdk_extract_temp
-set MODS_LIST_URL=https://raw.githubusercontent.com/kevinarismendy/modpack-santi/main/mods.csv
+set BOOTSTRAP_URL=https://raw.githubusercontent.com/kevinarismendy/modpack-santi/main/pack.toml
+set BOOTSTRAP_JAR_URL=https://raw.githubusercontent.com/kevinarismendy/modpack-santi/main/packwiz-installer-bootstrap.jar
+set BOOTSTRAP_JAR=packwiz-installer-bootstrap.jar
 set SERVER=amiguos.holy.gg
 
 echo ============================================
@@ -33,103 +35,115 @@ if not defined TLAUNCHER_EXE (
 echo [OK] TLauncher: !TLAUNCHER_EXE!
 echo.
 
-REM --- Detectar Java 21+ (opcional, solo para instalar JDK portable) ---
+REM --- Detectar Java 21+ ---
+echo Detectando Java...
+set "JAVA_CMD="
 where java >nul 2>&1
-if errorlevel 1 (
-    if not exist "%JDK_DIR%\bin\java.exe" (
-        echo [!] Java 21+ no encontrado. Bajando JDK 21 portable...
-        set "JDK_ZIP=%TEMP%\servidor_amigos_jdk.zip"
-        set "JDK_URL=https://api.adoptium.net/v3/binary/latest/21/ga/windows/x64/jdk/hotspot/normal/eclipse"
-        curl.exe -L -sS -o "%JDK_ZIP%" "%JDK_URL%"
-        if errorlevel 1 (
-            echo [WARN] No se pudo bajar JDK. Si tienes Java 21+ instalado, ignora este mensaje.
-        ) else (
-            if exist "%JDK_DIR%" rmdir /s /q "%JDK_DIR%" 2>nul
-            if exist "%EXTRACT_DIR%" rmdir /s /q "%EXTRACT_DIR%" 2>nul
-            mkdir "%EXTRACT_DIR%" 2>nul
-            powershell -NoProfile -Command "Expand-Archive -LiteralPath '%JDK_ZIP%' -DestinationPath '%EXTRACT_DIR%' -Force" >nul 2>&1
-            del "%JDK_ZIP%" 2>nul
-            for /d %%D in ("%EXTRACT_DIR%\*") do (
-                if exist "%%D\bin\java.exe" robocopy "%%D" "%JDK_DIR%" /E /MOVE /NFL /NDL /NJH /NJS /NC /NS >nul 2>&1
-            )
-            rmdir "%EXTRACT_DIR%" 2>nul
-            if exist "%JDK_DIR%\bin\java.exe" (
-                echo [OK] JDK 21 en %JDK_DIR%
-            ) else (
-                echo [WARN] No se encontro java.exe despues de extraer.
+if not errorlevel 1 (
+    for /f "tokens=2 delims= " %%v in ('"java -version 2>&1" ^| findstr /i "version"') do (
+        for /f "tokens=1 delims=." %%a in ("%%~v") do (
+            for /f "delims=""" %%b in ("%%a") do (
+                if %%b geq %MIN_JAVA% set "JAVA_CMD=java"
             )
         )
     )
 )
+if defined JAVA_CMD (
+    echo [OK] Java detectado
+) else (
+    if exist "%JDK_DIR%\bin\java.exe" (
+        echo [OK] JDK 21 portable en %JDK_DIR%
+        set "JAVA_CMD=%JDK_DIR%\bin\java.exe"
+    ) else (
+        echo [!] Java 21+ no encontrado. Bajando JDK 21 portable...
+        set "JDK_ZIP=%TEMP%\servidor_amigos_jdk.zip"
+        curl.exe -L -sS -o "%JDK_ZIP%" "https://api.adoptium.net/v3/binary/latest/21/ga/windows/x64/jdk/hotspot/normal/eclipse"
+        if errorlevel 1 (
+            echo [ERROR] No se pudo bajar JDK.
+            echo Instala Java 21 desde https://adoptium.net/ y volve a correr.
+            pause
+            exit /b 1
+        )
+        if exist "%JDK_DIR%" rmdir /s /q "%JDK_DIR%" 2>nul
+        if exist "%EXTRACT_DIR%" rmdir /s /q "%EXTRACT_DIR%" 2>nul
+        mkdir "%EXTRACT_DIR%" 2>nul
+        powershell -NoProfile -Command "Expand-Archive -LiteralPath '%JDK_ZIP%' -DestinationPath '%EXTRACT_DIR%' -Force" >nul 2>&1
+        del "%JDK_ZIP%" 2>nul
+        for /d %%D in ("%EXTRACT_DIR%\*") do (
+            if exist "%%D\bin\java.exe" robocopy "%%D" "%JDK_DIR%" /E /MOVE /NFL /NDL /NJH /NJS /NC /NS >nul 2>&1
+        )
+        rmdir "%EXTRACT_DIR%" 2>nul
+        if not exist "%JDK_DIR%\bin\java.exe" (
+            echo [ERROR] No se encontro java.exe despues de extraer.
+            pause
+            exit /b 1
+        )
+        set "JAVA_CMD=%JDK_DIR%\bin\java.exe"
+        echo [OK] JDK 21 portable listo
+    )
+)
 echo.
 
-REM --- Bajar lista de mods (mods.csv) ---
-set "MODS_LIST=%TEMP%\servidor-amiguos-mods-%RANDOM%.csv"
-echo Descargando lista de mods...
-curl.exe -L -sS -o "%MODS_LIST%" "%MODS_LIST_URL%" --max-time 60
-if errorlevel 1 (
-    echo [ERROR] No se pudo bajar la lista de mods.
-    echo Verifica tu conexion a internet.
+REM --- Bajar packwiz-installer-bootstrap.jar ---
+if not exist "%BOOTSTRAP_JAR%" (
+    echo Descargando packwiz bootstrap...
+    curl.exe -L -sS -o "%BOOTSTRAP_JAR%" "%BOOTSTRAP_JAR_URL%" --max-time 60
+    if errorlevel 1 (
+        echo [ERROR] No se pudo bajar el bootstrap.
+        pause
+        exit /b 1
+    )
+)
+echo [OK] Bootstrap listo
+echo.
+
+REM --- Limpiar cache viejo del bootstrap en TEMP ---
+if exist "%TEMP%\pack.toml" del "%TEMP%\pack.toml" 2>nul
+if exist "%TEMP%\pw_zip" rmdir /s /q "%TEMP%\pw_zip" 2>nul
+if exist "%TEMP%\pw_test" rmdir /s /q "%TEMP%\pw_test" 2>nul
+
+REM --- Bajar mods via packwiz-installer ---
+echo Descargando 31 mods Fabric...
+set "MODS_TEMP=%TEMP%\santicraft-mods-%RANDOM%"
+mkdir "!MODS_TEMP!" 2>nul
+pushd "!MODS_TEMP!"
+"!JAVA_CMD!" -jar "%~dp0%BOOTSTRAP_JAR%" -g %BOOTSTRAP_URL%
+set BOOTSTRAP_RC=!errorlevel!
+popd
+if !BOOTSTRAP_RC! neq 0 (
+    echo [ERROR] Fallo la descarga de mods.
+    rmdir /s /q "!MODS_TEMP!" 2>nul
     pause
     exit /b 1
 )
-if not exist "%MODS_LIST%" (
-    echo [ERROR] No se creo el archivo de lista.
+if not exist "!MODS_TEMP!\minecraft\mods" (
+    echo [ERROR] No se encontraron mods descargados.
+    rmdir /s /q "!MODS_TEMP!" 2>nul
     pause
     exit /b 1
 )
-echo [OK] Lista descargada.
-echo.
 
-REM --- Determinar carpeta destino ---
+REM --- Copiar mods a la carpeta de TLauncher ---
 set "MODS_DEST="
 if exist "%APPDATA%\.minecraft\mods" set "MODS_DEST=%APPDATA%\.minecraft\mods"
 if not defined MODS_DEST if exist "%APPDATA%\.minecraft" set "MODS_DEST=%APPDATA%\.minecraft\mods"
 if not defined MODS_DEST set "MODS_DEST=%LOCALAPPDATA%\TLauncher\mods"
 if not exist "!MODS_DEST!" mkdir "!MODS_DEST!" 2>nul
-echo Carpeta de mods: !MODS_DEST!
+echo.
+echo Copiando mods a !MODS_DEST! ...
+xcopy /E /Y /Q "!MODS_TEMP!\minecraft\mods\*" "!MODS_DEST!\" >nul 2>&1
+rmdir /s /q "!MODS_TEMP!" 2>nul
+echo [OK] 31 mods instalados.
 echo.
 
-REM --- Bajar cada mod desde mods.csv ---
-REM Formato CSV: filename,url
-set "MOD_COUNT=0"
-set "MODS_FAILED=0"
-set "TOTAL_BYTES=0"
-
-for /f "usebackq tokens=1,2 delims=," %%f in ("%MODS_LIST%") do (
-    set "MOD_FILE=%%f"
-    set "MOD_URL=%%g"
-    if /i not "!MOD_FILE:~0,1!"=="#" (
-        if defined MOD_FILE if defined MOD_URL (
-            set /a MOD_COUNT+=1
-            set "MOD_NUM=00!MOD_COUNT!"
-            set "MOD_NUM=!MOD_NUM:~-3!"
-            echo [!MOD_NUM!/??] !MOD_FILE!
-            curl.exe -L -sS -o "!MODS_DEST!\!MOD_FILE!" "!MOD_URL!" --max-time 120
-            if errorlevel 1 (
-                echo        [FAIL]
-                set /a MODS_FAILED+=1
-            ) else (
-                for %%S in ("!MODS_DEST!\!MOD_FILE!") do set "FILE_SIZE=%%~zS"
-                echo        [OK] !FILE_SIZE! bytes
-                set /a TOTAL_BYTES+=FILE_SIZE
-            )
-        )
-    )
-)
-
-del "%MODS_LIST%" 2>nul
-
-echo.
 echo ============================================
-echo   Resumen: !MOD_COUNT! mods, !MODS_FAILED! fallaron
-echo ============================================
+echo   Listo. Ya podes jugar.
 echo.
-echo Para jugar:
 echo   1) Abre TLauncher
 echo   2) Login con cualquier username (no-premium)
 echo   3) Crea perfil: 1.21.1 + Fabric 0.16.5
 echo   4) Conectate a: %SERVER%
+echo ============================================
 echo.
 pause
 exit /b 0
