@@ -64,22 +64,27 @@ if not defined JAVA_CMD (
     for /f "tokens=2 delims=" %%v in ('"java -version 2>&1" ^| findstr /i "version"') do echo [1/4] [OK] Java %%v detectado
 )
 
-REM --- HMCL (auto via winget) ---
-echo [2/4] Verificando HMCL...
-if exist "%LOCALAPPDATA%\HMCL\HMCL.exe" goto :hmcl_ok
-if exist "%LOCALAPPDATA%\Programs\HMCL\HMCL.exe" goto :hmcl_ok
-if exist "C:\Program Files\HMCL\HMCL.exe" goto :hmcl_ok
-echo       Instalando HMCL con winget (~1 min)...
-winget install --exact --id HMCL.HMCL.Stable --accept-package-agreements --accept-source-agreements --silent
-if exist "%LOCALAPPDATA%\HMCL\HMCL.exe" goto :hmcl_ok
-if exist "%LOCALAPPDATA%\Programs\HMCL\HMCL.exe" goto :hmcl_ok
-if exist "C:\Program Files\HMCL\HMCL.exe" goto :hmcl_ok
-echo       [WARN] winget fallo o HMCL no se instalo. Bajalo manualmente desde:
-echo       https://hmcl.huangyuhui.net/download/
-goto :hmcl_done
-:hmcl_ok
-echo       [OK] HMCL listo
-:hmcl_done
+REM --- TLauncher (no-premium) ---
+echo [2/4] Verificando TLauncher...
+if exist "%LOCALAPPDATA%\TLauncher\tlauncher.exe" goto :tlauncher_ok
+if exist "%LOCALAPPDATA%\Programs\TLauncher\tlauncher.exe" goto :tlauncher_ok
+if exist "C:\Program Files\TLauncher\tlauncher.exe" goto :tlauncher_ok
+echo       Descargando TLauncher (~10 MB)...
+set "TLAUNCHER_SETUP=%TEMP%\TLauncher-Setup.exe"
+curl.exe -L -sS -o "%TLAUNCHER_SETUP%" "https://tlauncher.org/installer" --max-time 180
+if errorlevel 1 goto :tlauncher_fail
+echo       Ejecutando instalador (espera a que termine)...
+start /wait "" "%TLAUNCHER_SETUP%" /quiet
+if exist "%LOCALAPPDATA%\TLauncher\tlauncher.exe" goto :tlauncher_ok
+if exist "%LOCALAPPDATA%\Programs\TLauncher\tlauncher.exe" goto :tlauncher_ok
+if exist "C:\Program Files\TLauncher\tlauncher.exe" goto :tlauncher_ok
+:tlauncher_fail
+echo       [WARN] Descarga/instalacion fallo. Baja TLauncher desde:
+echo       https://tlauncher.org/en/
+goto :tlauncher_done
+:tlauncher_ok
+echo       [OK] TLauncher listo
+:tlauncher_done
 
 REM --- Bootstrap jar ---
 if not exist %BOOTSTRAP_JAR% (
@@ -95,9 +100,9 @@ echo.
 echo.
 echo ============================================
 echo   Listo.
-echo   1) Abre HMCL desde el acceso directo del escritorio
-echo   2) Crea cuenta Classic (offline): icono persona - Add Account
-echo      - Username: cualquiera, Password: cualquiera
+echo   1) Abre TLauncher desde el acceso directo del escritorio
+echo   2) Click "Entrar al juego" o "Login"
+echo      (escribe cualquier username, sin password)
 echo   3) Crea instancia 1.21.1 + NeoForge 21.1.234
 echo   4) Conectate a: %SERVER%
 echo ============================================

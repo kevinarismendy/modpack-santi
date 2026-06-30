@@ -58,46 +58,31 @@ if [ -z "$JAVA_CMD" ]; then
     fi
 fi
 
-# --- HMCL (auto para Windows/Mac/Linux) ---
-echo "[2/4] Verificando HMCL..."
-HMCL_DIR="$HOME/Library/Application Support/HMCL"
-if [ "$(uname)" != "Darwin" ] && [ "$(uname)" != "Linux" ]; then
-    echo "      [WARN] OS no soportado. Instala HMCL desde https://hmcl.huangyuhui.net/download/"
-    return 0
+# --- TLauncher (no-premium) ---
+echo "[2/4] Verificando TLauncher..."
+TLAUNCHER_DIR="$HOME/.local/share/TLauncher"
+if [ "$(uname)" = "Darwin" ]; then
+    TLAUNCHER_DIR="$HOME/Library/Application Support/TLauncher"
 fi
-if [ -d "$HMCL_DIR" ] && [ -f "$HMCL_DIR/HMCL.jar" ]; then
-    echo "      [OK] HMCL ya instalado en $HMCL_DIR"
-elif [ "$(uname)" = "Darwin" ]; then
-    echo "      Descargando HMCL para Mac (~10 MB)..."
-    mkdir -p "$HMCL_DIR"
-    curl -L -sS -o "$HMCL_DIR/HMCL.jar" "https://github.com/huanghongxun/HMCL/releases/download/v3.15.2/HMCL-3.15.2.jar" --max-time 120
-    cat > "$HMCL_DIR/HMCL.command" <<'HMCL_EOF'
-#!/bin/bash
-cd "$(dirname "$0")"
-java -jar HMCL.jar
-HMCL_EOF
-    chmod +x "$HMCL_DIR/HMCL.command"
-    if [ -f "$HMCL_DIR/HMCL.jar" ]; then
-        echo "      [OK] HMCL instalado en $HMCL_DIR"
-    else
-        echo "      [WARN] Descarga fallo. Baja desde https://hmcl.huangyuhui.net/download/"
-    fi
+if [ -f "$TLAUNCHER_DIR/tlauncher" ] || [ -f "$TLAUNCHER_DIR/tlauncher.exe" ]; then
+    echo "      [OK] TLauncher ya instalado en $TLAUNCHER_DIR"
 else
-    echo "      Descargando HMCL Linux AppImage (~105 MB)..."
-    mkdir -p "$HMCL_DIR"
-    APPIMAGE="$HMCL_DIR/HMCL-x86_64.AppImage"
-    curl -L -sS -o "$APPIMAGE" "https://github.com/huanghongxun/HMCL/releases/download/v3.15.2/HMCL-3.15.2-x86_64.AppImage" --max-time 300
-    chmod +x "$APPIMAGE"
-    cat > "$HMCL_DIR/HMCL.sh" <<'HMCL_EOF'
-#!/bin/bash
-cd "$(dirname "$0")"
-./HMCL-x86_64.AppImage "$@"
-HMCL_EOF
-    chmod +x "$HMCL_DIR/HMCL.sh"
-    if [ -f "$APPIMAGE" ]; then
-        echo "      [OK] HMCL instalado en $HMCL_DIR"
+    echo "      Descargando TLauncher (~50 MB)..."
+    mkdir -p "$TLAUNCHER_DIR"
+    TLAUNCHER_ZIP="/tmp/tlauncher.zip"
+    if [ "$(uname)" = "Darwin" ]; then
+        curl -L -sS -o "$TLAUNCHER_ZIP" "https://tlauncher.org/jar" --max-time 180
     else
-        echo "      [WARN] Descarga fallo. Baja desde https://hmcl.huangyuhui.net/download/"
+        curl -L -sS -o "$TLAUNCHER_ZIP" "https://tlauncher.org/jar" --max-time 180
+    fi
+    if [ -s "$TLAUNCHER_ZIP" ]; then
+        unzip -q -o "$TLAUNCHER_ZIP" -d "$TLAUNCHER_DIR"
+        chmod +x "$TLAUNCHER_DIR/tlauncher" 2>/dev/null
+        rm "$TLAUNCHER_ZIP"
+        echo "      [OK] TLauncher instalado en $TLAUNCHER_DIR"
+    else
+        echo "      [WARN] Descarga fallo. Baja TLauncher desde:"
+        echo "      https://tlauncher.org/en/"
     fi
 fi
 
@@ -117,9 +102,8 @@ $JAVA_CMD -jar "$BOOTSTRAP_JAR" -g "$BOOTSTRAP_URL"
 echo ""
 echo "============================================"
 echo "  Listo."
-echo "  1) Abre HMCL (Windows: escritorio, Mac: ~/Library/Application Support/HMCL/HMCL.command)"
-echo "  2) Crea cuenta Classic (offline): icono persona - Add Account - Classic"
-echo "     Username: cualquiera, Password: cualquiera"
+echo "  1) Abre TLauncher (Windows: escritorio, Mac/Linux: $HOME/.local/share/TLauncher/tlauncher)"
+echo "  2) Login con cualquier username (sin password)"
 echo "  3) Crea instancia 1.21.1 + NeoForge 21.1.234"
 echo "  4) Conectate a: $SERVER"
 echo "============================================"
