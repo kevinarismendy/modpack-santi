@@ -15,6 +15,22 @@ echo "  MC 1.21.1 + NeoForge 21.1.234"
 echo "============================================"
 echo ""
 
+# --- [Pre] Auto-actualizar el launcher para la proxima corrida ---
+echo "[Pre] Verificando actualizaciones del launcher..."
+TEMP_LAUNCHER="/tmp/santicraft_launcher_$$.sh"
+if curl -L -sS -o "$TEMP_LAUNCHER" "$REPO/launcher.sh" 2>/dev/null && [ -s "$TEMP_LAUNCHER" ]; then
+    if ! cmp -s "$0" "$TEMP_LAUNCHER"; then
+        echo "      Launcher actualizado. (proxima corrida usara la nueva version)"
+        cp "$TEMP_LAUNCHER" "$0"
+    else
+        echo "      Launcher al dia."
+    fi
+    rm "$TEMP_LAUNCHER"
+else
+    echo "      [WARN] No se pudo verificar."
+fi
+echo ""
+
 # --- Localizar Java 21+ ---
 JAVA_CMD=""
 if command -v java &> /dev/null; then
