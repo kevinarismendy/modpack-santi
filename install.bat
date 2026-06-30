@@ -18,22 +18,20 @@ echo   MC 1.21.1 + NeoForge 21.1.234
 echo ============================================
 echo.
 
-REM --- [0/4] Auto-actualizar el launcher para la proxima corrida ---
-echo [0/4] Verificando actualizaciones del launcher...
+REM --- [Pre] Auto-actualizar el launcher para la proxima corrida ---
+echo [Pre] Verificando actualizaciones del launcher...
 set "TEMP_LAUNCHER=%TEMP%\santicraft_launcher_%RANDOM%.bat"
 curl.exe -L -sS -o "%TEMP_LAUNCHER%" "%REPO%/launcher.bat" 2>nul
-if exist "%TEMP_LAUNCHER%" (
-    fc /b "%~dp0launcher.bat" "%TEMP_LAUNCHER%" >nul 2>&1
-    if !errorlevel! neq 0 (
-        echo       Launcher actualizado. (proxima corrida usara la nueva version)
-        copy /y "%TEMP_LAUNCHER%" "%~dp0launcher.bat" >nul
-    ) else (
-        echo       Launcher al dia.
-    )
-    del "%TEMP_LAUNCHER%" 2>nul
+if not exist "%TEMP_LAUNCHER%" goto :launcher_done
+fc /b "%~dp0launcher.bat" "%TEMP_LAUNCHER%" >nul 2>&1
+if errorlevel 1 (
+    echo       Launcher actualizado. La proxima corrida usara la version nueva.
+    copy /y "%TEMP_LAUNCHER%" "%~dp0launcher.bat" >nul
 ) else (
-    echo       [WARN] No se pudo verificar.
+    echo       Launcher al dia.
 )
+del "%TEMP_LAUNCHER%" 2>nul
+:launcher_done
 echo.
 
 REM --- Localizar Java 21+ ---
