@@ -64,12 +64,21 @@ if not defined JAVA_CMD (
     for /f "tokens=2 delims=" %%v in ('"java -version 2>&1" ^| findstr /i "version"') do echo [1/4] [OK] Java %%v detectado
 )
 
-REM --- PrismLauncher (se instala manual) ---
-echo [2/4] PrismLauncher se instala manual.
-echo       Descargalo desde https://prismlauncher.org/choose/
-echo       (Windows installer, ~23MB).
-echo       Instalalo y volve a correr este launcher.
-echo       Los mods y Java se configuraron igual.
+REM --- PrismLauncher (auto via winget) ---
+echo [2/4] Verificando PrismLauncher...
+where PrismLauncher.exe >nul 2>&1
+if not errorlevel 1 (
+    echo       [OK] PrismLauncher ya instalado
+) else (
+    echo       Instalando PrismLauncher con winget (~1 min)...
+    winget install --exact --id PrismLauncher.PrismLauncher --accept-package-agreements --accept-source-agreements --silent
+    if errorlevel 1 (
+        echo       [WARN] winget fallo. Si tenes problemas, instalalo manualmente desde:
+        echo       https://prismlauncher.org/choose/
+    ) else (
+        echo       [OK] PrismLauncher instalado
+    )
+)
 
 REM --- Bootstrap jar ---
 if not exist %BOOTSTRAP_JAR% (
