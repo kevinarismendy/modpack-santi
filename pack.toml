@@ -1,0 +1,13 @@
+name = "SantiCraft"
+author = "Santiago"
+version = "1.0.0"
+pack-format = "packwiz:1.1.0"
+
+[index]
+file = "index.toml"
+hash-format = "sha256"
+hash = "75bec42adad2405228d6d676174b013dbe8480f66d4d1c1cb2162291f50c3750"
+
+[versions]
+minecraft = "1.21.1"
+neoforge = "21.1.234"
