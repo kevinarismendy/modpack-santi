@@ -68,8 +68,16 @@ if not defined JAVA_CMD (
 REM --- TLauncher (auto descarga) ---
 echo [2/4] Verificando TLauncher...
 if exist "%APPDATA%\.tlauncher\tlauncher.exe" goto :tlauncher_ok
+if exist "%APPDATA%\.tlauncher\TLauncher.exe" goto :tlauncher_ok
 if exist "%LOCALAPPDATA%\Programs\TLauncher\tlauncher.exe" goto :tlauncher_ok
+if exist "%LOCALAPPDATA%\Programs\TLauncher\TLauncher.exe" goto :tlauncher_ok
+if exist "%LOCALAPPDATA%\TLauncher\tlauncher.exe" goto :tlauncher_ok
+if exist "%LOCALAPPDATA%\TLauncher\TLauncher.exe" goto :tlauncher_ok
 if exist "C:\Program Files\TLauncher\tlauncher.exe" goto :tlauncher_ok
+if exist "C:\Program Files\TLauncher\TLauncher.exe" goto :tlauncher_ok
+if exist "%APPDATA%\.minecraft\TLauncher.exe" goto :tlauncher_ok
+if exist "%APPDATA%\.minecraft\TLauncher32bit.exe" goto :tlauncher_ok
+where tlauncher >nul 2>&1 goto :tlauncher_ok
 echo       Descargando TLauncher (~26 MB)...
 curl.exe -L -o "%TEMP%\TLauncher-Setup.exe" "%TLAUNCHER_URL%" --max-time 180
 if errorlevel 1 goto :tlauncher_fail
@@ -77,8 +85,15 @@ echo       Ejecutando instalador (puede tardar 1-2 min)...
 start /wait "" "%TEMP%\TLauncher-Setup.exe" /quiet
 del "%TEMP%\TLauncher-Setup.exe" 2>nul
 if exist "%APPDATA%\.tlauncher\tlauncher.exe" goto :tlauncher_ok
+if exist "%APPDATA%\.tlauncher\TLauncher.exe" goto :tlauncher_ok
 if exist "%LOCALAPPDATA%\Programs\TLauncher\tlauncher.exe" goto :tlauncher_ok
+if exist "%LOCALAPPDATA%\Programs\TLauncher\TLauncher.exe" goto :tlauncher_ok
+if exist "%LOCALAPPDATA%\TLauncher\tlauncher.exe" goto :tlauncher_ok
+if exist "%LOCALAPPDATA%\TLauncher\TLauncher.exe" goto :tlauncher_ok
 if exist "C:\Program Files\TLauncher\tlauncher.exe" goto :tlauncher_ok
+if exist "C:\Program Files\TLauncher\TLauncher.exe" goto :tlauncher_ok
+if exist "%APPDATA%\.minecraft\TLauncher.exe" goto :tlauncher_ok
+if exist "%APPDATA%\.minecraft\TLauncher32bit.exe" goto :tlauncher_ok
 :tlauncher_fail
 echo       [WARN] Descarga/instalacion fallo. Baja TLauncher desde:
 echo       https://tlauncher.org/en/
