@@ -23,10 +23,10 @@ echo [Pre] Verificando actualizaciones del launcher...
 set "TEMP_LAUNCHER=%TEMP%\santicraft_launcher_%RANDOM%.bat"
 curl.exe -L -sS -o "%TEMP_LAUNCHER%" "%LAUNCHER_URL%" 2>nul
 if not exist "%TEMP_LAUNCHER%" goto :launcher_done
-fc /b "%~dp0launcher.bat" "%TEMP_LAUNCHER%" >nul 2>&1
+fc /b "%~dp0launcher.bat" "%TEMP_LAUNCHER%" >nul 2>nul
 if errorlevel 1 (
     echo       Launcher actualizado. La proxima corrida usara la version nueva.
-    copy /y "%TEMP_LAUNCHER%" "%~dp0launcher.bat" >nul
+    copy /y "%TEMP_LAUNCHER%" "%~dp0launcher.bat" >nul 2>nul
 ) else (
     echo       Launcher al dia.
 )
@@ -66,7 +66,7 @@ if not defined JAVA_CMD (
 
 REM --- PrismLauncher (auto via winget) ---
 echo [2/4] Verificando PrismLauncher...
-where PrismLauncher.exe >nul 2>&1
+where PrismLauncher.exe >nul 2>nul
 if not errorlevel 1 (
     echo       [OK] PrismLauncher ya instalado
 ) else (
