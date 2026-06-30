@@ -88,13 +88,38 @@ if [ ! -f "$BOOTSTRAP_JAR" ]; then
     curl -L -sS -o "$BOOTSTRAP_JAR" "https://github.com/packwiz/packwiz-installer-bootstrap/releases/download/v0.0.3/packwiz-installer-bootstrap.jar"
 fi
 
-# --- Instalar mods ---
-echo "[4/4] Instalando mods desde el repo oficial..."
-echo "      (primera vez puede tardar varios minutos, ~91 MB)"
-echo ""
-$JAVA_CMD -version
-echo ""
-$JAVA_CMD -jar "$BOOTSTRAP_JAR" -g "$BOOTSTRAP_URL"
+# --- Crear instancia de TLauncher automaticamente ---
+echo "[4/4] Creando instancia 'Servidor Amiguos'..."
+if [ -d "$TLAUNCHER_DIR/instances" ] && [ ! -d "$TLAUNCHER_DIR/instances/Servidor Amiguos" ]; then
+    INSTANCE="$TLAUNCHER_DIR/instances/Servidor Amiguos"
+    MODS_TEMP="/tmp/santicraft-mods"
+    echo "      Bajando mods a $MODS_TEMP..."
+    mkdir -p "$MODS_TEMP"
+    (cd "$MODS_TEMP" && $JAVA_CMD -jar "$BOOTSTRAP_JAR" -g "$BOOTSTRAP_URL")
+    if [ -d "$MODS_TEMP/minecraft/mods" ]; then
+        mkdir -p "$INSTANCE/.minecraft/mods"
+        cp -r "$MODS_TEMP/minecraft/mods/"* "$INSTANCE/.minecraft/mods/"
+        cp "$BOOTSTRAP_JAR" "$INSTANCE/.minecraft/packwiz-installer-bootstrap.jar"
+        cat > "$INSTANCE/instance.cfg" <<'EOF'
+InstanceType=OneSix
+name=Servidor Amiguos
+iconKey=grass_block
+EOF
+        echo "      [OK] Instancia creada"
+    else
+        echo "      [WARN] No se pudieron bajar los mods. Crea la instancia manual."
+    fi
+else
+    if [ -d "$TLAUNCHER_DIR/instances/Servidor Amiguos" ]; then
+        echo "      Instancia ya existe."
+    fi
+fi
+
+# --- Instalar mods (solo si no hay instancia de TLauncher) ---
+if [ ! -d "$TLAUNCHER_DIR/instances/Servidor Amiguos" ]; then
+    echo "      Instalando mods en .minecraft/ default..."
+    $JAVA_CMD -jar "$BOOTSTRAP_JAR" -g "$BOOTSTRAP_URL"
+fi
 echo ""
 echo "============================================"
 echo "  Listo."

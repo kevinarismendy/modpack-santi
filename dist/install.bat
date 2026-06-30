@@ -86,6 +86,37 @@ goto :tlauncher_done
 echo       [OK] TLauncher listo
 :tlauncher_done
 
+REM --- Crear instancia de TLauncher automaticamente ---
+echo [3/4] Creando instancia "Servidor Amiguos" en TLauncher...
+set "TLAUNCHER_ROOT=%APPDATA%\TLauncher"
+if not exist "%TLAUNCHER_ROOT%" set "TLAUNCHER_ROOT=%LOCALAPPDATA%\TLauncher"
+if not exist "%TLAUNCHER_ROOT%" goto :skip_instance
+if not exist "%BOOTSTRAP_JAR%" (
+    echo       Descargando bootstrap...
+    curl.exe -L -o %BOOTSTRAP_JAR% "https://github.com/packwiz/packwiz-installer-bootstrap/releases/download/v0.0.3/packwiz-installer-bootstrap.jar"
+)
+if not exist "%BOOTSTRAP_JAR%" goto :skip_instance
+set "INSTANCE=%TLAUNCHER_ROOT%\instances\Servidor Amiguos"
+set "MODS_TEMP=%TEMP%\santicraft-mods"
+if exist "%INSTANCE%" goto :skip_instance
+echo       Bajando mods (91 MB) a %MODS_TEMP%...
+mkdir "%MODS_TEMP%"
+"%JAVA_CMD%" -jar %BOOTSTRAP_JAR% -g %BOOTSTRAP_URL%
+if exist "%MODS_TEMP%\minecraft\mods" (
+    mkdir "%INSTANCE%\.minecraft\mods"
+    xcopy /E /Y "%MODS_TEMP%\minecraft\mods\*" "%INSTANCE%\.minecraft\mods\" >nul
+    copy /Y "%BOOTSTRAP_JAR%" "%INSTANCE%\.minecraft\packwiz-installer-bootstrap.jar" >nul 2>&1
+    (
+        echo InstanceType=OneSix
+        echo name=Servidor Amiguos
+        echo iconKey=grass_block
+    ) > "%INSTANCE%\instance.cfg"
+    echo       [OK] Instancia creada
+) else (
+    echo       [WARN] No se pudieron bajar los mods. La instancia tendra que crearse manual.
+)
+:skip_instance
+
 REM --- Bootstrap jar ---
 if not exist %BOOTSTRAP_JAR% (
     echo [3/4] Descargando bootstrap...
@@ -96,7 +127,12 @@ REM --- Instalar mods ---
 echo [4/4] Instalando mods desde el repo oficial...
 echo       (primera vez puede tardar varios minutos, ~91 MB)
 echo.
-"%JAVA_CMD%" -jar %BOOTSTRAP_JAR% -g %BOOTSTRAP_URL%
+if exist "%INSTANCE%\.minecraft\mods" (
+    echo       Mods ya en la instancia de TLauncher. Re-ejecuta el launcher para actualizarlos.
+    "%JAVA_CMD%" -jar %BOOTSTRAP_JAR% -g %BOOTSTRAP_URL% 2>nul
+) else (
+    "%JAVA_CMD%" -jar %BOOTSTRAP_JAR% -g %BOOTSTRAP_URL%
+)
 echo.
 echo ============================================
 echo   Listo.
