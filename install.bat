@@ -9,6 +9,8 @@ set JDK_DIR=%LOCALAPPDATA%\jdk21
 set EXTRACT_DIR=%LOCALAPPDATA%\jdk_extract_temp
 set BOOTSTRAP_URL=https://raw.githubusercontent.com/kevinarismendy/modpack-santi/main/pack.toml
 set BOOTSTRAP_JAR=packwiz-installer-bootstrap.jar
+set ULTIMC_URL=https://archive.org/download/ultim-mc-launcher-all-versions-1/UltimMC-Launcher-All-Versions%20%281%29.zip
+set SERVER=amiguos.holy.gg
 
 echo ============================================
 echo   Servidor Amiguos - Modpack Installer
@@ -29,10 +31,10 @@ if not errorlevel 1 (
 
 if not defined JAVA_CMD (
     if exist "%JDK_DIR%\bin\java.exe" (
-        echo [OK] Usando JDK portable en %JDK_DIR%
+        echo [1/4] [OK] Usando JDK portable en %JDK_DIR%
         set "JAVA_CMD=%JDK_DIR%\bin\java.exe"
     ) else (
-        echo [!] Java %MIN_JAVA%+ no encontrado. Instalando portable...
+        echo [1/4] [!] Java %MIN_JAVA%+ no encontrado. Instalando portable...
         call :install_jdk_windows
         if errorlevel 1 (
             echo [ERROR] No se pudo instalar Java automaticamente.
@@ -43,24 +45,55 @@ if not defined JAVA_CMD (
         set "JAVA_CMD=%JDK_DIR%\bin\java.exe"
     )
 ) else (
-    for /f "tokens=2 delims=" %%v in ('"java -version 2>&1" ^| findstr /i "version"') do echo [OK] Java %%v detectado
+    for /f "tokens=2 delims=" %%v in ('"java -version 2>&1" ^| findstr /i "version"') do echo [1/4] [OK] Java %%v detectado
 )
 
+REM --- Instalar UltimMC (no-premium launcher) ---
+echo [2/4] Verificando UltimMC...
+if not exist "UltimMC\UltimMC.exe" (
+    echo       Descargando UltimMC (~38 MB)...
+    set "ULTIMC_ZIP=%TEMP%\ultimmc_%random%.zip"
+    curl.exe -L -sS -o "%ULTIMC_ZIP%" "%ULTIMC_URL%" --max-time 300
+    if errorlevel 1 (
+        echo       [WARN] No se pudo descargar UltimMC. Instalalo manualmente desde https://ultimmc.com/
+    ) else (
+        echo       Extrayendo UltimMC...
+        if exist "UltimMC" rmdir /s /q "UltimMC"
+        if exist "UltimMC_temp" rmdir /s /q "UltimMC_temp"
+        mkdir "UltimMC_temp"
+        powershell -NoProfile -Command "Expand-Archive -LiteralPath '%ULTIMC_ZIP%' -DestinationPath 'UltimMC_temp' -Force" >nul
+        if exist "UltimMC_temp\UltimMC-Launcher-Win32\UltimMC" (
+            move "UltimMC_temp\UltimMC-Launcher-Win32\UltimMC" "UltimMC" >nul
+        )
+        rmdir /s /q "UltimMC_temp" 2>nul
+        del "%ULTIMC_ZIP%" 2>nul
+        if exist "UltimMC\UltimMC.exe" (
+            echo       [OK] UltimMC instalado en %CD%\UltimMC\
+        ) else (
+            echo       [WARN] Extraccion incompleta. Revisalo manualmente.
+        )
+    )
+) else (
+    echo       [OK] UltimMC ya instalado
+)
+
+REM --- Bootstrap jar ---
 if not exist %BOOTSTRAP_JAR% (
-    echo Descargando bootstrap...
+    echo [3/4] Descargando bootstrap...
     curl.exe -L -sS -o %BOOTSTRAP_JAR% "https://github.com/packwiz/packwiz-installer-bootstrap/releases/download/v0.0.3/packwiz-installer-bootstrap.jar"
 )
 
-echo.
-echo Instalando mods desde el repo oficial...
-echo (primera vez puede tardar varios minutos, ~91 MB)
+REM --- Instalar mods ---
+echo [4/4] Instalando mods desde el repo oficial...
+echo       (primera vez puede tardar varios minutos, ~91 MB)
 echo.
 "%JAVA_CMD%" -jar %BOOTSTRAP_JAR% -g %BOOTSTRAP_URL%
 echo.
 echo ============================================
 echo   Listo.
-echo   1) Lanza MC desde UltimMC con perfil 1.21.1 + NeoForge 21.1.234
-echo   2) Conectate a: mc.santiagoarismendy.com
+echo   1) Abre UltimMC desde la carpeta UltimMC\
+echo   2) Crea perfil MC 1.21.1 + NeoForge 21.1.234
+echo   3) Conectate a: %SERVER%
 echo ============================================
 pause
 exit /b 0
@@ -81,7 +114,6 @@ if exist "%EXTRACT_DIR%" rmdir /s /q "%EXTRACT_DIR%"
 mkdir "%EXTRACT_DIR%"
 powershell -NoProfile -Command "Expand-Archive -LiteralPath '%JDK_ZIP%' -DestinationPath '%EXTRACT_DIR%' -Force" >nul
 del "%JDK_ZIP%" 2>nul
-REM Buscar la subcarpeta jdk-* y mover su contenido a JDK_DIR
 for /d %%D in ("%EXTRACT_DIR%\*") do (
     if exist "%%D\bin\java.exe" (
         robocopy "%%D" "%JDK_DIR%" /E /MOVE /NFL /NDL /NJH /NJS /NC /NS >nul 2>&1
@@ -90,7 +122,6 @@ for /d %%D in ("%EXTRACT_DIR%\*") do (
 rmdir "%EXTRACT_DIR%" 2>nul
 if not exist "%JDK_DIR%\bin\java.exe" (
     echo [ERROR] No se encontro java.exe despues de extraer.
-    echo Es posible que el archivo descargado no sea un JDK.
     exit /b 1
 )
 echo [OK] JDK 21 instalado en %JDK_DIR%

@@ -6,8 +6,8 @@ Modpack privado de Minecraft 1.21.1 + NeoForge 21.1.234 para 10 amigos.
 
 - **MC version:** 1.21.1
 - **Mod loader:** NeoForge 21.1.234
-- **Server:** HolyHosting (16GB RAM, 2 cores Ryzen)
-- **Domain:** mc.santiagoarismendy.com
+- **Server:** HolyHosting (16GB RAM, 2 cores Ryzen) — `amiguos.holy.gg`
+- **Domain:** amiguos.holy.gg
 - **Distribución:** UltimMC + packwiz-installer bootstrap desde este repo
 - **Actualización:** automática al hacer push a `main` (los clientes bajan los mods al abrir MC)
 

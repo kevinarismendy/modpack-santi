@@ -6,6 +6,8 @@ JDK_DIR="$HOME/.jdk21"
 EXTRACT_DIR="/tmp/jdk_extract_temp"
 BOOTSTRAP_URL="https://raw.githubusercontent.com/kevinarismendy/modpack-santi/main/pack.toml"
 BOOTSTRAP_JAR="packwiz-installer-bootstrap.jar"
+ULTIMC_URL="https://archive.org/download/ultim-mc-launcher-all-versions-1/UltimMC-Launcher-All-Versions%20%281%29.zip"
+SERVER="amiguos.holy.gg"
 
 echo "============================================"
 echo "  Servidor Amiguos - Modpack Installer"
@@ -18,17 +20,17 @@ JAVA_CMD=""
 if command -v java &> /dev/null; then
     JAVA_VER=$(java -version 2>&1 | head -1 | sed -E 's/.*"([0-9]+)\.([0-9]+)\..*/\1/')
     if [ "$JAVA_VER" -ge "$MIN_JAVA" ] 2>/dev/null; then
-        echo "[OK] Java $JAVA_VER detectado"
+        echo "[1/4] [OK] Java $JAVA_VER detectado"
         JAVA_CMD="java"
     fi
 fi
 
 if [ -z "$JAVA_CMD" ]; then
     if [ -x "$JDK_DIR/bin/java" ]; then
-        echo "[OK] Usando JDK portable en $JDK_DIR"
+        echo "[1/4] [OK] Usando JDK portable en $JDK_DIR"
         JAVA_CMD="$JDK_DIR/bin/java"
     else
-        echo "[!] Java $MIN_JAVA+ no encontrado. Instalando portable..."
+        echo "[1/4] [!] Java $MIN_JAVA+ no encontrado. Instalando portable..."
         install_jdk_unix
         if [ $? -ne 0 ]; then
             echo "[ERROR] No se pudo instalar Java automaticamente."
@@ -39,14 +41,53 @@ if [ -z "$JAVA_CMD" ]; then
     fi
 fi
 
+# --- Instalar UltimMC (no-premium launcher) ---
+echo "[2/4] Verificando UltimMC..."
+if [ ! -f "UltimMC/UltimMC" ] && [ ! -d "UltimMC.app" ]; then
+    echo "      Descargando UltimMC (~38 MB)..."
+    TEMP_FILE=$(mktemp)
+    if ! curl -L -sS -o "$TEMP_FILE" "$ULTIMC_URL" --max-time 300; then
+        echo "      [WARN] No se pudo descargar UltimMC. Instalalo manualmente desde https://ultimmc.com/"
+    else
+        echo "      Extrayendo UltimMC..."
+        OS=$(uname -s | tr '[:upper:]' '[:lower:]')
+        case "$OS" in
+            darwin) FOLDER="UltimMC-Launcher-Osx64" ;;
+            *) FOLDER="UltimMC-Launcher-Linux64" ;;
+        esac
+        rm -rf UltimMC UltimMC_temp
+        mkdir -p UltimMC_temp
+        unzip -q "$TEMP_FILE" -d UltimMC_temp
+        if [ "$OS" = "darwin" ]; then
+            if [ -d "UltimMC_temp/$FOLDER/UltimMC.app" ]; then
+                mv "UltimMC_temp/$FOLDER/UltimMC.app" .
+            fi
+        else
+            if [ -d "UltimMC_temp/$FOLDER/UltimMC" ]; then
+                mv "UltimMC_temp/$FOLDER/UltimMC" .
+            fi
+        fi
+        rm -rf UltimMC_temp
+        rm "$TEMP_FILE"
+        if [ -f "UltimMC/UltimMC" ] || [ -d "UltimMC.app" ]; then
+            echo "      [OK] UltimMC instalado en $(pwd)"
+        else
+            echo "      [WARN] Extraccion incompleta. Revisalo manualmente."
+        fi
+    fi
+else
+    echo "      [OK] UltimMC ya instalado"
+fi
+
+# --- Bootstrap jar ---
 if [ ! -f "$BOOTSTRAP_JAR" ]; then
-    echo "Descargando bootstrap..."
+    echo "[3/4] Descargando bootstrap..."
     curl -L -sS -o "$BOOTSTRAP_JAR" "https://github.com/packwiz/packwiz-installer-bootstrap/releases/download/v0.0.3/packwiz-installer-bootstrap.jar"
 fi
 
-echo ""
-echo "Instalando mods desde el repo oficial..."
-echo "(primera vez puede tardar varios minutos, ~91 MB)"
+# --- Instalar mods ---
+echo "[4/4] Instalando mods desde el repo oficial..."
+echo "      (primera vez puede tardar varios minutos, ~91 MB)"
 echo ""
 $JAVA_CMD -version
 echo ""
@@ -54,8 +95,9 @@ $JAVA_CMD -jar "$BOOTSTRAP_JAR" -g "$BOOTSTRAP_URL"
 echo ""
 echo "============================================"
 echo "  Listo."
-echo "  1) Lanza MC desde UltimMC con perfil 1.21.1 + NeoForge 21.1.234"
-echo "  2) Conectate a: mc.santiagoarismendy.com"
+echo "  1) Abre UltimMC desde la carpeta UltimMC/"
+echo "  2) Crea perfil MC 1.21.1 + NeoForge 21.1.234"
+echo "  3) Conectate a: $SERVER"
 echo "============================================"
 
 # ========== Instalador portable de JDK 21 ==========
@@ -86,10 +128,9 @@ install_jdk_unix() {
     mkdir -p "$EXTRACT_DIR"
     tar -xzf "$JDK_FILE" -C "$EXTRACT_DIR"
     rm -f "$JDK_FILE"
-    # Mover la subcarpeta jdk-* extraida a JDK_DIR
     INNER=$(find "$EXTRACT_DIR" -maxdepth 1 -type d -name 'jdk-*' | head -1)
     if [ -z "$INNER" ] || [ ! -x "$INNER/bin/java" ]; then
-        echo "[ERROR] No se encontro java.exe despues de extraer."
+        echo "[ERROR] No se encontro java despues de extraer."
         return 1
     fi
     mv "$INNER" "$JDK_DIR"
