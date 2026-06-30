@@ -4,7 +4,7 @@ cd "$(dirname "$0")"
 MIN_JAVA=21
 JDK_DIR="$HOME/.jdk21"
 EXTRACT_DIR="/tmp/jdk_extract_temp"
-BOOTSTRAP_URL="https://raw.githubusercontent.com/kevinarismendy/modpack-santi/main/pack.toml"
+BOOTSTRAP_URL="https://cdn.jsdelivr.net/gh/kevinarismendy/modpack-santi@main/pack.toml"
 BOOTSTRAP_JAR="packwiz-installer-bootstrap.jar"
 PRISM_URL="https://github.com/kevinarismendy/modpack-santi/releases/download/prismlauncher-v1/PrismLauncher-Linux.tar.gz"
 SERVER="amiguos.holy.gg"
