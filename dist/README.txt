@@ -12,7 +12,7 @@ Windows:
   1. Descomprime este ZIP donde quieras
   2. Doble click en launcher.bat
      (descarga la ultima version del instalador)
-  3. Espera a que se instale: Java 21, TLauncher, los 49 mods (~91 MB),
+  3. Espera a que se instale: Java 21, TLauncher, los 39 mods (~75 MB),
      y se cree la instancia "Servidor Amiguos" en TLauncher
   4. Abre TLauncher desde el acceso directo del escritorio
   5. Click "+" o "Add Instance":
@@ -27,8 +27,8 @@ Mac:
   1. Descomprime este ZIP donde quieras
   2. Abre Terminal en la carpeta descomprimida
   3. Ejecuta: bash launcher.sh
-  4. Espera a que se instale Java 21, TLauncher, los 49 mods, y se cree
-     la instancia
+  4. Espera a que se instale Java 21, TLauncher, los 39 mods, y se cree
+      la instancia
   5. Abre TLauncher desde ~/Library/Application Support/TLauncher/tlauncher
   6. Crea instancia 1.21.1 + Fabric 0.16.5
   7. Login con cualquier username, conectate al server
@@ -37,8 +37,8 @@ Linux:
   1. Descomprime este ZIP donde quieras
   2. Abre Terminal en la carpeta descomprimida
   3. Ejecuta: bash launcher.sh
-  4. Espera a que se instale Java 21, TLauncher, los 49 mods, y se cree
-     la instancia
+  4. Espera a que se instale Java 21, TLauncher, los 39 mods, y se cree
+      la instancia
   5. Abre TLauncher desde ~/.local/share/TLauncher/tlauncher
   6. Crea instancia 1.21.1 + Fabric 0.16.5
   7. Login con cualquier username, conectate al server
@@ -57,7 +57,7 @@ INSTANCIA YA CREADA
 --------------------
 
 El script creo la instancia "Servidor Amiguos" (1.21.1 + Fabric 0.16.5) en
-TLauncher con los 49 mods pre-instalados. Solo:
+TLauncher con los 39 mods pre-instalados. Solo:
   1. Click en la instancia "Servidor Amiguos"
   2. Click "Entrar al juego" (o Login si no has entrado)
   3. Click "Play"

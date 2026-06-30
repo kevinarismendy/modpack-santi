@@ -15,7 +15,7 @@ set SERVER=amiguos.holy.gg
 
 echo ============================================
 echo   Servidor Amiguos - Modpack Installer
-echo   MC 1.21.1 + NeoForge 21.1.234
+echo   MC 1.21.1 + Fabric 0.16.5
 echo ============================================
 echo.
 

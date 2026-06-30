@@ -59,7 +59,8 @@ else
     echo "      Descargando TLauncher (~26 MB)..."
     mkdir -p "$TLAUNCHER_DIR"
     TLAUNCHER_ZIP="/tmp/tlauncher.zip"
-    if [ "$(uname)" = "Darwin" ]; then
+if [ "$(uname)" = "Darwin" ]; then
+    echo "      Bajando TLauncher para Mac (~26 MB)..."
         curl -L -sS -o "$TLAUNCHER_ZIP" "https://github.com/kevinarismendy/modpack-santi/releases/download/tlauncher-v1/TLauncher.v17.zip" --max-time 180
     else
         curl -L -sS -o "$TLAUNCHER_ZIP" "https://github.com/kevinarismendy/modpack-santi/releases/download/tlauncher-v1/TLauncher.v17.zip" --max-time 180
