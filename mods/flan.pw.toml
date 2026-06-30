@@ -1,13 +1,13 @@
 name = "Flan"
-filename = "flan-1.21.1-1.12.7-fabric.jar"
+filename = "flan-1.21.1-1.12.7-neoforge.jar"
 side = "server"
 
 [download]
-url = "https://cdn.modrinth.com/data/Si383TIH/versions/Dozjx0xr/flan-1.21.1-1.12.7-fabric.jar"
+url = "https://cdn.modrinth.com/data/Si383TIH/versions/2PanOvza/flan-1.21.1-1.12.7-neoforge.jar"
 hash-format = "sha512"
-hash = "0124534ac3a578fa77a7a63b34564a87808a4bbb8a7e8eb2514085544031272613b6b4e2217e56314c043bbfc0c51939dad0bdfd8ce614904e0888a504f6ce50"
+hash = "753ed55fa287e2cdea93042258d875de1a15c8f6e39ddd7fddc242ad5866e5ebbae71815b4a12af9347d4ce46af9b716dcc2cf9ec0c2da3765d96611f1e2aac4"
 
 [update]
 [update.modrinth]
 mod-id = "Si383TIH"
-version = "Dozjx0xr"
+version = "2PanOvza"

@@ -68,6 +68,17 @@ Si la instancia no se creo automaticamente, creala manual:
   2. Configura: 1.21.1 + Fabric 0.16.5
   3. Click "OK" / "Create"
 
+MOCHILA (se incluye al instalar): Traveler's Backpack
+--------------------------------------------------------------
+
+Tu amigo puede usar la mochila automaticamente:
+  1. Click en "Mods" en la pantalla principal de TLauncher
+  2. Click "+" o "Add Mod"
+  3. Click en Traveler's Backpack
+  4. Click "Install" o "Descargar"
+  5. El mod ya está descargado, solo necesita activarlo en su perfil de juego
+  6. Click en el icono de mochila en el inventario (esquina superior derecha)
+
 UPDATES
 -------
 
