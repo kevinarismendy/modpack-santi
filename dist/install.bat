@@ -64,19 +64,19 @@ if not defined JAVA_CMD (
     for /f "tokens=2 delims=" %%v in ('"java -version 2>&1" ^| findstr /i "version"') do echo [1/4] [OK] Java %%v detectado
 )
 
-REM --- PrismLauncher (auto via winget) ---
-echo [2/4] Verificando PrismLauncher...
-where PrismLauncher.exe >nul 2>nul
-if %errorlevel%==0 goto :prism_ok
-echo       Instalando PrismLauncher con winget (~1 min)...
-winget install --exact --id PrismLauncher.PrismLauncher --accept-package-agreements --accept-source-agreements --silent
-if %errorlevel%==0 goto :prism_ok
-echo       [WARN] winget fallo. Instala PrismLauncher manualmente desde:
-echo       https://prismlauncher.org/choose/
-goto :prism_done
-:prism_ok
-echo       [OK] PrismLauncher listo
-:prism_done
+REM --- HMCL (auto via winget) ---
+echo [2/4] Verificando HMCL...
+where hmcl >nul 2>nul
+if %errorlevel%==0 goto :hmcl_ok
+echo       Instalando HMCL con winget (~1 min)...
+winget install --exact --id HMCL.HMCL.Stable --accept-package-agreements --accept-source-agreements --silent
+if %errorlevel%==0 goto :hmcl_ok
+echo       [WARN] winget fallo. Instala HMCL manualmente desde:
+echo       https://hmcl.huangyuhui.net/download/
+goto :hmcl_done
+:hmcl_ok
+echo       [OK] HMCL listo
+:hmcl_done
 
 REM --- Bootstrap jar ---
 if not exist %BOOTSTRAP_JAR% (

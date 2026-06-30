@@ -58,19 +58,47 @@ if [ -z "$JAVA_CMD" ]; then
     fi
 fi
 
-# --- PrismLauncher (auto via package manager) ---
-echo "[2/4] Verificando PrismLauncher..."
-if command -v PrismLauncher &> /dev/null; then
-    echo "      [OK] PrismLauncher ya instalado"
+# --- HMCL (auto para Windows/Mac/Linux) ---
+echo "[2/4] Verificando HMCL..."
+HMCL_DIR="$HOME/Library/Application Support/HMCL"
+if [ "$(uname)" != "Darwin" ] && [ "$(uname)" != "Linux" ]; then
+    echo "      [WARN] OS no soportado. Instala HMCL desde https://hmcl.huangyuhui.net/download/"
+    return 0
+fi
+if [ -d "$HMCL_DIR" ] && [ -f "$HMCL_DIR/HMCL.jar" ]; then
+    echo "      [OK] HMCL ya instalado en $HMCL_DIR"
 elif [ "$(uname)" = "Darwin" ]; then
-    echo "      Instalando con Homebrew..."
-    brew install --cask prismlauncher
-elif command -v flatpak &> /dev/null; then
-    echo "      Instalando con Flatpak..."
-    flatpak install -y flathub org.prismlauncher.PrismLauncher
+    echo "      Descargando HMCL para Mac (~10 MB)..."
+    mkdir -p "$HMCL_DIR"
+    curl -L -sS -o "$HMCL_DIR/HMCL.jar" "https://github.com/huanghongxun/HMCL/releases/download/v3.15.2/HMCL-3.15.2.jar" --max-time 120
+    cat > "$HMCL_DIR/HMCL.command" <<'HMCL_EOF'
+#!/bin/bash
+cd "$(dirname "$0")"
+java -jar HMCL.jar
+HMCL_EOF
+    chmod +x "$HMCL_DIR/HMCL.command"
+    if [ -f "$HMCL_DIR/HMCL.jar" ]; then
+        echo "      [OK] HMCL instalado en $HMCL_DIR"
+    else
+        echo "      [WARN] Descarga fallo. Baja desde https://hmcl.huangyuhui.net/download/"
+    fi
 else
-    echo "      [WARN] No encontre package manager. Instala PrismLauncher desde:"
-    echo "      https://prismlauncher.org/choose/ (Linux AppImage)"
+    echo "      Descargando HMCL Linux AppImage (~105 MB)..."
+    mkdir -p "$HMCL_DIR"
+    APPIMAGE="$HMCL_DIR/HMCL-x86_64.AppImage"
+    curl -L -sS -o "$APPIMAGE" "https://github.com/huanghongxun/HMCL/releases/download/v3.15.2/HMCL-3.15.2-x86_64.AppImage" --max-time 300
+    chmod +x "$APPIMAGE"
+    cat > "$HMCL_DIR/HMCL.sh" <<'HMCL_EOF'
+#!/bin/bash
+cd "$(dirname "$0")"
+./HMCL-x86_64.AppImage "$@"
+HMCL_EOF
+    chmod +x "$HMCL_DIR/HMCL.sh"
+    if [ -f "$APPIMAGE" ]; then
+        echo "      [OK] HMCL instalado en $HMCL_DIR"
+    else
+        echo "      [WARN] Descarga fallo. Baja desde https://hmcl.huangyuhui.net/download/"
+    fi
 fi
 
 # --- Bootstrap jar ---
