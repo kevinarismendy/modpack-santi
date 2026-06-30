@@ -44,18 +44,30 @@ if not defined TLAUNCHER_EXE (
 echo TLauncher: !TLAUNCHER_EXE!
 echo.
 echo Creando accesos directos en el escritorio...
-powershell -NoProfile -ExecutionPolicy Bypass -Command ^
-    "$ws = New-Object -ComObject WScript.Shell; ^
-     $sc = $ws.CreateShortcut([Environment]::GetFolderPath('Desktop') + '\Servidor Amiguos - TLauncher.lnk'); ^
-     $sc.TargetPath = '%TLAUNCHER_EXE%'; ^
-     $sc.WorkingDirectory = '%TLAUNCHER_DIR%'; ^
-     $sc.Save(); ^
-     $su = $ws.CreateShortcut([Environment]::GetFolderPath('Desktop') + '\Servidor Amiguos - Actualizar.bat.lnk'); ^
-     $su.TargetPath = '%~dp02-instalar-mods.bat'; ^
-     $su.WorkingDirectory = '%~dp0'; ^
-     $su.IconLocation = '%TLAUNCHER_EXE%'; ^
-     $su.Save()"
-if errorlevel 1 (
+
+REM --- Crear archivo VBS temporal para crear los shortcuts ---
+set "VBS_FILE=%TEMP%\create_shortcuts_%RANDOM%.vbs"
+(
+    echo Set ws = CreateObject("WScript.Shell"^)
+    echo Set desktop = ws.SpecialFolders("Desktop"^)
+    echo.
+    echo Set lnk1 = ws.CreateShortcut(desktop ^& "\Servidor Amiguos - TLauncher.lnk"^)
+    echo lnk1.TargetPath = "!TLAUNCHER_EXE!"
+    echo lnk1.WorkingDirectory = "!TLAUNCHER_DIR!"
+    echo lnk1.Save
+    echo.
+    echo Set lnk2 = ws.CreateShortcut(desktop ^& "\Servidor Amiguos - Actualizar.lnk"^)
+    echo lnk2.TargetPath = "%~dp02-instalar-mods.bat"
+    echo lnk2.WorkingDirectory = "%~dp0"
+    echo lnk2.IconLocation = "!TLAUNCHER_EXE!"
+    echo lnk2.Save
+) > "%VBS_FILE%"
+
+cscript //nologo "%VBS_FILE%"
+set VBS_RC=%errorlevel%
+del "%VBS_FILE%" 2>nul
+
+if %VBS_RC% neq 0 (
     echo [ERROR] No se pudieron crear los accesos directos.
 ) else (
     echo [OK] Accesos directos creados en el escritorio.
