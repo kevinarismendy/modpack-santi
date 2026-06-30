@@ -1,16 +1,14 @@
 FROM alpine:3.19
 
-# Static site for packwiz modpack
-# Coolify will serve /www on the configured domain
+RUN apk add --no-cache nginx git
 
-RUN apk add --no-cache nginx && \
+# Clone the repo directly (works around Coolify's empty build context)
+RUN git clone --depth 1 https://github.com/kevinarismendy/modpack-santi.git /tmp/repo && \
     mkdir -p /www/mods && \
-    rm -rf /etc/nginx/http.d/default.conf
-
-COPY pack.toml /www/
-COPY index.toml /www/
-COPY packwiz-installer-bootstrap.jar /www/
-COPY mods/ /www/mods/
+    cp /tmp/repo/pack.toml /tmp/repo/index.toml /tmp/repo/packwiz-installer-bootstrap.jar /www/ && \
+    cp -r /tmp/repo/mods/* /www/mods/ && \
+    rm -rf /etc/nginx/http.d/default.conf && \
+    rm -rf /tmp/repo
 
 COPY nginx.conf /etc/nginx/http.d/
 
