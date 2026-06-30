@@ -332,11 +332,6 @@ hash = "6da6b2be309785e5ab8e575010b4f30d66a717ace60b10748271333c09aba523"
 metafile = true
 
 [[files]]
-file = "mods/simple-tpa.pw.toml"
-hash = "232b30041f3a381413dd9f5a9f0c71a8fdcc893901d42b8f155677559d663bf9"
-metafile = true
-
-[[files]]
 file = "mods/simple-voice-chat.pw.toml"
 hash = "369617869e9c8224e9c5e875d70677c491bc4282919b32705d096d253e2ffecd"
 metafile = true
