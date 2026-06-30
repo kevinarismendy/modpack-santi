@@ -73,12 +73,19 @@ if not exist "PrismLauncher\PrismLauncher.exe" (
     if errorlevel 1 (
         echo       [WARN] No se pudo descargar PrismLauncher. Instalalo desde https://prismlauncher.org/
     ) else (
-        echo       Extrayendo PrismLauncher con PowerShell...
+        echo       Extrayendo con tar.exe...
         if exist "PrismLauncher" rmdir /s /q "PrismLauncher"
         if exist "PrismLauncher_temp" rmdir /s /q "PrismLauncher_temp"
-        powershell -NoProfile -ExecutionPolicy Bypass -Command "Expand-Archive -LiteralPath '%PRISM_ZIP%' -DestinationPath 'PrismLauncher_temp' -Force; Get-ChildItem -Path 'PrismLauncher_temp' -Directory | ForEach-Object { Move-Item -Path $_.FullName -Destination 'PrismLauncher' -Force }"
-        rmdir /s /q "PrismLauncher_temp"
-        del "%PRISM_ZIP%"
+        tar.exe -xf "%PRISM_ZIP%" >nul 2>&1
+        if exist "PrismLauncher-Launcher-Win32\PrismLauncher\PrismLauncher.exe" (
+            move "PrismLauncher-Launcher-Win32\PrismLauncher" "PrismLauncher" >nul
+            rmdir /s /q "PrismLauncher-Launcher-Win32" 2>nul
+        ) else (
+            if exist "PrismLauncher-Launcher-Win32" (
+                ren "PrismLauncher-Launcher-Win32" "PrismLauncher"
+            )
+        )
+        del "%PRISM_ZIP%" 2>nul
         if exist "PrismLauncher\PrismLauncher.exe" (
             echo       [OK] PrismLauncher instalado
         ) else (
