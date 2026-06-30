@@ -6,7 +6,7 @@ JDK_DIR="$HOME/.jdk21"
 EXTRACT_DIR="/tmp/jdk_extract_temp"
 BOOTSTRAP_URL="https://raw.githubusercontent.com/kevinarismendy/modpack-santi/main/pack.toml"
 BOOTSTRAP_JAR="packwiz-installer-bootstrap.jar"
-ULTIMC_URL="https://github.com/kevinarismendy/modpack-santi/releases/download/ultimc-v1/UltimMC-Launcher.zip"
+PRISM_URL="https://github.com/kevinarismendy/modpack-santi/releases/download/prismlauncher-v1/PrismLauncher-Linux.tar.gz"
 SERVER="amiguos.holy.gg"
 
 echo "============================================"
@@ -41,42 +41,41 @@ if [ -z "$JAVA_CMD" ]; then
     fi
 fi
 
-# --- Instalar UltimMC (no-premium launcher) ---
-echo "[2/4] Verificando UltimMC..."
-if [ ! -f "UltimMC/UltimMC" ] && [ ! -d "UltimMC.app" ]; then
-    echo "      Descargando UltimMC (~38 MB)..."
+# --- Instalar PrismLauncher (offline, no-premium) ---
+echo "[2/4] Verificando PrismLauncher..."
+if [ ! -f "PrismLauncher/PrismLauncher" ] && [ ! -f "PrismLauncher/PrismLauncher.exe" ]; then
+    echo "      Descargando PrismLauncher (~60 MB)..."
     TEMP_FILE=$(mktemp)
-    if ! curl -L -sS -o "$TEMP_FILE" "$ULTIMC_URL" --max-time 300; then
-        echo "      [WARN] No se pudo descargar UltimMC. Instalalo manualmente desde https://ultimmc.com/"
+    if ! curl -L -sS -o "$TEMP_FILE" "$PRISM_URL" --max-time 300; then
+        echo "      [WARN] No se pudo descargar PrismLauncher. Instalalo desde https://prismlauncher.org/"
     else
-        echo "      Extrayendo UltimMC..."
-        OS=$(uname -s | tr '[:upper:]' '[:lower:]')
-        case "$OS" in
-            darwin) FOLDER="UltimMC-Launcher-Osx64" ;;
-            *) FOLDER="UltimMC-Launcher-Linux64" ;;
-        esac
-        rm -rf UltimMC UltimMC_temp
-        mkdir -p UltimMC_temp
-        unzip -q "$TEMP_FILE" -d UltimMC_temp
-        if [ "$OS" = "darwin" ]; then
-            if [ -d "UltimMC_temp/$FOLDER/UltimMC.app" ]; then
-                mv "UltimMC_temp/$FOLDER/UltimMC.app" .
-            fi
+        echo "      Extrayendo PrismLauncher..."
+        rm -rf PrismLauncher PrismLauncher_temp
+        mkdir -p PrismLauncher_temp
+        if [[ "$TEMP_FILE" == *.tar.gz ]]; then
+            tar -xzf "$TEMP_FILE" -C PrismLauncher_temp
         else
-            if [ -d "UltimMC_temp/$FOLDER/UltimMC" ]; then
-                mv "UltimMC_temp/$FOLDER/UltimMC" .
+            unzip -q "$TEMP_FILE" -d PrismLauncher_temp
+        fi
+        if [ -d "PrismLauncher_temp/PrismLauncher" ]; then
+            mv PrismLauncher_temp/PrismLauncher .
+        else
+            INNER=$(find PrismLauncher_temp -maxdepth 2 -name 'PrismLauncher' -type f | head -1)
+            if [ -n "$INNER" ]; then
+                INNER_DIR=$(dirname "$INNER")
+                mv "$INNER_DIR" PrismLauncher
             fi
         fi
-        rm -rf UltimMC_temp
+        rm -rf PrismLauncher_temp
         rm "$TEMP_FILE"
-        if [ -f "UltimMC/UltimMC" ] || [ -d "UltimMC.app" ]; then
-            echo "      [OK] UltimMC instalado en $(pwd)"
+        if [ -f "PrismLauncher/PrismLauncher" ] || [ -f "PrismLauncher/PrismLauncher.exe" ]; then
+            echo "      [OK] PrismLauncher instalado en $(pwd)/PrismLauncher"
         else
             echo "      [WARN] Extraccion incompleta. Revisalo manualmente."
         fi
     fi
 else
-    echo "      [OK] UltimMC ya instalado"
+    echo "      [OK] PrismLauncher ya instalado"
 fi
 
 # --- Bootstrap jar ---
@@ -95,7 +94,7 @@ $JAVA_CMD -jar "$BOOTSTRAP_JAR" -g "$BOOTSTRAP_URL"
 echo ""
 echo "============================================"
 echo "  Listo."
-echo "  1) Abre UltimMC desde la carpeta UltimMC/"
+echo "  1) Abre PrismLauncher desde la carpeta PrismLauncher/"
 echo "  2) Crea perfil MC 1.21.1 + NeoForge 21.1.234"
 echo "  3) Conectate a: $SERVER"
 echo "============================================"

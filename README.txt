@@ -11,10 +11,10 @@ INSTALACION (una sola vez)
 2. Ejecuta launcher.bat (Windows) o launcher.sh (Mac/Linux)
    - El launcher se auto-actualiza solo
    - Baja Java 21 portable si no tienes
-   - Baja e instala UltimMC
+   - Baja e instala PrismLauncher
    - Baja e instala los ~91 MB de mods
 
-3. Abre UltimMC desde la carpeta UltimMC/
+3. Abre PrismLauncher desde la carpeta PrismLauncher/
 4. Crea un perfil con MC 1.21.1 + NeoForge 21.1.234
 5. Lanza MC una vez para generar la carpeta .minecraft
 6. Vuelve a correr el launcher (ya esta todo, baja los mods)
@@ -42,8 +42,8 @@ PROBLEMAS COMUNES
 "No se pudo instalar Java"
   -> Descarga Java 21 manualmente desde https://adoptium.net/
 
-"No se pudo instalar UltimMC"
-  -> Verifica conexion o descarga manual desde https://ultimmc.com/
+"No se pudo instalar PrismLauncher"
+  -> Verifica conexion o descarga manual desde https://prismlauncher.org/
 
 "Mods no aparecen"
-  -> Asegurate de tener NeoForge 21.1.234 instalado en UltimMC
+  -> Asegurate de tener NeoForge 21.1.234 instalado en PrismLauncher

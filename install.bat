@@ -9,7 +9,7 @@ set JDK_DIR=%LOCALAPPDATA%\jdk21
 set EXTRACT_DIR=%LOCALAPPDATA%\jdk_extract_temp
 set BOOTSTRAP_URL=https://raw.githubusercontent.com/kevinarismendy/modpack-santi/main/pack.toml
 set BOOTSTRAP_JAR=packwiz-installer-bootstrap.jar
-set ULTIMC_URL=https://github.com/kevinarismendy/modpack-santi/releases/download/ultimc-v1/UltimMC-Launcher.zip
+set PRISM_URL=https://github.com/kevinarismendy/modpack-santi/releases/download/prismlauncher-v1/PrismLauncher-Windows.zip
 set SERVER=amiguos.holy.gg
 
 echo ============================================
@@ -48,33 +48,39 @@ if not defined JAVA_CMD (
     for /f "tokens=2 delims=" %%v in ('"java -version 2>&1" ^| findstr /i "version"') do echo [1/4] [OK] Java %%v detectado
 )
 
-REM --- Instalar UltimMC (no-premium launcher) ---
-echo [2/4] Verificando UltimMC...
-if not exist "UltimMC\UltimMC.exe" (
-    echo       Descargando UltimMC (~38 MB)...
-    set "ULTIMC_ZIP=%TEMP%\ultimmc_%random%.zip"
-    curl.exe -L -sS -o "%ULTIMC_ZIP%" "%ULTIMC_URL%" --max-time 300
+REM --- Instalar PrismLauncher (offline, no-premium) ---
+echo [2/4] Verificando PrismLauncher...
+if not exist "PrismLauncher\PrismLauncher.exe" (
+    echo       Descargando PrismLauncher (~20 MB)...
+    set "PRISM_ZIP=%TEMP%\prism_%random%.zip"
+    curl.exe -L -sS -o "%PRISM_ZIP%" "%PRISM_URL%" --max-time 300
     if errorlevel 1 (
-        echo       [WARN] No se pudo descargar UltimMC. Instalalo manualmente desde https://ultimmc.com/
+        echo       [WARN] No se pudo descargar PrismLauncher. Instalalo desde https://prismlauncher.org/
     ) else (
-        echo       Extrayendo UltimMC...
-        if exist "UltimMC" rmdir /s /q "UltimMC"
-        if exist "UltimMC_temp" rmdir /s /q "UltimMC_temp"
-        mkdir "UltimMC_temp"
-        powershell -NoProfile -Command "Expand-Archive -LiteralPath '%ULTIMC_ZIP%' -DestinationPath 'UltimMC_temp' -Force" >nul
-        if exist "UltimMC_temp\UltimMC-Launcher-Win32\UltimMC" (
-            move "UltimMC_temp\UltimMC-Launcher-Win32\UltimMC" "UltimMC" >nul
+        echo       Extrayendo PrismLauncher...
+        if exist "PrismLauncher" rmdir /s /q "PrismLauncher"
+        if exist "PrismLauncher_temp" rmdir /s /q "PrismLauncher_temp"
+        mkdir "PrismLauncher_temp"
+        powershell -NoProfile -Command "Expand-Archive -LiteralPath '%PRISM_ZIP%' -DestinationPath 'PrismLauncher_temp' -Force" >nul
+        REM Mover contenido de la subcarpeta PrismLauncher\ a la raiz
+        if exist "PrismLauncher_temp\PrismLauncher\PrismLauncher.exe" (
+            move "PrismLauncher_temp\PrismLauncher" "PrismLauncher" >nul
+        ) else (
+            REM Si esta en la raiz del zip
+            for /d %%D in ("PrismLauncher_temp\*") do (
+                if exist "%%D\PrismLauncher.exe" move "%%D" "PrismLauncher" >nul 2>&1
+            )
         )
-        rmdir /s /q "UltimMC_temp" 2>nul
-        del "%ULTIMC_ZIP%" 2>nul
-        if exist "UltimMC\UltimMC.exe" (
-            echo       [OK] UltimMC instalado en %CD%\UltimMC\
+        rmdir /s /q "PrismLauncher_temp" 2>nul
+        del "%PRISM_ZIP%" 2>nul
+        if exist "PrismLauncher\PrismLauncher.exe" (
+            echo       [OK] PrismLauncher instalado en %CD%\PrismLauncher\
         ) else (
             echo       [WARN] Extraccion incompleta. Revisalo manualmente.
         )
     )
 ) else (
-    echo       [OK] UltimMC ya instalado
+    echo       [OK] PrismLauncher ya instalado
 )
 
 REM --- Bootstrap jar ---
@@ -91,7 +97,7 @@ echo.
 echo.
 echo ============================================
 echo   Listo.
-echo   1) Abre UltimMC desde la carpeta UltimMC\
+echo   1) Abre PrismLauncher desde la carpeta PrismLauncher\PrismLauncher.exe
 echo   2) Crea perfil MC 1.21.1 + NeoForge 21.1.234
 echo   3) Conectate a: %SERVER%
 echo ============================================
