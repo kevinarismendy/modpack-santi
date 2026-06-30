@@ -1,6 +1,34 @@
 hash-format = "sha256"
 
 [[files]]
+file = "dist/README.md"
+hash = "8f2e709c158be4ae834faf46a38727005496f807bc7e57c5cfbc6918f6a5123b"
+
+[[files]]
+file = "dist/README.txt"
+hash = "f50ca9e7bec85c87b99bea1732a68c607d5f5bb7951fcbd35985bcd535b30d15"
+
+[[files]]
+file = "dist/docs/seeds.md"
+hash = "6a6f15482bfc4680af8d72a59f5e99faf3bc2982068a1b71d68827c10d22677a"
+
+[[files]]
+file = "dist/install.bat"
+hash = "73e8a82ef3d817024d36a5f253bc66fe4b1f4ed7e85ea995352163cabf5ae6b6"
+
+[[files]]
+file = "dist/install.sh"
+hash = "162338ca28aa392470d2014f510cd02bb1816939001809e13f4085cdbefec2ca"
+
+[[files]]
+file = "dist/launcher.bat"
+hash = "12e3852a6e114251a99284dbad519442a3f3382dd6bf1724abc34902a7b9eb59"
+
+[[files]]
+file = "dist/launcher.sh"
+hash = "52ee2d70a82968fb0e05ccfe6f332883bc5787ba384b2893983f7bdde2dc617a"
+
+[[files]]
 file = "mods/alexs-mobs(1.21.1).pw.toml"
 hash = "fb53bc6c0d543cd7e88a5faba1e3235dca6c556e0cf8c1a534bbdec581c3c2f8"
 metafile = true
@@ -202,4 +230,3 @@ hash = "a8fbb24dc604278e97f4688e82d3d91a318b98efc08d5dbfcbcbcab6443d116c"
 [[files]]
 file = "version.txt"
 hash = "ded1b601e81d31ca1f65c4f3ccf2ebd7992b6390e37bc2a86f3837282f1e00cf"
-
