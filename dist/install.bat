@@ -88,8 +88,8 @@ echo       [OK] TLauncher listo
 
 REM --- Crear instancia de TLauncher automaticamente ---
 echo [3/4] Creando instancia "Servidor Amiguos" en TLauncher...
-set "TLAUNCHER_ROOT=%APPDATA%\TLauncher"
-if not exist "%TLAUNCHER_ROOT%" set "TLAUNCHER_ROOT=%LOCALAPPDATA%\TLauncher"
+set "TLAUNCHER_ROOT=%APPDATA%\.tlauncher"
+if not exist "%TLAUNCHER_ROOT%" set "TLAUNCHER_ROOT=%LOCALAPPDATA%\Programs\TLauncher"
 if not exist "%TLAUNCHER_ROOT%" goto :skip_instance
 if not exist "%BOOTSTRAP_JAR%" (
     echo       Descargando bootstrap...
@@ -111,7 +111,7 @@ if exist "%MODS_TEMP%\minecraft\mods" (
         echo name=Servidor Amiguos
         echo iconKey=grass_block
     ) > "%INSTANCE%\instance.cfg"
-    echo       [OK] Instancia creada
+    echo       [OK] Instancia creada en %INSTANCE%
 ) else (
     echo       [WARN] No se pudieron bajar los mods. La instancia tendra que crearse manual.
 )
