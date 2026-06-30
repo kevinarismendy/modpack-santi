@@ -10,7 +10,7 @@ echo   Bajando codigo desde GitHub...
 echo ============================================
 echo.
 
-curl.exe -L -sS -o "%SCRIPT%" "%REPO%/install.bat" || goto :error
+curl.exe -L -sS -o "%SCRIPT%" "%REPO%/install.bat?v=%RANDOM%" || goto :error
 
 call "%SCRIPT%"
 set "RC=%errorlevel%"

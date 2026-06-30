@@ -110,53 +110,13 @@ $JAVA_CMD -jar "$BOOTSTRAP_JAR" -g "$BOOTSTRAP_URL"
 echo ""
 echo "============================================"
 echo "  Listo."
-echo "  1) Abre PrismLauncher desde el acceso directo del escritorio"
-echo "     (o desde PrismLauncher/PrismLauncher)"
+echo "  1) Abre PrismLauncher desde PrismLauncher/PrismLauncher"
 echo "  2) Crea perfil MC 1.21.1 + NeoForge 21.1.234"
 echo "  3) Conectate a: $SERVER"
 echo "============================================"
 echo ""
-
-# --- Crear acceso directo en el escritorio (Linux .desktop file) ---
-if [ -f "PrismLauncher/PrismLauncher" ] || [ -f "PrismLauncher/PrismLauncher.exe" ]; then
-    echo "Creando acceso directo en el escritorio..."
-    DESKTOP_DIR="$HOME/Desktop"
-    [ ! -d "$DESKTOP_DIR" ] && DESKTOP_DIR="$HOME/Escritorio"  # fallback espanol
-    if [ -d "$DESKTOP_DIR" ]; then
-        cat > "$DESKTOP_DIR/servidor-amiguos-prism.desktop" <<EOF
-[Desktop Entry]
-Version=1.0
-Type=Application
-Name=Servidor Amiguos - PrismLauncher
-Comment=Lanza MC 1.21.1 + NeoForge
-Exec="$PWD/PrismLauncher/PrismLauncher" %u
-Path=$PWD/PrismLauncher/
-Icon=$PWD/PrismLauncher/PrismLauncher.svg
-Terminal=false
-Categories=Game;
-EOF
-        cat > "$DESKTOP_DIR/servidor-amiguos-actualizar.desktop" <<EOF
-[Desktop Entry]
-Version=1.0
-Type=Application
-Name=Servidor Amiguos - Actualizar
-Comment=Busca actualizaciones y reinstala
-Exec=bash "$PWD/launcher.sh"
-Path=$PWD/
-Terminal=true
-Categories=Game;
-EOF
-        chmod +x "$DESKTOP_DIR/servidor-amiguos-prism.desktop" "$DESKTOP_DIR/servidor-amiguos-actualizar.desktop" 2>/dev/null
-        echo "  [OK] Accesos directos creados en $DESKTOP_DIR"
-    else
-        echo "  [WARN] No se encontro carpeta Desktop. Crealos manualmente."
-    fi
-    echo ""
-fi
-
-echo "Cuando quieras buscar actualizaciones, ejecuta:"
-echo "  'Servidor Amiguos - Actualizar' del escritorio"
-echo "O vuelve a correr launcher.sh desde la carpeta."
+echo "  Para crear un acceso directo en Linux: ver documentacion de tu DE."
+echo "  Para buscar updates: vuelve a correr launcher.sh desde aqui."
 echo ""
 echo "============================================"
 

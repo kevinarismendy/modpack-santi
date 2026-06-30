@@ -9,7 +9,7 @@ echo "  Bajando codigo desde GitHub..."
 echo "============================================"
 echo ""
 
-curl -L -sS -o "$SCRIPT" "$REPO/install.sh" || { echo "[ERROR] No se pudo conectar a GitHub."; exit 1; }
+curl -L -sS -o "$SCRIPT" "$REPO/install.sh?v=$(date +%s)" || { echo "[ERROR] No se pudo conectar a GitHub."; exit 1; }
 chmod +x "$SCRIPT"
 
 bash "$SCRIPT"
