@@ -4,6 +4,14 @@ setlocal EnableExtensions EnableDelayedExpansion
 title Servidor Amiguos - Modpack Installer
 cd /d "%~dp0"
 
+REM --- Auto-elevar a admin (necesario para instalar TLauncher) ---
+net session >nul 2>&1
+if errorlevel 1 (
+    echo [Setup] Re-ejecutando como Administrador (UAC)...
+    powershell -NoProfile -Command "Start-Process -FilePath '%~f0' -Verb RunAs -WorkingDirectory '%~dp0'"
+    exit /b
+)
+
 set MIN_JAVA=21
 set JDK_DIR=%LOCALAPPDATA%\jdk21
 set EXTRACT_DIR=%LOCALAPPDATA%\jdk_extract_temp
@@ -179,28 +187,32 @@ REM ========== Subrutinas ==========
 :find_tlauncher
 set "TLAUNCHER_EXE="
 set "TLAUNCHER_DIR="
-set "TLAUNCHER_ROOT="
 set "CANDIDATE="
-for %%P in (
-    "%APPDATA%\.tlauncher\tlauncher.exe"
-    "%APPDATA%\.tlauncher\TLauncher.exe"
-    "%LOCALAPPDATA%\Programs\TLauncher\tlauncher.exe"
-    "%LOCALAPPDATA%\Programs\TLauncher\TLauncher.exe"
-    "%LOCALAPPDATA%\TLauncher\tlauncher.exe"
-    "%LOCALAPPDATA%\TLauncher\TLauncher.exe"
-    "C:\Program Files\TLauncher\tlauncher.exe"
-    "C:\Program Files\TLauncher\TLauncher.exe"
-    "%APPDATA%\.minecraft\TLauncher.exe"
-    "%APPDATA%\.minecraft\tlauncher.exe"
-    "%APPDATA%\.minecraft\TLauncher32bit.exe"
-    "C:\TLauncher\tlauncher.exe"
-    "C:\TLauncher\TLauncher.exe"
-) do (
-    if exist "%%~P" if not defined TLAUNCHER_EXE (
-        set "TLAUNCHER_EXE=%%~P"
-        set "TLAUNCHER_DIR=%%~dpP"
-    )
-)
+if exist "%APPDATA%\.tlauncher\tlauncher.exe" (set "TLAUNCHER_EXE=%APPDATA%\.tlauncher\tlauncher.exe") & (set "TLAUNCHER_DIR=%APPDATA%\.tlauncher\")
+if defined TLAUNCHER_EXE exit /b 0
+if exist "%APPDATA%\.tlauncher\TLauncher.exe" (set "TLAUNCHER_EXE=%APPDATA%\.tlauncher\TLauncher.exe") & (set "TLAUNCHER_DIR=%APPDATA%\.tlauncher\")
+if defined TLAUNCHER_EXE exit /b 0
+if exist "%LOCALAPPDATA%\Programs\TLauncher\tlauncher.exe" (set "TLAUNCHER_EXE=%LOCALAPPDATA%\Programs\TLauncher\tlauncher.exe") & (set "TLAUNCHER_DIR=%LOCALAPPDATA%\Programs\TLauncher\")
+if defined TLAUNCHER_EXE exit /b 0
+if exist "%LOCALAPPDATA%\Programs\TLauncher\TLauncher.exe" (set "TLAUNCHER_EXE=%LOCALAPPDATA%\Programs\TLauncher\TLauncher.exe") & (set "TLAUNCHER_DIR=%LOCALAPPDATA%\Programs\TLauncher\")
+if defined TLAUNCHER_EXE exit /b 0
+if exist "%LOCALAPPDATA%\TLauncher\tlauncher.exe" (set "TLAUNCHER_EXE=%LOCALAPPDATA%\TLauncher\tlauncher.exe") & (set "TLAUNCHER_DIR=%LOCALAPPDATA%\TLauncher\")
+if defined TLAUNCHER_EXE exit /b 0
+if exist "%LOCALAPPDATA%\TLauncher\TLauncher.exe" (set "TLAUNCHER_EXE=%LOCALAPPDATA%\TLauncher\TLauncher.exe") & (set "TLAUNCHER_DIR=%LOCALAPPDATA%\TLauncher\")
+if defined TLAUNCHER_EXE exit /b 0
+if exist "C:\Program Files\TLauncher\tlauncher.exe" (set "TLAUNCHER_EXE=C:\Program Files\TLauncher\tlauncher.exe") & (set "TLAUNCHER_DIR=C:\Program Files\TLauncher\")
+if defined TLAUNCHER_EXE exit /b 0
+if exist "C:\Program Files\TLauncher\TLauncher.exe" (set "TLAUNCHER_EXE=C:\Program Files\TLauncher\TLauncher.exe") & (set "TLAUNCHER_DIR=C:\Program Files\TLauncher\")
+if defined TLAUNCHER_EXE exit /b 0
+if exist "%APPDATA%\.minecraft\TLauncher.exe" (set "TLAUNCHER_EXE=%APPDATA%\.minecraft\TLauncher.exe") & (set "TLAUNCHER_DIR=%APPDATA%\.minecraft\")
+if defined TLAUNCHER_EXE exit /b 0
+if exist "%APPDATA%\.minecraft\tlauncher.exe" (set "TLAUNCHER_EXE=%APPDATA%\.minecraft\tlauncher.exe") & (set "TLAUNCHER_DIR=%APPDATA%\.minecraft\")
+if defined TLAUNCHER_EXE exit /b 0
+if exist "%APPDATA%\.minecraft\TLauncher32bit.exe" (set "TLAUNCHER_EXE=%APPDATA%\.minecraft\TLauncher32bit.exe") & (set "TLAUNCHER_DIR=%APPDATA%\.minecraft\")
+if defined TLAUNCHER_EXE exit /b 0
+if exist "C:\TLauncher\tlauncher.exe" (set "TLAUNCHER_EXE=C:\TLauncher\tlauncher.exe") & (set "TLAUNCHER_DIR=C:\TLauncher\")
+if defined TLAUNCHER_EXE exit /b 0
+if exist "C:\TLauncher\TLauncher.exe" (set "TLAUNCHER_EXE=C:\TLauncher\TLauncher.exe") & (set "TLAUNCHER_DIR=C:\TLauncher\")
 exit /b 0
 
 :find_tlauncher_root
