@@ -1,24 +1,25 @@
 #!/bin/bash
-cd "$(dirname "$0")"
+set -e
 SCRIPT_URL="https://github.com/kevinarismendy/modpack-santi/releases/latest/download/install.sh"
-SCRIPT="/tmp/santicraft_$$.sh"
+BOOTSTRAP_URL="https://github.com/packwiz/packwiz-installer-bootstrap/releases/download/v0.0.3/packwiz-installer-bootstrap.jar"
+WORKDIR="$HOME/.servidor-amiguos-tmp"
 
-echo "============================================"
-echo "  Servidor Amiguos - Launcher"
-echo "  Bajando codigo desde GitHub..."
-echo "============================================"
+mkdir -p "$WORKDIR"
+echo "[1/4] Bajando instalador..."
+curl -L -sS -o "$WORKDIR/install.sh" "$SCRIPT_URL"
+chmod +x "$WORKDIR/install.sh"
+
+echo "[2/4] Bajando packwiz bootstrap..."
+curl -L -sS -o "$WORKDIR/packwiz-installer-bootstrap.jar" "$BOOTSTRAP_URL"
+
+echo "[3/4] Ejecutando instalador..."
+cd "$WORKDIR"
+bash "$WORKDIR/install.sh"
+
+echo "[4/4] Limpiando temporales..."
+rm -rf "$WORKDIR"
+
 echo ""
-
-curl -L -sS -o "$SCRIPT" "$SCRIPT_URL" || { echo "[ERROR] No se pudo conectar a GitHub."; exit 1; }
-chmod +x "$SCRIPT"
-
-bash "$SCRIPT"
-RC=$?
-rm "$SCRIPT"
-
+echo "Listo. Ya podes abrir TLauncher y jugar."
 echo ""
-echo "============================================"
-echo "  Presiona ENTER para cerrar"
-echo "============================================"
-read -r _
-exit $RC
+read -p "Presiona ENTER para cerrar..."
