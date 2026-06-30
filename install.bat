@@ -64,37 +64,12 @@ if not defined JAVA_CMD (
     for /f "tokens=2 delims=" %%v in ('"java -version 2>&1" ^| findstr /i "version"') do echo [1/4] [OK] Java %%v detectado
 )
 
-REM --- Instalar PrismLauncher (offline, no-premium) ---
-echo [2/4] Verificando PrismLauncher...
-if not exist "PrismLauncher\PrismLauncher.exe" (
-    echo       Descargando PrismLauncher (~20 MB)...
-    set "PRISM_ZIP=%TEMP%\prism_install.zip"
-    curl.exe -L -sS -o "%PRISM_ZIP%" "%PRISM_URL%" --max-time 300
-    if errorlevel 1 (
-        echo       [WARN] No se pudo descargar PrismLauncher. Instalalo desde https://prismlauncher.org/
-    ) else (
-        echo       Extrayendo con tar.exe...
-        if exist "PrismLauncher" rmdir /s /q "PrismLauncher"
-        if exist "PrismLauncher_temp" rmdir /s /q "PrismLauncher_temp"
-        tar.exe -xf "%PRISM_ZIP%" >nul 2>&1
-        if exist "PrismLauncher-Launcher-Win32\PrismLauncher\PrismLauncher.exe" (
-            move "PrismLauncher-Launcher-Win32\PrismLauncher" "PrismLauncher" >nul
-            rmdir /s /q "PrismLauncher-Launcher-Win32" 2>nul
-        ) else (
-            if exist "PrismLauncher-Launcher-Win32" (
-                ren "PrismLauncher-Launcher-Win32" "PrismLauncher"
-            )
-        )
-        del "%PRISM_ZIP%" 2>nul
-        if exist "PrismLauncher\PrismLauncher.exe" (
-            echo       [OK] PrismLauncher instalado
-        ) else (
-            echo       [WARN] Extraccion incompleta. Revisalo manualmente.
-        )
-    )
-) else (
-    echo       [OK] PrismLauncher ya instalado
-)
+REM --- PrismLauncher (se instala manual) ---
+echo [2/4] PrismLauncher se instala manual.
+echo       Descargalo desde https://prismlauncher.org/choose/
+echo       (Windows installer, ~23MB).
+echo       Instalalo y volve a correr este launcher.
+echo       Los mods y Java se configuraron igual.
 
 REM --- Bootstrap jar ---
 if not exist %BOOTSTRAP_JAR% (
@@ -110,15 +85,15 @@ echo.
 echo.
 echo ============================================
 echo   Listo.
-echo   1) Abre PrismLauncher desde PrismLauncher\PrismLauncher.exe
-echo   2) Crea perfil MC 1.21.1 + NeoForge 21.1.234
+echo   1) Instala PrismLauncher desde https://prismlauncher.org/choose/
+echo   2) Abre PrismLauncher y crea perfil MC 1.21.1 + NeoForge 21.1.234
 echo   3) Conectate a: %SERVER%
 echo ============================================
 echo.
-echo   Para crear un acceso directo: haz click derecho en
-echo   PrismLauncher.exe - Enviar a - Escritorio (crear acceso directo).
+echo   Los mods y Java ya estan listos.
 echo.
-echo   Para buscar updates: vuelve a correr launcher.bat desde aqui.
+echo   Para buscar updates en el futuro: vuelve a correr launcher.bat
+echo   desde esta carpeta.
 echo.
 exit /b 0
 
