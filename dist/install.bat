@@ -92,15 +92,17 @@ echo.
 echo.
 echo ============================================
 echo   Listo.
-echo   1) Instala PrismLauncher desde https://prismlauncher.org/choose/
-echo   2) Abre PrismLauncher y crea perfil MC 1.21.1 + NeoForge 21.1.234
-echo   3) Conectate a: %SERVER%
+echo   1) Abre HMCL desde el acceso directo del escritorio
+echo   2) Crea cuenta Classic (offline): icono persona - Add Account
+echo      - Username: cualquiera, Password: cualquiera
+echo   3) Crea instancia 1.21.1 + NeoForge 21.1.234
+echo   4) Conectate a: %SERVER%
 echo ============================================
 echo.
 echo   Los mods y Java ya estan listos.
 echo.
-echo   Para buscar updates en el futuro: vuelve a correr launcher.bat
-echo   desde esta carpeta.
+echo   Para buscar updates: doble-click "Servidor Amiguos - Actualizar"
+echo   o vuelve a correr launcher.bat desde esta carpeta.
 echo.
 exit /b 0
 
