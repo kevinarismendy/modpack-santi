@@ -1,4 +1,4 @@
-name = "SantiCraft"
+name = "Servidor Amiguos"
 author = "Santiago"
 version = "1.0.0"
 pack-format = "packwiz:1.1.0"
@@ -6,7 +6,7 @@ pack-format = "packwiz:1.1.0"
 [index]
 file = "index.toml"
 hash-format = "sha256"
-hash = "234194fc3279bd47a22ce26111d609d56edf555c81c6b84307d3349af8fa7354"
+hash = "ed1c5cf99ffde890afa192780964bb1b5ded87a63551d1a55f85eea89ac582fb"
 
 [versions]
 minecraft = "1.21.1"
