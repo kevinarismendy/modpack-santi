@@ -24,6 +24,10 @@ file = "mods/chunky.pw.toml"
 hash = "8add5ed243a090926fb00925a608775dde81020cdf76a311edc2ef2021d060d5"
 metafile = true
 [[files]]
+file = "mods/cloth-config.pw.toml"
+hash = "501401e7b42a9e9fe1a28884dd3859cc88b0a8842b744a601a59432551808a7a"
+metafile = true
+[[files]]
 file = "mods/comforts.pw.toml"
 hash = "e52cff237e16bac892ee70591fb3a928a6422c0fe2619e1075d49c9b25302e69"
 metafile = true
@@ -34,6 +38,10 @@ metafile = true
 [[files]]
 file = "mods/dungeons-arise.pw.toml"
 hash = "e44070a779647ff942231989bdeea8a1943cfddfa0dc5a9310e34ff379fafbcf"
+metafile = true
+[[files]]
+file = "mods/fabric-api.pw.toml"
+hash = "e5779a586163573b0650cef6745b542d696b4c33ebe1d32901bb4153929bffa0"
 metafile = true
 [[files]]
 file = "mods/ferrite-core.pw.toml"
@@ -50,6 +58,10 @@ metafile = true
 [[files]]
 file = "mods/kiwi.pw.toml"
 hash = "b13c2bd9f4417726c8d752fbfee5dbfb4cb79b52a767c30f5ec51f8a64e450ba"
+metafile = true
+[[files]]
+file = "mods/lithostitched.pw.toml"
+hash = "86ac315ccd1613e00a1425679494de0695f87dcdf524d1549d3f059bda4107a5"
 metafile = true
 [[files]]
 file = "mods/lootr.pw.toml"
