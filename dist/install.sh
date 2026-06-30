@@ -67,14 +67,10 @@ fi
 if [ -f "$TLAUNCHER_DIR/tlauncher" ] || [ -f "$TLAUNCHER_DIR/tlauncher.exe" ]; then
     echo "      [OK] TLauncher ya instalado en $TLAUNCHER_DIR"
 else
-    echo "      Descargando TLauncher (~50 MB)..."
+    echo "      Descargando TLauncher (~26 MB, desde GitHub)..."
     mkdir -p "$TLAUNCHER_DIR"
     TLAUNCHER_ZIP="/tmp/tlauncher.zip"
-    if [ "$(uname)" = "Darwin" ]; then
-        curl -L -sS -o "$TLAUNCHER_ZIP" "https://tlauncher.org/jar" --max-time 180
-    else
-        curl -L -sS -o "$TLAUNCHER_ZIP" "https://tlauncher.org/jar" --max-time 180
-    fi
+    curl -L --progress-bar -o "$TLAUNCHER_ZIP" "https://github.com/kevinarismendy/modpack-santi/releases/download/tlauncher-v1/TLauncher.zip" --max-time 180
     if [ -s "$TLAUNCHER_ZIP" ]; then
         unzip -q -o "$TLAUNCHER_ZIP" -d "$TLAUNCHER_DIR"
         chmod +x "$TLAUNCHER_DIR/tlauncher" 2>/dev/null
