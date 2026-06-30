@@ -107,7 +107,11 @@ echo Descargando 40 mods a una carpeta temporal...
 set "MODS_TEMP=%TEMP%\santicraft-mods-%RANDOM%"
 mkdir "!MODS_TEMP!" 2>nul
 pushd "!MODS_TEMP!"
-"!JAVA_CMD!" -jar "%~dp0%BOOTSTRAP_JAR%" -g %BOOTSTRAP_URL%
+REM Limpiar cache viejo del bootstrap (pack.toml guardado de runs anteriores)
+if exist "%TEMP%\pack.toml" del "%TEMP%\pack.toml" 2>nul
+if exist "%TEMP%\pw_zip" rmdir /s /q "%TEMP%\pw_zip" 2>nul
+if exist "%TEMP%\pw_test" rmdir /s /q "%TEMP%\pw_test" 2>nul
+"!JAVA_CMD!" -jar "%~dp0%BOOTSTRAP_JAR%" -g %BOOTSTRAP_URL% -n
 set BOOTSTRAP_RC=!errorlevel!
 popd
 if !BOOTSTRAP_RC! neq 0 (
