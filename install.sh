@@ -6,7 +6,7 @@ JDK_DIR="$HOME/.jdk21"
 EXTRACT_DIR="/tmp/jdk_extract_temp"
 BOOTSTRAP_URL="https://raw.githubusercontent.com/kevinarismendy/modpack-santi/main/pack.toml"
 BOOTSTRAP_JAR="packwiz-installer-bootstrap.jar"
-ULTIMC_URL="https://archive.org/download/ultim-mc-launcher-all-versions-1/UltimMC-Launcher-All-Versions%20%281%29.zip"
+ULTIMC_URL="https://github.com/kevinarismendy/modpack-santi/releases/download/ultimc-v1/UltimMC-Launcher.zip"
 SERVER="amiguos.holy.gg"
 
 echo "============================================"

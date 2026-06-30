@@ -9,7 +9,7 @@ set JDK_DIR=%LOCALAPPDATA%\jdk21
 set EXTRACT_DIR=%LOCALAPPDATA%\jdk_extract_temp
 set BOOTSTRAP_URL=https://raw.githubusercontent.com/kevinarismendy/modpack-santi/main/pack.toml
 set BOOTSTRAP_JAR=packwiz-installer-bootstrap.jar
-set ULTIMC_URL=https://archive.org/download/ultim-mc-launcher-all-versions-1/UltimMC-Launcher-All-Versions%20%281%29.zip
+set ULTIMC_URL=https://github.com/kevinarismendy/modpack-santi/releases/download/ultimc-v1/UltimMC-Launcher.zip
 set SERVER=amiguos.holy.gg
 
 echo ============================================
