@@ -97,10 +97,50 @@ echo.
 echo.
 echo ============================================
 echo   Listo.
-echo   1) Abre PrismLauncher desde la carpeta PrismLauncher\PrismLauncher.exe
+echo   1) Abre PrismLauncher desde el acceso directo del escritorio
+echo      (o desde PrismLauncher\PrismLauncher.exe)
 echo   2) Crea perfil MC 1.21.1 + NeoForge 21.1.234
 echo   3) Conectate a: %SERVER%
 echo ============================================
+echo.
+
+REM --- Crear acceso directo en el escritorio ---
+if exist "PrismLauncher\PrismLauncher.exe" (
+    echo Creando acceso directo en el escritorio...
+    set "DESKTOP=%USERPROFILE%\Desktop"
+    powershell -NoProfile -ExecutionPolicy Bypass -Command ^
+        "$ws = New-Object -ComObject WScript.Shell; ^
+         $sc = $ws.CreateShortcut('%DESKTOP%\Servidor Amiguos - PrismLauncher.lnk'); ^
+         $sc.TargetPath = '%CD%\PrismLauncher\PrismLauncher.exe'; ^
+         $sc.WorkingDirectory = '%CD%\PrismLauncher'; ^
+         $sc.Description = 'Lanza MC 1.21.1 + NeoForge - Servidor Amiguos'; ^
+         $sc.Save(); ^
+         Write-Host '  OK: $sc.FullName'" 2>nul
+    if !errorlevel! equ 0 (
+        echo       [OK] Acceso directo creado en %DESKTOP%
+    ) else (
+        echo       [WARN] No se pudo crear el acceso directo. Crealo manualmente.
+    )
+    echo.
+    REM Tambien acceso directo al launcher (para updates)
+    powershell -NoProfile -ExecutionPolicy Bypass -Command ^
+        "$ws = New-Object -ComObject WScript.Shell; ^
+         $sc = $ws.CreateShortcut('%DESKTOP%\Servidor Amiguos - Actualizar.lnk'); ^
+         $sc.TargetPath = '%CD%\launcher.bat'; ^
+         $sc.WorkingDirectory = '%CD%'; ^
+         $sc.Description = 'Busca actualizaciones y ejecuta el instalador'; ^
+         $sc.Save(); ^
+         Write-Host '  OK: $sc.FullName'" 2>nul
+    if !errorlevel! equ 0 (
+        echo       [OK] Acceso directo a launcher creado (para updates)
+    )
+    echo.
+)
+
+echo   Cuando quieras buscar actualizaciones, ejecuta:
+echo     "Servidor Amiguos - Actualizar" del escritorio
+echo   O vuelve a correr launcher.bat desde la carpeta.
+echo.
 pause
 exit /b 0
 
