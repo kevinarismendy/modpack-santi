@@ -56,11 +56,6 @@ hash = "73360e397134d238ee8fd21d33fd7f9275e9441f74f8f1b6ed92278877c0b9f1"
 metafile = true
 
 [[files]]
-file = "mods/flan.pw.toml"
-hash = "c30988ad811e3a1e25b6827dd2a1ca99b2aa0d5c8504dee0091b491f46a25b41"
-metafile = true
-
-[[files]]
 file = "mods/ftb-essentials.pw.toml"
 hash = "aaa5d15a2ebf6ae368561fc49d7994ffa5084138942095cb4ded4c8921189437"
 metafile = true
