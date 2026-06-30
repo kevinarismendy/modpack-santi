@@ -6,9 +6,7 @@ cd /d "%~dp0"
 set MIN_JAVA=21
 set JDK_DIR=%LOCALAPPDATA%\jdk21
 set EXTRACT_DIR=%LOCALAPPDATA%\jdk_extract_temp
-set BOOTSTRAP_URL=https://raw.githubusercontent.com/kevinarismendy/modpack-santi/main/pack.toml
-set BOOTSTRAP_JAR_URL=https://raw.githubusercontent.com/kevinarismendy/modpack-santi/main/packwiz-installer-bootstrap.jar
-set BOOTSTRAP_JAR=packwiz-installer-bootstrap.jar
+set MODS_LIST_URL=https://raw.githubusercontent.com/kevinarismendy/modpack-santi/main/mods.csv
 set SERVER=amiguos.holy.gg
 
 echo ============================================
@@ -84,66 +82,76 @@ if defined JAVA_CMD (
 )
 echo.
 
-REM --- Bajar packwiz-installer-bootstrap.jar ---
-if not exist "%BOOTSTRAP_JAR%" (
-    echo Descargando packwiz bootstrap...
-    curl.exe -L -sS -o "%BOOTSTRAP_JAR%" "%BOOTSTRAP_JAR_URL%" --max-time 60
-    if errorlevel 1 (
-        echo [ERROR] No se pudo bajar el bootstrap.
-        pause
-        exit /b 1
-    )
+REM --- Bajar lista de mods (mods.csv) ---
+set "MODS_LIST=%TEMP%\servidor-amiguos-mods-%RANDOM%.csv"
+echo Descargando lista de mods...
+REM Timestamp para bypasear cache de GitHub raw
+set "CACHE_BUST=%RANDOM%%RANDOM%"
+curl.exe -L -sS -o "%MODS_LIST%" "%MODS_LIST_URL%?t=%CACHE_BUST%" --max-time 60
+if errorlevel 1 (
+    echo [ERROR] No se pudo bajar la lista de mods.
+    echo Verifica tu conexion a internet.
+    pause
+    exit /b 1
 )
-echo [OK] Bootstrap listo
+if not exist "%MODS_LIST%" (
+    echo [ERROR] No se creo el archivo de lista.
+    pause
+    exit /b 1
+)
+echo [OK] Lista descargada.
 echo.
 
-REM --- Limpiar cache viejo del bootstrap en TEMP ---
-if exist "%TEMP%\pack.toml" del "%TEMP%\pack.toml" 2>nul
-if exist "%TEMP%\pw_zip" rmdir /s /q "%TEMP%\pw_zip" 2>nul
-if exist "%TEMP%\pw_test" rmdir /s /q "%TEMP%\pw_test" 2>nul
-
-REM --- Bajar mods via packwiz-installer ---
-echo Descargando 31 mods Fabric...
-set "MODS_TEMP=%TEMP%\santicraft-mods-%RANDOM%"
-mkdir "!MODS_TEMP!" 2>nul
-pushd "!MODS_TEMP!"
-"!JAVA_CMD!" -jar "%~dp0%BOOTSTRAP_JAR%" -g %BOOTSTRAP_URL%
-set BOOTSTRAP_RC=!errorlevel!
-popd
-if !BOOTSTRAP_RC! neq 0 (
-    echo [ERROR] Fallo la descarga de mods.
-    rmdir /s /q "!MODS_TEMP!" 2>nul
-    pause
-    exit /b 1
-)
-if not exist "!MODS_TEMP!\minecraft\mods" (
-    echo [ERROR] No se encontraron mods descargados.
-    rmdir /s /q "!MODS_TEMP!" 2>nul
-    pause
-    exit /b 1
-)
-
-REM --- Copiar mods a la carpeta de TLauncher ---
+REM --- Determinar carpeta destino ---
 set "MODS_DEST="
 if exist "%APPDATA%\.minecraft\mods" set "MODS_DEST=%APPDATA%\.minecraft\mods"
 if not defined MODS_DEST if exist "%APPDATA%\.minecraft" set "MODS_DEST=%APPDATA%\.minecraft\mods"
 if not defined MODS_DEST set "MODS_DEST=%LOCALAPPDATA%\TLauncher\mods"
 if not exist "!MODS_DEST!" mkdir "!MODS_DEST!" 2>nul
-echo.
-echo Copiando mods a !MODS_DEST! ...
-xcopy /E /Y /Q "!MODS_TEMP!\minecraft\mods\*" "!MODS_DEST!\" >nul 2>&1
-rmdir /s /q "!MODS_TEMP!" 2>nul
-echo [OK] 31 mods instalados.
+echo Carpeta de mods: !MODS_DEST!
 echo.
 
+REM --- Bajar cada mod desde mods.csv ---
+set "MOD_COUNT=0"
+set "MODS_FAILED=0"
+
+for /f "usebackq tokens=1,2 delims=," %%f in ("%MODS_LIST%") do (
+    set "MOD_FILE=%%f"
+    set "MOD_URL=%%g"
+    if /i not "!MOD_FILE:~0,1!"=="#" (
+        if defined MOD_FILE if defined MOD_URL (
+            set /a MOD_COUNT+=1
+            set "MOD_NUM=00!MOD_COUNT!"
+            set "MOD_NUM=!MOD_NUM:~-3!"
+            echo [!MOD_NUM!/31] !MOD_FILE!
+            curl.exe -L -sS -o "!MODS_DEST!\!MOD_FILE!" "!MOD_URL!" --max-time 120
+            if errorlevel 1 (
+                echo        [FAIL]
+                set /a MODS_FAILED+=1
+            ) else (
+                for %%S in ("!MODS_DEST!\!MOD_FILE!") do set "FILE_SIZE=%%~zS"
+                echo        [OK] !FILE_SIZE! bytes
+            )
+        )
+    )
+)
+
+del "%MODS_LIST%" 2>nul
+
 echo ============================================
-echo   Listo. Ya podes jugar.
+echo   Resumen: !MOD_COUNT! mods, !MODS_FAILED! fallaron
+echo ============================================
+if !MODS_FAILED! gtr 0 (
+    echo.
+    echo [!] Algunos mods no se pudieron descargar.
+    echo     Vuelve a correr este script para reintentar.
+)
 echo.
+echo Para jugar:
 echo   1) Abre TLauncher
 echo   2) Login con cualquier username (no-premium)
 echo   3) Crea perfil: 1.21.1 + Fabric 0.16.5
 echo   4) Conectate a: %SERVER%
-echo ============================================
 echo.
 pause
 exit /b 0
