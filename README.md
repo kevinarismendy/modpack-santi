@@ -43,7 +43,7 @@ packwiz serve
 
 URL raw del pack (para bootstrap):
 ```
-https://raw.githubusercontent.com/sarmendy/modpack-santi/main/pack.toml
+https://raw.githubusercontent.com/kevinarismendy/modpack-santi/main/pack.toml
 ```
 
 ## Skins
