@@ -1,6 +1,6 @@
 @echo off
-chcp 65001 >nul
 setlocal
+
 set "SCRIPT_URL=https://github.com/kevinarismendy/modpack-santi/releases/latest/download/install.bat"
 set "SCRIPT=%TEMP%\santicraft_%RANDOM%.bat"
 
@@ -10,16 +10,20 @@ echo   Bajando codigo desde GitHub...
 echo ============================================
 echo.
 
-REM --- Auto-elevar a admin si hace falta (el instalador necesita UAC) ---
+REM --- Re-ejecutar como admin si hace falta (instalador de TLauncher requiere UAC) ---
 net session >nul 2>&1
 if errorlevel 1 (
     echo [Setup] Requiriendo permisos de Administrador (UAC)...
-    powershell -NoProfile -Command "Start-Process -FilePath '%~f0' -Verb RunAs -WorkingDirectory '%~dp0'"
+    powershell -NoProfile -Command "Start-Process -FilePath '%~f0' -Verb RunAs"
     exit /b 0
 )
 
-curl.exe -L -sS -o "%SCRIPT%" "%SCRIPT_URL%" || goto :error
+REM --- Bajar el instalador desde el release mas nuevo ---
+curl.exe -L -sS -o "%SCRIPT%" "%SCRIPT_URL%"
+if errorlevel 1 goto :error
+if not exist "%SCRIPT%" goto :error
 
+REM --- Ejecutar el instalador ---
 call "%SCRIPT%"
 set "RC=%errorlevel%"
 del "%SCRIPT%" 2>nul
