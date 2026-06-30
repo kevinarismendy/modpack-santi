@@ -6,9 +6,10 @@ cd /d "%~dp0"
 set MIN_JAVA=21
 set JDK_DIR=%LOCALAPPDATA%\jdk21
 set EXTRACT_DIR=%LOCALAPPDATA%\jdk_extract_temp
-set MODPACK_URL=https://servermc.santiagoarismendy.com
-set BOOTSTRAP_URL=%MODPACK_URL%/pack.toml
-set BOOTSTRAP_JAR_URL=%MODPACK_URL%/packwiz-installer-bootstrap.jar
+set RAW_BASE=https://raw.githubusercontent.com/kevinarismendy/modpack-santi/main
+set CACHE_BUST=%RANDOM%%RANDOM%
+set BOOTSTRAP_URL=%RAW_BASE%/pack.toml?cb=%CACHE_BUST%
+set BOOTSTRAP_JAR_URL=%RAW_BASE%/packwiz-installer-bootstrap.jar?cb=%CACHE_BUST%
 set BOOTSTRAP_JAR=packwiz-installer-bootstrap.jar
 set SERVER=amiguos.holy.gg
 
@@ -86,15 +87,15 @@ if defined JAVA_CMD (
 echo.
 
 REM --- Verificar conexion al servidor de modpack ---
-echo Verificando servidor de modpack...
-curl.exe -L -sS -o nul -w "" "%MODPACK_URL%/pack.toml" --max-time 10
+echo Verificando GitHub...
+curl.exe -L -sS -o nul -w "" "%BOOTSTRAP_URL%" --max-time 10
 if errorlevel 1 (
-    echo [ERROR] No se puede conectar a %MODPACK_URL%
-    echo Verifica tu conexion a internet y que el servidor este activo.
+    echo [ERROR] No se puede conectar a GitHub.
+    echo Verifica tu conexion a internet.
     pause
     exit /b 1
 )
-echo [OK] Servidor accesible
+echo [OK] GitHub accesible
 echo.
 
 REM --- Bajar packwiz-installer-bootstrap.jar ---
@@ -116,7 +117,7 @@ if exist "%TEMP%\pw_zip" rmdir /s /q "%TEMP%\pw_zip" 2>nul
 if exist "%TEMP%\pw_test" rmdir /s /q "%TEMP%\pw_test" 2>nul
 
 REM --- Bajar mods via packwiz-installer ---
-echo Descargando 31 mods Fabric desde %MODPACK_URL%...
+echo Descargando 31 mods Fabric desde GitHub (cache-bust)...
 set "MODS_TEMP=%TEMP%\santicraft-mods-%RANDOM%"
 mkdir "!MODS_TEMP!" 2>nul
 pushd "!MODS_TEMP!"
