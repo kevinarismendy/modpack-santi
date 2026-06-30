@@ -72,15 +72,14 @@ if exist "%LOCALAPPDATA%\Programs\HMCL\HMCL.exe" goto :hmcl_ok
 if exist "C:\Program Files\HMCL\HMCL.exe" goto :hmcl_ok
 echo       Instalando HMCL con winget (~1 min)...
 winget install --exact --id HMCL.HMCL.Stable --accept-package-agreements --accept-source-agreements --silent
-if exist "%LOCALAPPDATA%\HMCL\HMCL.exe" goto :hmcl_ok
-if exist "%LOCALAPPDATA%\Programs\HMCL\HMCL.exe" goto :hmcl_ok
-if exist "C:\Program Files\HMCL\HMCL.exe" goto :hmcl_ok
+:hmcl_ok
+if exist "%LOCALAPPDATA%\HMCL\HMCL.exe" goto :hmcl_done
+if exist "%LOCALAPPDATA%\Programs\HMCL\HMCL.exe" goto :hmcl_done
+if exist "C:\Program Files\HMCL\HMCL.exe" goto :hmcl_done
 echo       [WARN] winget fallo. Instala HMCL manualmente desde:
 echo       https://hmcl.huangyuhui.net/download/
-goto :hmcl_done
-:hmcl_ok
-echo       [OK] HMCL listo
 :hmcl_done
+echo       [OK] HMCL listo
 
 REM --- Crear instancia de HMCL automaticamente ---
 echo [3/4] Creando instancia "Servidor Amiguos" en HMCL...
@@ -131,10 +130,10 @@ if exist "%INSTANCE%\.minecraft\mods" (
 echo.
 echo ============================================
 echo   Listo.
-echo   1) Abre TLauncher desde el acceso directo del escritorio
+echo   1) Abre HMCL desde el acceso directo del escritorio
 echo   2) Click "Entrar al juego" o "Login"
 echo      (escribe cualquier username, sin password)
-echo   3) Crea instancia 1.21.1 + NeoForge 21.1.234
+echo   3) Click en la instancia "Servidor Amiguos"
 echo   4) Conectate a: %SERVER%
 echo ============================================
 echo.
