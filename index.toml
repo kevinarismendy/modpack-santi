@@ -30,7 +30,7 @@ hash = "8f2e709c158be4ae834faf46a38727005496f807bc7e57c5cfbc6918f6a5123b"
 
 [[files]]
 file = "dist/README.txt"
-hash = "d6b22318dc2144b6955b976b230c34328ad76728f8592edd6de0790968cb8d28"
+hash = "9394c42c3f6937b199ba101e73250348f693916ec7266842fbb62a598cae7b44"
 
 [[files]]
 file = "dist/docs/seeds.md"
@@ -38,11 +38,11 @@ hash = "6a6f15482bfc4680af8d72a59f5e99faf3bc2982068a1b71d68827c10d22677a"
 
 [[files]]
 file = "dist/install.bat"
-hash = "4de29dd50bea2c40b8d9c0b73e1d751b3be9bfdab675d4b8f8df8641561b3b01"
+hash = "8f74848bd5a7ab1f5065c8ce8ab1a7ec327f474266852e987fe8b5ef7ee6968a"
 
 [[files]]
 file = "dist/install.sh"
-hash = "d0432e49c40e8009be327ed1175a324a416f17e71fea7f4554a8d3e9e42298ed"
+hash = "7395239213ff4d82dc0a2b8597de26d0484631872709959d633d9b4d3750f169"
 
 [[files]]
 file = "dist/launcher.bat"
@@ -240,6 +240,11 @@ metafile = true
 [[files]]
 file = "mods/reeses-sodium-options.pw.toml"
 hash = "fc29b2201ee5db5c3139c6b07b47bc7b30ae18174de8d2502d426e2c0286ccce"
+metafile = true
+
+[[files]]
+file = "mods/simple-tpa.pw.toml"
+hash = "dea3472dca340c9934280c234add9500f7fac85542f658e9f831d898e9eaa328"
 metafile = true
 
 [[files]]

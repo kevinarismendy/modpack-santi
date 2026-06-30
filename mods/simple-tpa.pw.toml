@@ -1,0 +1,13 @@
+name = "Simple TPA"
+filename = "simpletpa-fabric-1.21.1-1.1.0.jar"
+side = "both"
+
+[download]
+hash-format = "sha1"
+hash = "29e38954300c8d37c99964d34a1963537358c8dc"
+mode = "metadata:curseforge"
+
+[update]
+[update.curseforge]
+file-id = 7948874
+project-id = 1491817
