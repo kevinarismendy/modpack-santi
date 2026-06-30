@@ -66,12 +66,15 @@ if not defined JAVA_CMD (
 
 REM --- HMCL (auto via winget) ---
 echo [2/4] Verificando HMCL...
-where hmcl >nul 2>nul
-if %errorlevel%==0 goto :hmcl_ok
+if exist "%LOCALAPPDATA%\HMCL\HMCL.exe" goto :hmcl_ok
+if exist "%LOCALAPPDATA%\Programs\HMCL\HMCL.exe" goto :hmcl_ok
+if exist "C:\Program Files\HMCL\HMCL.exe" goto :hmcl_ok
 echo       Instalando HMCL con winget (~1 min)...
 winget install --exact --id HMCL.HMCL.Stable --accept-package-agreements --accept-source-agreements --silent
-if %errorlevel%==0 goto :hmcl_ok
-echo       [WARN] winget fallo. Instala HMCL manualmente desde:
+if exist "%LOCALAPPDATA%\HMCL\HMCL.exe" goto :hmcl_ok
+if exist "%LOCALAPPDATA%\Programs\HMCL\HMCL.exe" goto :hmcl_ok
+if exist "C:\Program Files\HMCL\HMCL.exe" goto :hmcl_ok
+echo       [WARN] winget fallo o HMCL no se instalo. Bajalo manualmente desde:
 echo       https://hmcl.huangyuhui.net/download/
 goto :hmcl_done
 :hmcl_ok
