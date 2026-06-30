@@ -68,29 +68,19 @@ REM --- Instalar PrismLauncher (offline, no-premium) ---
 echo [2/4] Verificando PrismLauncher...
 if not exist "PrismLauncher\PrismLauncher.exe" (
     echo       Descargando PrismLauncher (~20 MB)...
-    set "PRISM_ZIP=%TEMP%\prism_%random%.zip"
+    set "PRISM_ZIP=%TEMP%\prism_install.zip"
     curl.exe -L -sS -o "%PRISM_ZIP%" "%PRISM_URL%" --max-time 300
     if errorlevel 1 (
         echo       [WARN] No se pudo descargar PrismLauncher. Instalalo desde https://prismlauncher.org/
     ) else (
-        echo       Extrayendo PrismLauncher...
+        echo       Extrayendo PrismLauncher con PowerShell...
         if exist "PrismLauncher" rmdir /s /q "PrismLauncher"
         if exist "PrismLauncher_temp" rmdir /s /q "PrismLauncher_temp"
-        mkdir "PrismLauncher_temp"
-        powershell -NoProfile -Command "Expand-Archive -LiteralPath '%PRISM_ZIP%' -DestinationPath 'PrismLauncher_temp' -Force" >nul
-        REM Mover contenido de la subcarpeta PrismLauncher\ a la raiz
-        if exist "PrismLauncher_temp\PrismLauncher\PrismLauncher.exe" (
-            move "PrismLauncher_temp\PrismLauncher" "PrismLauncher" >nul
-        ) else (
-            REM Si esta en la raiz del zip
-            for /d %%D in ("PrismLauncher_temp\*") do (
-                if exist "%%D\PrismLauncher.exe" move "%%D" "PrismLauncher" >nul 2>&1
-            )
-        )
-        rmdir /s /q "PrismLauncher_temp" 2>nul
-        del "%PRISM_ZIP%" 2>nul
+        powershell -NoProfile -ExecutionPolicy Bypass -Command "Expand-Archive -LiteralPath '%PRISM_ZIP%' -DestinationPath 'PrismLauncher_temp' -Force; Get-ChildItem -Path 'PrismLauncher_temp' -Directory | ForEach-Object { Move-Item -Path $_.FullName -Destination 'PrismLauncher' -Force }"
+        rmdir /s /q "PrismLauncher_temp"
+        del "%PRISM_ZIP%"
         if exist "PrismLauncher\PrismLauncher.exe" (
-            echo       [OK] PrismLauncher instalado en %CD%\PrismLauncher\
+            echo       [OK] PrismLauncher instalado
         ) else (
             echo       [WARN] Extraccion incompleta. Revisalo manualmente.
         )
