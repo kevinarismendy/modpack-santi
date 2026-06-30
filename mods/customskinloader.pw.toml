@@ -1,6 +1,5 @@
-name = "CustomSkinLoader"
+name = "CustomSkinLoader_Universal_15.0.1"
 filename = "CustomSkinLoader_Universal-15.0.1.jar"
-side = "client"
 
 [download]
 url = "https://cdn.modrinth.com/data/idMHQ4n2/versions/OLaesh5y/CustomSkinLoader_Universal-15.0.1.jar"
