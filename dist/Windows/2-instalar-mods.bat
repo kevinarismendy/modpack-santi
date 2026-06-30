@@ -130,11 +130,16 @@ if !BOOTSTRAP_RC! neq 0 (
     pause
     exit /b 1
 )
-if not exist "!MODS_TEMP!\minecraft\mods" (
-    echo [ERROR] No se encontraron mods descargados.
-    rmdir /s /q "!MODS_TEMP!" 2>nul
-    pause
-    exit /b 1
+if not exist "!MODS_TEMP!\mods" (
+    if not exist "!MODS_TEMP!\minecraft\mods" (
+        echo [ERROR] No se encontraron mods descargados.
+        rmdir /s /q "!MODS_TEMP!" 2>nul
+        pause
+        exit /b 1
+    )
+    set "MODS_SOURCE=!MODS_TEMP!\minecraft\mods"
+) else (
+    set "MODS_SOURCE=!MODS_TEMP!\mods"
 )
 
 REM --- Copiar mods a la carpeta de TLauncher ---
@@ -145,7 +150,7 @@ if not defined MODS_DEST set "MODS_DEST=%LOCALAPPDATA%\TLauncher\mods"
 if not exist "!MODS_DEST!" mkdir "!MODS_DEST!" 2>nul
 echo.
 echo Copiando mods a !MODS_DEST! ...
-xcopy /E /Y /Q "!MODS_TEMP!\minecraft\mods\*" "!MODS_DEST!\" >nul 2>&1
+xcopy /E /Y /Q "!MODS_SOURCE!\*" "!MODS_DEST!\" >nul 2>&1
 rmdir /s /q "!MODS_TEMP!" 2>nul
 echo [OK] Mods instalados.
 echo.
