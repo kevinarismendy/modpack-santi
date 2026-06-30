@@ -1,4 +1,4 @@
-﻿hash-format = "sha256"
+hash-format = "sha256"
 
 [[files]]
 file = "accessories.pw.toml"

@@ -1,4 +1,4 @@
-﻿name = "Servidor Amiguos"
+name = "Servidor Amiguos"
 author = "Santiago"
 version = "1.0.0"
 pack-format = "packwiz:1.1.0"
@@ -6,7 +6,7 @@ pack-format = "packwiz:1.1.0"
 [index]
 file = "index.toml"
 hash-format = "sha256"
-hash = "1a6cd1eb9c1aed1f197214c8c221d2f05c18a09033750af2e0708e8f30839706"
+hash = "61a51dd1ff403830ada7f2712034d5014fcf0fbac30b0ff725e092a05c0a39dc"
 
 [versions]
 minecraft = "1.21.1"
