@@ -8,8 +8,6 @@ BOOTSTRAP_URL="https://cdn.jsdelivr.net/gh/kevinarismendy/modpack-santi@main/pac
 LAUNCHER_URL="https://raw.githubusercontent.com/kevinarismendy/modpack-santi/main/dist/launcher.sh"
 HMCL_URL="https://github.com/kevinarismendy/modpack-santi/releases/download/hmcl-v1/HMCL-3.15.2.zip"
 BOOTSTRAP_JAR="packwiz-installer-bootstrap.jar"
-PRISM_URL="https://github.com/kevinarismendy/modpack-santi/releases/download/prismlauncher-v1/PrismLauncher-Linux.tar.gz"
-PRISM_INSTALLED=0
 SERVER="amiguos.holy.gg"
 
 echo "============================================"
