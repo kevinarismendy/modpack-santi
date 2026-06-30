@@ -58,41 +58,19 @@ if [ -z "$JAVA_CMD" ]; then
     fi
 fi
 
-# --- Instalar PrismLauncher (offline, no-premium) ---
+# --- PrismLauncher (auto via package manager) ---
 echo "[2/4] Verificando PrismLauncher..."
-if [ ! -f "PrismLauncher/PrismLauncher" ] && [ ! -f "PrismLauncher/PrismLauncher.exe" ]; then
-    echo "      Descargando PrismLauncher (~60 MB)..."
-    TEMP_FILE=$(mktemp)
-    if ! curl -L -sS -o "$TEMP_FILE" "$PRISM_URL" --max-time 300; then
-        echo "      [WARN] No se pudo descargar PrismLauncher. Instalalo desde https://prismlauncher.org/"
-    else
-        echo "      Extrayendo PrismLauncher..."
-        rm -rf PrismLauncher PrismLauncher_temp
-        mkdir -p PrismLauncher_temp
-        if [[ "$TEMP_FILE" == *.tar.gz ]]; then
-            tar -xzf "$TEMP_FILE" -C PrismLauncher_temp
-        else
-            unzip -q "$TEMP_FILE" -d PrismLauncher_temp
-        fi
-        if [ -d "PrismLauncher_temp/PrismLauncher" ]; then
-            mv PrismLauncher_temp/PrismLauncher .
-        else
-            INNER=$(find PrismLauncher_temp -maxdepth 2 -name 'PrismLauncher' -type f | head -1)
-            if [ -n "$INNER" ]; then
-                INNER_DIR=$(dirname "$INNER")
-                mv "$INNER_DIR" PrismLauncher
-            fi
-        fi
-        rm -rf PrismLauncher_temp
-        rm "$TEMP_FILE"
-        if [ -f "PrismLauncher/PrismLauncher" ] || [ -f "PrismLauncher/PrismLauncher.exe" ]; then
-            echo "      [OK] PrismLauncher instalado en $(pwd)/PrismLauncher"
-        else
-            echo "      [WARN] Extraccion incompleta. Revisalo manualmente."
-        fi
-    fi
-else
+if command -v PrismLauncher &> /dev/null; then
     echo "      [OK] PrismLauncher ya instalado"
+elif [ "$(uname)" = "Darwin" ]; then
+    echo "      Instalando con Homebrew..."
+    brew install --cask prismlauncher
+elif command -v flatpak &> /dev/null; then
+    echo "      Instalando con Flatpak..."
+    flatpak install -y flathub org.prismlauncher.PrismLauncher
+else
+    echo "      [WARN] No encontre package manager. Instala PrismLauncher desde:"
+    echo "      https://prismlauncher.org/choose/ (Linux AppImage)"
 fi
 
 # --- Bootstrap jar ---
@@ -164,3 +142,4 @@ install_jdk_unix() {
     echo "[OK] JDK 21 instalado en $JDK_DIR"
     return 0
 }
+
