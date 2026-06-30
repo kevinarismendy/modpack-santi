@@ -1,0 +1,13 @@
+name = "Reese's Sodium Options Chinese Translation"
+filename = "Reese's Sodium Options Translation.zip"
+side = "client"
+
+[download]
+url = "https://cdn.modrinth.com/data/XWkJXTXl/versions/ICVWLKJv/Reese%27s%20Sodium%20Options%20Translation.zip"
+hash-format = "sha512"
+hash = "0cb8be8b5bf397d6714726ef85af9880e05e6c5d4bbb7cf578e29994c7ff6c46ae032594167c6e42be6116071496af902d7a7a50857d64d3e49bc786e8e3f2dd"
+
+[update]
+[update.modrinth]
+mod-id = "XWkJXTXl"
+version = "ICVWLKJv"

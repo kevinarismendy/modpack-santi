@@ -10,7 +10,7 @@ set EXTRACT_DIR=%LOCALAPPDATA%\jdk_extract_temp
 set BOOTSTRAP_URL=https://cdn.jsdelivr.net/gh/kevinarismendy/modpack-santi@main/pack.toml
 set BOOTSTRAP_JAR=packwiz-installer-bootstrap.jar
 set LAUNCHER_URL=https://raw.githubusercontent.com/kevinarismendy/modpack-santi/main/dist/launcher.bat
-set HMCL_URL=https://github.com/kevinarismendy/modpack-santi/releases/download/hmcl-v1/HMCL-3.15.2.zip
+set TLAUNCHER_URL=https://github.com/kevinarismendy/modpack-santi/releases/download/tlauncher-v1/TLauncher-Setup.exe
 set SERVER=amiguos.holy.gg
 
 echo ============================================
@@ -65,21 +65,58 @@ if not defined JAVA_CMD (
     for /f "tokens=2 delims=" %%v in ('"java -version 2>&1" ^| findstr /i "version"') do echo [1/4] [OK] Java %%v detectado
 )
 
-REM --- HMCL (auto via winget) ---
-echo [2/4] Verificando HMCL...
-if exist "%LOCALAPPDATA%\HMCL\HMCL.exe" goto :hmcl_ok
-if exist "%LOCALAPPDATA%\Programs\HMCL\HMCL.exe" goto :hmcl_ok
-if exist "C:\Program Files\HMCL\HMCL.exe" goto :hmcl_ok
-echo       Instalando HMCL con winget (~1 min)...
-winget install --exact --id HMCL.HMCL.Stable --accept-package-agreements --accept-source-agreements --silent
-:hmcl_ok
-if exist "%LOCALAPPDATA%\HMCL\HMCL.exe" goto :hmcl_done
-if exist "%LOCALAPPDATA%\Programs\HMCL\HMCL.exe" goto :hmcl_done
-if exist "C:\Program Files\HMCL\HMCL.exe" goto :hmcl_done
-echo       [WARN] winget fallo. Instala HMCL manualmente desde:
-echo       https://hmcl.huangyuhui.net/download/
-:hmcl_done
-echo       [OK] HMCL listo
+REM --- TLauncher (auto descarga) ---
+echo [2/4] Verificando TLauncher...
+if exist "%APPDATA%\.tlauncher\tlauncher.exe" goto :tlauncher_ok
+if exist "%LOCALAPPDATA%\Programs\TLauncher\tlauncher.exe" goto :tlauncher_ok
+if exist "C:\Program Files\TLauncher\tlauncher.exe" goto :tlauncher_ok
+echo       Descargando TLauncher (~26 MB)...
+curl.exe -L -o "%TEMP%\TLauncher-Setup.exe" "%TLAUNCHER_URL%" --max-time 180
+if errorlevel 1 goto :tlauncher_fail
+echo       Ejecutando instalador (puede tardar 1-2 min)...
+start /wait "" "%TEMP%\TLauncher-Setup.exe" /quiet
+del "%TEMP%\TLauncher-Setup.exe" 2>nul
+if exist "%APPDATA%\.tlauncher\tlauncher.exe" goto :tlauncher_ok
+if exist "%LOCALAPPDATA%\Programs\TLauncher\tlauncher.exe" goto :tlauncher_ok
+if exist "C:\Program Files\TLauncher\tlauncher.exe" goto :tlauncher_ok
+:tlauncher_fail
+echo       [WARN] Descarga/instalacion fallo. Baja TLauncher desde:
+echo       https://tlauncher.org/en/
+goto :tlauncher_done
+:tlauncher_ok
+echo       [OK] TLauncher listo
+:tlauncher_done
+
+REM --- Crear instancia de TLauncher automaticamente ---
+echo [3/4] Creando instancia "Servidor Amiguos" en TLauncher...
+set "TLAUNCHER_ROOT=%APPDATA%\.tlauncher"
+if not exist "%TLAUNCHER_ROOT%" set "TLAUNCHER_ROOT=%LOCALAPPDATA%\Programs\TLauncher"
+if not exist "%TLAUNCHER_ROOT%" goto :skip_instance
+if not exist "%BOOTSTRAP_JAR%" (
+    echo       Descargando bootstrap...
+    curl.exe -L -o %BOOTSTRAP_JAR% "https://github.com/packwiz/packwiz-installer-bootstrap/releases/download/v0.0.3/packwiz-installer-bootstrap.jar"
+)
+if not exist "%BOOTSTRAP_JAR%" goto :skip_instance
+set "INSTANCE=%TLAUNCHER_ROOT%\instances\Servidor Amiguos"
+set "MODS_TEMP=%TEMP%\santicraft-mods"
+if exist "%INSTANCE%" goto :skip_instance
+echo       Bajando mods (49) a %MODS_TEMP%...
+mkdir "%MODS_TEMP%"
+"%JAVA_CMD%" -jar %BOOTSTRAP_JAR% -g %BOOTSTRAP_URL%
+if exist "%MODS_TEMP%\minecraft\mods" (
+    mkdir "%INSTANCE%\.minecraft\mods"
+    xcopy /E /Y "%MODS_TEMP%\minecraft\mods\*" "%INSTANCE%\.minecraft\mods\" >nul
+    copy /Y "%BOOTSTRAP_JAR%" "%INSTANCE%\.minecraft\packwiz-installer-bootstrap.jar" >nul 2>&1
+    (
+        echo InstanceType=OneSix
+        echo name=Servidor Amiguos
+        echo iconKey=grass_block
+    ) > "%INSTANCE%\instance.cfg"
+    echo       [OK] Instancia creada en %INSTANCE%
+) else (
+    echo       [WARN] No se pudieron bajar los mods. La instancia tendra que crearse manual.
+)
+:skip_instance
 
 REM --- Crear instancia de HMCL automaticamente ---
 echo [3/4] Creando instancia "Servidor Amiguos" en HMCL...
@@ -130,10 +167,14 @@ if exist "%INSTANCE%\.minecraft\mods" (
 echo.
 echo ============================================
 echo   Listo.
-echo   1) Abre HMCL desde el acceso directo del escritorio
+echo   1) Abre TLauncher desde el acceso directo del escritorio
 echo   2) Click "Entrar al juego" o "Login"
 echo      (escribe cualquier username, sin password)
-echo   3) Click en la instancia "Servidor Amiguos"
+echo   3) Click "+" o "Add Instance":
+echo      Name: Servidor Amiguos
+echo      Version: 1.21.1
+echo      Loader: Fabric
+echo      Loader version: 0.16.5
 echo   4) Conectate a: %SERVER%
 echo ============================================
 echo.

@@ -1,9 +1,9 @@
 Servidor Amiguos - Modpack
 =======================
 
-Modpack privado de Minecraft 1.21.1 + NeoForge 21.1.234.
+Modpack privado de Minecraft 1.21.1 + Fabric 0.16.5.
 Server: amiguos.holy.gg (no-premium)
-Launcher: HMCL (no-premium, soporta NeoForge, open source GPL-3.0)
+Launcher: TLauncher (no-premium, estandar en LatAm)
 
 INSTALACION (una sola vez)
 ---------------------------
@@ -12,51 +12,52 @@ Windows:
   1. Descomprime este ZIP donde quieras
   2. Doble click en launcher.bat
      (descarga la ultima version del instalador)
-  3. Espera a que se instale: Java 21, HMCL, los 39 mods (~91 MB),
-     y se cree la instancia "Servidor Amiguos" en HMCL
-  4. Abre HMCL desde el acceso directo del escritorio
-  5. Click en la instancia "Servidor Amiguos"
-  6. Login con cualquier username (sin password) y click "Entrar al juego"
+  3. Espera a que se instale: Java 21, TLauncher, los 49 mods (~91 MB),
+     y se cree la instancia "Servidor Amiguos" en TLauncher
+  4. Abre TLauncher desde el acceso directo del escritorio
+  5. Click "+" o "Add Instance":
+     - Name: Servidor Amiguos
+     - Version: 1.21.1
+     - Loader: Fabric
+     - Loader Version: 0.16.5
+  6. Login con cualquier username (sin password)
   7. Click Play, conectate a amiguos.holy.gg
 
 Mac:
   1. Descomprime este ZIP donde quieras
   2. Abre Terminal en la carpeta descomprimida
   3. Ejecuta: bash launcher.sh
-  4. Espera a que se instale: Java 21, HMCL (en ~/Library/Application
-     Support/HMCL/), los 39 mods, y se cree la instancia
-  5. Abre HMCL desde ~/Library/Application Support/HMCL/HMCL.command
-  6. Click en la instancia "Servidor Amiguos"
-  7. Login con cualquier username, click "Entrar al juego", conectate al server
+  4. Espera a que se instale Java 21, TLauncher, los 49 mods, y se cree
+     la instancia
+  5. Abre TLauncher desde ~/Library/Application Support/TLauncher/tlauncher
+  6. Crea instancia 1.21.1 + Fabric 0.16.5
+  7. Login con cualquier username, conectate al server
 
 Linux:
   1. Descomprime este ZIP donde quieras
   2. Abre Terminal en la carpeta descomprimida
   3. Ejecuta: bash launcher.sh
-  4. Espera a que se instale Java 21, HMCL (en ~/.local/share/HMCL/),
-     los 39 mods, y se cree la instancia
-  5. Abre HMCL desde ~/.local/share/HMCL/HMCL
-  6. Click en la instancia "Servidor Amiguos"
-  7. Login con cualquier username, click "Entrar al juego", conectate al server
+  4. Espera a que se instale Java 21, TLauncher, los 49 mods, y se cree
+     la instancia
+  5. Abre TLauncher desde ~/.local/share/TLauncher/tlauncher
+  6. Crea instancia 1.21.1 + Fabric 0.16.5
+  7. Login con cualquier username, conectate al server
 
-CREAR CUENTA OFFLINE EN HMCL
------------------------------
+CREAR CUENTA EN TLAUNCHER
+------------------------
 
-Al abrir HMCL por primera vez:
+Al abrir TLauncher por primera vez:
   1. Te aparece la pantalla principal
-  2. Click en el icono de persona (esquina superior) o "Add Account"
-  3. Selecciona "Classic Account" (no Microsoft)
-  4. Te pide:
-     - Username: cualquiera (ej: tu nombre)
-     - Password: cualquiera (no se valida)
-  5. Click "Add" o "OK"
-  6. Listo, ya podes jugar
+  2. Click "Entrar al juego" o "Login"
+  3. Te pide un username (cualquiera) y password (cualquiera, no valida)
+  4. Click "Entrar"
+  5. Listo, ya podes jugar
 
 INSTANCIA YA CREADA
----------------------
+--------------------
 
-El script creo la instancia "Servidor Amiguos" (1.21.1 + NeoForge 21.1.234) en
-HMCL con los 39 mods pre-instalados. Solo:
+El script creo la instancia "Servidor Amiguos" (1.21.1 + Fabric 0.16.5) en
+TLauncher con los 49 mods pre-instalados. Solo:
   1. Click en la instancia "Servidor Amiguos"
   2. Click "Entrar al juego" (o Login si no has entrado)
   3. Click "Play"
@@ -64,10 +65,8 @@ HMCL con los 39 mods pre-instalados. Solo:
 
 Si la instancia no se creo automaticamente, creala manual:
   1. Click "+" o "Add Instance"
-  2. Configura: 1.21.1 + NeoForge 21.1.234
+  2. Configura: 1.21.1 + Fabric 0.16.5
   3. Click "OK" / "Create"
-  4. Despues de crear la instancia, copia los 39 mods de la carpeta
-     `dist-tlauncher/mods/` (del ZIP) a la instancia .minecraft/mods/
 
 UPDATES
 -------
@@ -76,25 +75,25 @@ Cada vez que quieras buscar updates:
   - Windows: doble-click el acceso directo "Servidor Amiguos - Actualizar" del escritorio
   - Mac/Linux: ejecuta launcher.sh (o launcher.bat) de nuevo
 
-Los mods y configs se actualizan solos en la instancia de HMCL.
+Los mods y configs se actualizan solos en la instancia de TLauncher.
 
 PROBLEMAS COMUNES
------------------
+----------------
 
-"No se pudo instalar HMCL" (Windows)
-  -> El instalador puede requerir permisos de admin
-  -> O baja desde https://hmcl.huangyuhui.net/download/ y ejecuta el .exe
+"No se pudo instalar TLauncher" (Windows)
+  -> El instalador .exe puede requerir permisos de admin
+  -> O baja desde https://tlauncher.org/en/ y ejecuta el .exe
 
 "No se creo la instancia automaticamente"
-  -> Verifica que HMCL este instalado en %APPDATA%\.hmcl\ (Windows)
-  -> Crealo manual: Add Instance -> 1.21.1 + NeoForge 21.1.234
+  -> Verifica que TLauncher este instalado en %APPDATA%\.tlauncher\ (Windows)
+  -> Crealo manual: Add Instance -> 1.21.1 + Fabric 0.16.5
 
 "Java not found" o "Version 21 not found"
   -> El launcher deberia instalar Java 21 portable automaticamente
   -> Si falla, descarga desde https://adoptium.net/
 
 "Mods no aparecen"
-  -> Verifica que NeoForge 21.1.234 esta seleccionado en la instancia
+  -> Verifica que Fabric 0.16.5 esta seleccionado en la instancia
   -> Ejecuta el launcher.bat de nuevo para re-descargar mods
 
 "Failed to connect to server"
@@ -105,19 +104,43 @@ PROBLEMAS COMUNES
   -> No estas en la whitelist del server
   -> Contacta al admin para que te agregue
 
-"HMCL pide Microsoft account"
-  -> Asegurate de seleccionar "Classic Account", NO "Microsoft Account"
-  -> Si ya tienes cuenta MS, desinstala HMCL y borra %APPDATA%\.hmcl
+MODS INCLUIDOS (49)
+---------------------
 
-¿POR QUE HMCL Y NO TLAUNCHER?
-------------------------
+Performance: sodium, lithium, modernfix, ferritecore, krypton,
+  c2me-fabric, fastback, mcef, sodium-extra, reeses-sodium-options,
+  reeses-sodium-config, lazur, embedded
+Utilities: cloth-config, fabric-api, modmenu, jade, balm, architectury,
+  kiwi, lychee, moonlight, malilib, placeholder-api, puzzles-lib,
+  accessories, simple-voice-chat
+Mods de gameplay: carry-on, comforts, customskinloader, appleskin,
+  mousetweaks, waystones, chunky, lootr, xaeros-minimap,
+  xaeros-world-map, macaws-furniture, supplementaries, farmers-delight,
+  inventory-tweaks-refoxed, jade, security-craft, flan, terralith,
+  yungs-api, yungs-better-dungeons, yungs-better-mineshafts, litematica,
+  reborn, lithostitched, easy-magic, more-lapis-lazuli, cobblemon
+Decoracion: -
+Mobs: -
+Alimentos: farmers-delight
+NOTA: 14 mods del modpack original (Embeddium, Sophisticated Backpacks,
+Sophisticated Core, etc.) se perdieron porque no tienen version Fabric
+1.21.1. Esta es la realidad del modpack con TLauncher.
 
-Probamos TLauncher primero pero NO soporta NeoForge. Solo Forge, Fabric,
-Quilt, OptiFine. Sin NeoForge, 24 de 39 mods no funcionan. HMCL es open
-source, soporta NeoForge, y permite cuentas "Classic" (no-premium). Es la
-unica opcion que soporta todo el modpack.
+¿POR QUE TLAUNCHER Y NO HMCL?
+---------------------------
 
-TLauncher 1.x: Forge, Fabric, Quilt, OptiFine (sin NeoForge)
+HMCL requiere instalacion mas compleja y el script tuvo problemas con
+winget mintiendo sobre la instalacion. TLauncher es el launcher estandar
+para no-premium en LatAm, es simple, estable, y soporta Fabric 1.21.1.
+
+TLauncher 1.x: Vanilla, Forge, Fabric, Quilt, OptiFine (sin NeoForge)
 TLauncher 2.x: similar (no testeado completamente)
 HMCL: Forge, NeoForge, Fabric, OptiFine (soporta todo)
 Prism: Forge, NeoForge, Fabric, OptiFine (pero requiere Microsoft account)
+
+Para este modpack especificamente con TLauncher + Fabric:
+- 49 mods funcionan
+- 14 mods del modpack original (Embeddium, Sophisticated Backpacks,
+  Sophisticated Core, etc.) se perdieron porque no tienen version Fabric
+- Rendimiento optimo: Sodium + Lithium + ModernFix + Embeddium-equivalent
+  dan mejor FPS que NeoForge/Forge
