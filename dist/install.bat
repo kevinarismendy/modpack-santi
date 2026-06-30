@@ -183,6 +183,26 @@ echo.
 echo   Para buscar updates: doble-click "Servidor Amiguos - Actualizar"
 echo   o vuelve a correr launcher.bat desde esta carpeta.
 echo.
+
+REM --- Crear accesos directos en el escritorio ---
+if exist "%TLAUNCHER_DIR%\tlauncher.exe" (
+    echo   Creando accesos directos en el escritorio...
+    powershell -NoProfile -ExecutionPolicy Bypass -Command ^
+        "$ws = New-Object -ComObject WScript.Shell; ^
+         $sc = $ws.CreateShortcut([Environment]::GetFolderPath('Desktop') + '\Servidor Amiguos - TLauncher.lnk'); ^
+         $sc.TargetPath = '%TLAUNCHER_DIR%\tlauncher.exe'; ^
+         $sc.WorkingDirectory = '%TLAUNCHER_DIR%'; ^
+         $sc.Save(); ^
+         $su = $ws.CreateShortcut([Environment]::GetFolderPath('Desktop') + '\Servidor Amiguos - Actualizar.lnk'); ^
+         $su.TargetPath = '%~dp0launcher.bat'; ^
+         $su.WorkingDirectory = '%~dp0'; ^
+         $su.IconLocation = '%TLAUNCHER_DIR%\tlauncher.exe'; ^
+         $su.Save()"
+    echo   [OK] Accesos directos creados en el escritorio
+) else (
+    echo   [WARN] TLauncher no detectado, no se crearon accesos directos
+)
+echo.
 exit /b 0
 
 REM ========== Instalador portable de JDK 21 ==========
