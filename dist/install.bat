@@ -1,6 +1,6 @@
 @echo off
 chcp 65001 >nul
-setlocal EnableExtensions
+setlocal EnableExtensions EnableDelayedExpansion
 title Servidor Amiguos - Modpack Installer
 cd /d "%~dp0"
 
@@ -9,7 +9,7 @@ set JDK_DIR=%LOCALAPPDATA%\jdk21
 set EXTRACT_DIR=%LOCALAPPDATA%\jdk_extract_temp
 set BOOTSTRAP_URL=https://cdn.jsdelivr.net/gh/kevinarismendy/modpack-santi@main/pack.toml
 set BOOTSTRAP_JAR=packwiz-installer-bootstrap.jar
-set PRISM_URL=https://github.com/kevinarismendy/modpack-santi/releases/download/prismlauncher-v1/PrismLauncher-Windows.zip
+set LAUNCHER_URL=https://github.com/kevinarismendy/modpack-santi/releases/download/hmcl-v1/HMCL-3.15.2.jar
 set SERVER=amiguos.holy.gg
 
 echo ============================================
