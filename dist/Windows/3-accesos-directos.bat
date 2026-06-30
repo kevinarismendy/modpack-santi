@@ -1,7 +1,6 @@
 @echo off
-title [3/3] Accesos Directos
 setlocal EnableExtensions EnableDelayedExpansion
-cd /d "%~dp0"
+title [3/3] Accesos Directos
 
 echo ============================================
 echo   [3/3] Creador de Accesos Directos
@@ -9,16 +8,41 @@ echo ============================================
 echo.
 
 set "TLAUNCHER_EXE="
-call :find_tlauncher
+set "TLAUNCHER_DIR="
+if exist "%APPDATA%\.tlauncher\tlauncher.exe" (
+    set "TLAUNCHER_EXE=%APPDATA%\.tlauncher\tlauncher.exe"
+    set "TLAUNCHER_DIR=%APPDATA%\.tlauncher\"
+)
+if not defined TLAUNCHER_EXE if exist "%APPDATA%\.tlauncher\TLauncher.exe" (
+    set "TLAUNCHER_EXE=%APPDATA%\.tlauncher\TLauncher.exe"
+    set "TLAUNCHER_DIR=%APPDATA%\.tlauncher\"
+)
+if not defined TLAUNCHER_EXE if exist "%LOCALAPPDATA%\TLauncher\tlauncher.exe" (
+    set "TLAUNCHER_EXE=%LOCALAPPDATA%\TLauncher\tlauncher.exe"
+    set "TLAUNCHER_DIR=%LOCALAPPDATA%\TLauncher\"
+)
+if not defined TLAUNCHER_EXE if exist "%LOCALAPPDATA%\TLauncher\TLauncher.exe" (
+    set "TLAUNCHER_EXE=%LOCALAPPDATA%\TLauncher\TLauncher.exe"
+    set "TLAUNCHER_DIR=%LOCALAPPDATA%\TLauncher\"
+)
+if not defined TLAUNCHER_EXE if exist "%APPDATA%\.minecraft\TLauncher.exe" (
+    set "TLAUNCHER_EXE=%APPDATA%\.minecraft\TLauncher.exe"
+    set "TLAUNCHER_DIR=%APPDATA%\.minecraft\"
+)
+if not defined TLAUNCHER_EXE if exist "%APPDATA%\.minecraft\tlauncher.exe" (
+    set "TLAUNCHER_EXE=%APPDATA%\.minecraft\tlauncher.exe"
+    set "TLAUNCHER_DIR=%APPDATA%\.minecraft\"
+)
+
 if not defined TLAUNCHER_EXE (
     echo [ERROR] TLauncher no esta instalado.
     echo Primero corre "1-instalar-tlauncher.bat"
     pause
     exit /b 1
 )
+
 echo TLauncher: !TLAUNCHER_EXE!
 echo.
-
 echo Creando accesos directos en el escritorio...
 powershell -NoProfile -ExecutionPolicy Bypass -Command ^
     "$ws = New-Object -ComObject WScript.Shell; ^
@@ -38,17 +62,4 @@ if errorlevel 1 (
 )
 echo.
 pause
-exit /b 0
-
-:find_tlauncher
-if exist "%APPDATA%\.tlauncher\tlauncher.exe" (set "TLAUNCHER_EXE=%APPDATA%\.tlauncher\tlauncher.exe") & (set "TLAUNCHER_DIR=%APPDATA%\.tlauncher\")
-if defined TLAUNCHER_EXE exit /b 0
-if exist "%APPDATA%\.tlauncher\TLauncher.exe" (set "TLAUNCHER_EXE=%APPDATA%\.tlauncher\TLauncher.exe") & (set "TLAUNCHER_DIR=%APPDATA%\.tlauncher\")
-if defined TLAUNCHER_EXE exit /b 0
-if exist "%LOCALAPPDATA%\TLauncher\tlauncher.exe" (set "TLAUNCHER_EXE=%LOCALAPPDATA%\TLauncher\tlauncher.exe") & (set "TLAUNCHER_DIR=%LOCALAPPDATA%\TLauncher\")
-if defined TLAUNCHER_EXE exit /b 0
-if exist "%LOCALAPPDATA%\TLauncher\TLauncher.exe" (set "TLAUNCHER_EXE=%LOCALAPPDATA%\TLauncher\TLauncher.exe") & (set "TLAUNCHER_DIR=%LOCALAPPDATA%\TLauncher\")
-if exist "%APPDATA%\.minecraft\TLauncher.exe" (set "TLAUNCHER_EXE=%APPDATA%\.minecraft\TLauncher.exe") & (set "TLAUNCHER_DIR=%APPDATA%\.minecraft\")
-if defined TLAUNCHER_EXE exit /b 0
-if exist "%APPDATA%\.minecraft\tlauncher.exe" (set "TLAUNCHER_EXE=%APPDATA%\.minecraft\tlauncher.exe") & (set "TLAUNCHER_DIR=%APPDATA%\.minecraft\")
 exit /b 0

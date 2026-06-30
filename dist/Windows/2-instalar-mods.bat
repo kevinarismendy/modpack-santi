@@ -1,6 +1,6 @@
 @echo off
-title [2/3] Instalar Mods
 setlocal EnableExtensions EnableDelayedExpansion
+title [2/3] Instalar Mods
 cd /d "%~dp0"
 
 set MIN_JAVA=21
@@ -16,9 +16,14 @@ echo   MC 1.21.1 + Fabric 0.16.5
 echo ============================================
 echo.
 
-REM --- Detectar TLauncher ---
 set "TLAUNCHER_EXE="
-call :find_tlauncher
+if exist "%APPDATA%\.tlauncher\tlauncher.exe" set "TLAUNCHER_EXE=%APPDATA%\.tlauncher\tlauncher.exe"
+if not defined TLAUNCHER_EXE if exist "%APPDATA%\.tlauncher\TLauncher.exe" set "TLAUNCHER_EXE=%APPDATA%\.tlauncher\TLauncher.exe"
+if not defined TLAUNCHER_EXE if exist "%LOCALAPPDATA%\TLauncher\tlauncher.exe" set "TLAUNCHER_EXE=%LOCALAPPDATA%\TLauncher\tlauncher.exe"
+if not defined TLAUNCHER_EXE if exist "%LOCALAPPDATA%\TLauncher\TLauncher.exe" set "TLAUNCHER_EXE=%LOCALAPPDATA%\TLauncher\TLauncher.exe"
+if not defined TLAUNCHER_EXE if exist "%APPDATA%\.minecraft\TLauncher.exe" set "TLAUNCHER_EXE=%APPDATA%\.minecraft\TLauncher.exe"
+if not defined TLAUNCHER_EXE if exist "%APPDATA%\.minecraft\tlauncher.exe" set "TLAUNCHER_EXE=%APPDATA%\.minecraft\tlauncher.exe"
+
 if not defined TLAUNCHER_EXE (
     echo [ERROR] TLauncher no esta instalado.
     echo Primero corre "1-instalar-tlauncher.bat"
@@ -51,12 +56,34 @@ if defined JAVA_CMD (
         set "JAVA_CMD=%JDK_DIR%\bin\java.exe"
     ) else (
         echo [!] Java 21+ no encontrado. Bajando JDK 21 portable...
-        call :install_jdk_windows
+        set "JDK_ZIP=%TEMP%\servidor_amigos_jdk.zip"
+        set "JDK_URL=https://api.adoptium.net/v3/binary/latest/21/ga/windows/x64/jdk/hotspot/normal/eclipse"
+        echo       Descargando...
+        curl.exe -L -sS -o "%JDK_ZIP%" "%JDK_URL%"
         if errorlevel 1 (
-            echo [ERROR] No se pudo bajar JDK. Instala Java 21 desde https://adoptium.net/
+            echo [ERROR] No se pudo bajar JDK.
+            echo Instala Java 21 desde https://adoptium.net/ y volve a correr.
             pause
             exit /b 1
         )
+        echo       Extrayendo...
+        if exist "%JDK_DIR%" rmdir /s /q "%JDK_DIR%" 2>nul
+        if exist "%EXTRACT_DIR%" rmdir /s /q "%EXTRACT_DIR%" 2>nul
+        mkdir "%EXTRACT_DIR%" 2>nul
+        powershell -NoProfile -Command "Expand-Archive -LiteralPath '%JDK_ZIP%' -DestinationPath '%EXTRACT_DIR%' -Force" >nul 2>&1
+        del "%JDK_ZIP%" 2>nul
+        for /d %%D in ("%EXTRACT_DIR%\*") do (
+            if exist "%%D\bin\java.exe" (
+                robocopy "%%D" "%JDK_DIR%" /E /MOVE /NFL /NDL /NJH /NJS /NC /NS >nul 2>&1
+            )
+        )
+        rmdir "%EXTRACT_DIR%" 2>nul
+        if not exist "%JDK_DIR%\bin\java.exe" (
+            echo [ERROR] No se encontro java.exe despues de extraer.
+            pause
+            exit /b 1
+        )
+        echo       [OK] JDK 21 en %JDK_DIR%
         set "JAVA_CMD=%JDK_DIR%\bin\java.exe"
     )
 )
@@ -76,7 +103,7 @@ echo [OK] Bootstrap listo
 echo.
 
 REM --- Bajar mods ---
-echo Descargando 39 mods a una carpeta temporal...
+echo Descargando 40 mods a una carpeta temporal...
 set "MODS_TEMP=%TEMP%\santicraft-mods-%RANDOM%"
 mkdir "!MODS_TEMP!" 2>nul
 pushd "!MODS_TEMP!"
@@ -96,7 +123,7 @@ if not exist "!MODS_TEMP!\minecraft\mods" (
     exit /b 1
 )
 
-REM --- Copiar mods a la carpeta de TLauncher ---
+REM --- Copiar mods ---
 set "MODS_DEST="
 if exist "%APPDATA%\.minecraft\mods" set "MODS_DEST=%APPDATA%\.minecraft\mods"
 if not defined MODS_DEST if exist "%APPDATA%\.minecraft" set "MODS_DEST=%APPDATA%\.minecraft\mods"
@@ -105,54 +132,18 @@ if not exist "!MODS_DEST!" mkdir "!MODS_DEST!" 2>nul
 echo.
 echo Copiando mods a !MODS_DEST! ...
 xcopy /E /Y /Q "!MODS_TEMP!\minecraft\mods\*" "!MODS_DEST!\" >nul 2>&1
-copy /Y "%~dp0%BOOTSTRAP_JAR%" "%APPDATA%\.minecraft\packwiz-installer-bootstrap.jar" >nul 2>&1
 rmdir /s /q "!MODS_TEMP!" 2>nul
-echo [OK] 39 mods instalados.
+echo [OK] Mods instalados.
 echo.
 
 echo ============================================
-echo   Mods listos.
+echo   Listo. Ya podes jugar.
 echo.
-echo   Siguiente paso: abre TLauncher, crea perfil:
-echo     Version: 1.21.1
-echo     Loader: Fabric
-echo     Loader version: 0.16.5
-echo   Y conectate a: %SERVER%
+echo   1) Abre TLauncher
+echo   2) Login con cualquier username (no-premium)
+echo   3) Crea perfil: 1.21.1 + Fabric 0.16.5
+echo   4) Conectate a: %SERVER%
 echo ============================================
 echo.
 pause
-exit /b 0
-
-:find_tlauncher
-if exist "%APPDATA%\.tlauncher\tlauncher.exe" set "TLAUNCHER_EXE=%APPDATA%\.tlauncher\tlauncher.exe"
-if defined TLAUNCHER_EXE exit /b 0
-if exist "%APPDATA%\.tlauncher\TLauncher.exe" set "TLAUNCHER_EXE=%APPDATA%\.tlauncher\TLauncher.exe"
-if defined TLAUNCHER_EXE exit /b 0
-if exist "%LOCALAPPDATA%\TLauncher\tlauncher.exe" set "TLAUNCHER_EXE=%LOCALAPPDATA%\TLauncher\tlauncher.exe"
-if defined TLAUNCHER_EXE exit /b 0
-if exist "%LOCALAPPDATA%\TLauncher\TLauncher.exe" set "TLAUNCHER_EXE=%LOCALAPPDATA%\TLauncher\TLauncher.exe"
-if defined TLAUNCHER_EXE exit /b 0
-if exist "%APPDATA%\.minecraft\TLauncher.exe" set "TLAUNCHER_EXE=%APPDATA%\.minecraft\TLauncher.exe"
-if defined TLAUNCHER_EXE exit /b 0
-if exist "%APPDATA%\.minecraft\tlauncher.exe" set "TLAUNCHER_EXE=%APPDATA%\.minecraft\tlauncher.exe"
-exit /b 0
-
-:install_jdk_windows
-set "JDK_ZIP=%TEMP%\servidor_amigos_jdk.zip"
-set "JDK_URL=https://api.adoptium.net/v3/binary/latest/21/ga/windows/x64/jdk/hotspot/normal/eclipse"
-echo Descargando JDK 21 (portable)...
-curl.exe -L -sS -o "%JDK_ZIP%" "%JDK_URL%"
-if errorlevel 1 exit /b 1
-echo Extrayendo...
-if exist "%JDK_DIR%" rmdir /s /q "%JDK_DIR%"
-if exist "%EXTRACT_DIR%" rmdir /s /q "%EXTRACT_DIR%"
-mkdir "%EXTRACT_DIR%"
-powershell -NoProfile -Command "Expand-Archive -LiteralPath '%JDK_ZIP%' -DestinationPath '%EXTRACT_DIR%' -Force" >nul
-del "%JDK_ZIP%" 2>nul
-for /d %%D in ("%EXTRACT_DIR%\*") do (
-    if exist "%%D\bin\java.exe" robocopy "%%D" "%JDK_DIR%" /E /MOVE /NFL /NDL /NJH /NJS /NC /NS >nul 2>&1
-)
-rmdir "%EXTRACT_DIR%" 2>nul
-if not exist "%JDK_DIR%\bin\java.exe" exit /b 1
-echo [OK] JDK 21 en %JDK_DIR%
 exit /b 0
