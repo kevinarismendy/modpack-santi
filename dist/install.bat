@@ -63,16 +63,20 @@ echo.
 
 REM --- Localizar Java 21+ ---
 set "JAVA_CMD="
+set "JAVA_VERSION="
 where java >nul 2>&1
 if not errorlevel 1 (
-    for /f "tokens=2 delims=" %%v in ('"java -version 2>&1" ^| findstr /i "version"') do (
-        for /f "delims=. tokens=1" %%m in ("%%~v") do (
-            if %%m geq %MIN_JAVA% set "JAVA_CMD=java"
+    for /f "tokens=2 delims= " %%v in ('"java -version 2>&1" ^| findstr /i "version"') do (
+        for /f "tokens=1 delims=." %%a in ("%%~v") do (
+            for /f "delims=""" %%b in ("%%a") do (
+                set "JAVA_VERSION=%%b"
+                if !JAVA_VERSION! geq %MIN_JAVA% set "JAVA_CMD=java"
+            )
         )
     )
 )
 if defined JAVA_CMD (
-    for /f "tokens=2 delims=" %%v in ('"java -version 2>&1" ^| findstr /i "version"') do echo [2/5] [OK] Java %%v detectado
+    echo [2/5] [OK] Java !JAVA_VERSION! detectado
 ) else (
     if exist "%JDK_DIR%\bin\java.exe" (
         echo [2/5] [OK] Usando JDK portable en %JDK_DIR%
@@ -92,9 +96,9 @@ if defined JAVA_CMD (
 echo.
 
 REM --- Descargar bootstrap si hace falta ---
-if not exist %BOOTSTRAP_JAR% (
+if not exist "%BOOTSTRAP_JAR%" (
     echo [3/5] Descargando packwiz bootstrap...
-    curl.exe -L -sS -o %BOOTSTRAP_JAR% "https://github.com/packwiz/packwiz-installer-bootstrap/releases/download/v0.0.3/packwiz-installer-bootstrap.jar"
+    curl.exe -L -sS -o "%BOOTSTRAP_JAR%" "https://github.com/packwiz/packwiz-installer-bootstrap/releases/download/v0.0.3/packwiz-installer-bootstrap.jar"
     if errorlevel 1 (
         echo [ERROR] No se pudo descargar el bootstrap.
         pause
@@ -104,43 +108,36 @@ if not exist %BOOTSTRAP_JAR% (
 echo [3/5] [OK] Bootstrap listo
 echo.
 
-REM --- Crear/actualizar instancia de TLauncher ---
-echo [4/5] Configurando instancia "%INSTANCE_NAME%" en TLauncher...
-call :find_tlauncher_root
-if defined TLAUNCHER_ROOT (
-    set "INSTANCE=!TLAUNCHER_ROOT!\instances\%INSTANCE_NAME%"
-    set "MODS_TEMP=%TEMP%\santicraft-mods-%RANDOM%"
-    mkdir "!MODS_TEMP!" 2>nul
-    echo       Bajando mods a !MODS_TEMP!\minecraft\mods ...
-    pushd "!MODS_TEMP!"
-    "!JAVA_CMD!" -jar "%~dp0%BOOTSTRAP_JAR%" -g %BOOTSTRAP_URL%
-    set BOOTSTRAP_RC=!errorlevel!
-    popd
-    if !BOOTSTRAP_RC! neq 0 (
-        echo       [WARN] Bootstrap fallo. Los mods se descargaran cuando abras TLauncher.
-    ) else (
-        if exist "!MODS_TEMP!\minecraft\mods" (
-            if not exist "!INSTANCE!" mkdir "!INSTANCE!\.minecraft\mods" 2>nul
-            if exist "!INSTANCE!\.minecraft\mods" (
-                xcopy /E /Y /Q "!MODS_TEMP!\minecraft\mods\*" "!INSTANCE!\.minecraft\mods\" >nul 2>&1
-            )
-            if not exist "!INSTANCE!\instance.cfg" (
-                (
-                    echo InstanceType=OneSix
-                    echo name=%INSTANCE_NAME%
-                    echo iconKey=grass_block
-                ) > "!INSTANCE!\instance.cfg"
-            )
-            copy /Y "%~dp0%BOOTSTRAP_JAR%" "!INSTANCE!\.minecraft\packwiz-installer-bootstrap.jar" >nul 2>&1
-            echo       [OK] Instancia: !INSTANCE!
-        ) else (
-            echo       [WARN] No se encontraron mods descargados.
-        )
-    )
+REM --- Instalar mods en la carpeta global de TLauncher ---
+echo [4/5] Instalando 39 mods en TLauncher...
+set "MODS_TEMP=%TEMP%\santicraft-mods-%RANDOM%"
+mkdir "!MODS_TEMP!" 2>nul
+pushd "!MODS_TEMP!"
+"!JAVA_CMD!" -jar "%~dp0%BOOTSTRAP_JAR%" -g %BOOTSTRAP_URL%
+set BOOTSTRAP_RC=!errorlevel!
+popd
+if !BOOTSTRAP_RC! neq 0 (
+    echo       [ERROR] No se pudieron descargar los mods. Reintenta cuando tengas internet.
     rmdir /s /q "!MODS_TEMP!" 2>nul
-) else (
-    echo       [WARN] TLauncher no detectado, instancia no creada. Crealo manual en TLauncher.
+    pause
+    exit /b 1
 )
+if not exist "!MODS_TEMP!\minecraft\mods" (
+    echo       [ERROR] No se encontraron mods descargados.
+    rmdir /s /q "!MODS_TEMP!" 2>nul
+    pause
+    exit /b 1
+)
+set "MODS_DEST="
+if exist "%APPDATA%\.minecraft\mods" set "MODS_DEST=%APPDATA%\.minecraft\mods"
+if not defined MODS_DEST if exist "%APPDATA%\.tlauncher" set "MODS_DEST=%APPDATA%\.tlauncher\mods"
+if not defined MODS_DEST if exist "%LOCALAPPDATA%\Programs\TLauncher" set "MODS_DEST=%LOCALAPPDATA%\Programs\TLauncher\mods"
+if not defined MODS_DEST set "MODS_DEST=%APPDATA%\.minecraft\mods"
+if not exist "!MODS_DEST!" mkdir "!MODS_DEST!" 2>nul
+xcopy /E /Y /Q "!MODS_TEMP!\minecraft\mods\*" "!MODS_DEST!\" >nul 2>&1
+copy /Y "%~dp0%BOOTSTRAP_JAR%" "%APPDATA%\.minecraft\packwiz-installer-bootstrap.jar" >nul 2>&1
+echo       [OK] Mods instalados en !MODS_DEST!
+rmdir /s /q "!MODS_TEMP!" 2>nul
 echo.
 
 REM --- Accesos directos ---
@@ -164,9 +161,12 @@ echo   Listo. Ya podes jugar.
 echo.
 echo   1) Abre TLauncher desde el escritorio
 echo   2) Login con cualquier username (no-premium)
-echo   3) Selecciona la instancia "%INSTANCE_NAME%" (ya creada)
-echo      Si no aparece: "+" o "Add Instance" -^> 1.21.1 + Fabric 0.16.5
-echo   4) Conectate a: %SERVER%
+echo   3) Click "Install client" o "+" -^> selecciona:
+echo      Version: 1.21.1
+echo      Loader: Fabric
+echo      Loader version: 0.16.5
+echo      (los 39 mods ya estan en tu carpeta de mods)
+echo   4) Multiplayer -^> Add Server: %SERVER%
 echo ============================================
 echo.
 echo   Para actualizar mods: corre "Servidor Amiguos - Actualizar"
