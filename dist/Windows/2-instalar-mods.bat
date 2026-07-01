@@ -11,7 +11,8 @@ set CACHE_BUST=%RANDOM%%RANDOM%
 set BOOTSTRAP_URL=%RAW_BASE%/pack.toml?cb=%CACHE_BUST%
 set BOOTSTRAP_JAR_URL=%RAW_BASE%/packwiz-installer-bootstrap.jar?cb=%CACHE_BUST%
 set BOOTSTRAP_JAR=packwiz-installer-bootstrap.jar
-set "INSTANCE=Servidor Amiguos"
+set "INSTANCE=servidor"
+set "SERVER_NAME=Servidor Amiguos"
 set "SERVER_IP=135.148.137.58:19403"
 
 echo ============================================
@@ -162,7 +163,7 @@ if exist "!INSTANCE_DIR!\servers.dat" (
 )
 set "SRV_PS=%TEMP%\gen_servers_%RANDOM%.ps1"
 > "%SRV_PS%" echo $ip = '%SERVER_IP%'
->> "%SRV_PS%" echo $name = '%INSTANCE%'
+>> "%SRV_PS%" echo $name = '%SERVER_NAME%'
 >> "%SRV_PS%" echo $ms = New-Object System.IO.MemoryStream
 >> "%SRV_PS%" echo function W($b){ $y=[byte[]]$b; $ms.Write($y,0,$y.Length) }
 >> "%SRV_PS%" echo function WStr($s){ $x=[Text.Encoding]::UTF8.GetBytes($s); W @([byte](($x.Length -shr 8) -band 0xFF),[byte]($x.Length -band 0xFF)); W $x }
@@ -192,7 +193,7 @@ echo   1) Abre TLauncher
 echo   2) Login con cualquier username (no-premium)
 echo   3) Crea/selecciona una version Fabric 1.21.1 (Loader 0.19.3+)
 echo      y nombrala EXACTAMENTE:  %INSTANCE%
-echo      (con "carpetas separadas por version" activado)
+echo      (en minusculas, con "carpetas separadas por version" activado)
 echo   4) El servidor %SERVER_IP% ya aparece en la lista
 echo ============================================
 echo.

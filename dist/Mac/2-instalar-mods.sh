@@ -11,7 +11,8 @@ BOOTSTRAP_JAR="packwiz-installer-bootstrap.jar"
 CACHE_BUST="$RANDOM$RANDOM"
 BOOTSTRAP_URL="${BASE_URL}/pack.toml?cb=${CACHE_BUST}"
 BOOTSTRAP_JAR_URL="${BASE_URL}/${BOOTSTRAP_JAR}?cb=${CACHE_BUST}"
-INSTANCE="Servidor Amiguos"
+INSTANCE="servidor"
+SERVER_NAME="Servidor Amiguos"
 SERVER_IP="135.148.137.58:19403"
 
 echo "============================================"
@@ -149,7 +150,7 @@ else
     {
         printf '\x0a\x00\x00\x09\x00\x07servers\x0a\x00\x00\x00\x01'
         printf '\x08\x00\x02ip'; write_len ${#SERVER_IP}; printf '%s' "$SERVER_IP"
-        printf '\x08\x00\x04name'; write_len ${#INSTANCE}; printf '%s' "$INSTANCE"
+        printf '\x08\x00\x04name'; write_len ${#SERVER_NAME}; printf '%s' "$SERVER_NAME"
         printf '\x01\x00\x06hidden\x00'
         printf '\x00\x00'
     } > "$INSTANCE_DIR/servers.dat"
@@ -170,7 +171,7 @@ echo "  1) Abre TLauncher"
 echo "  2) Login con cualquier username (no-premium)"
 echo "  3) Crea/selecciona una version Fabric 1.21.1 (Loader 0.19.3+)"
 echo "     y nombrala EXACTAMENTE:  $INSTANCE"
-echo "     (con 'carpetas separadas por version' activado)"
+echo "     (en minusculas, con 'carpetas separadas por version' activado)"
 echo "  4) El servidor $SERVER_IP ya aparece en la lista"
 echo "============================================"
 echo ""

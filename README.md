@@ -7,7 +7,7 @@ Modpack de Minecraft **1.21.1 + Fabric 0.19.3** para ~10 amigos.
 - El repo se sirve desde **GitHub raw** (con cache-bust `?cb=random`).
 - El cliente (TLauncher + Fabric) baja los mods con **packwiz** directo desde GitHub.
 - El servidor de Minecraft (`135.148.137.58:19403`, HolyHosting) corre Fabric con los mismos 34 mods.
-- Los mods se instalan en una **instancia aislada** de TLauncher: `.minecraft/versions/Servidor Amiguos/mods/`.
+- Los mods se instalan en una **instancia aislada** de TLauncher: `.minecraft/versions/servidor/mods/`.
 
 > No hay VPS. El intento con Coolify/servermc se descartó.
 
@@ -39,11 +39,11 @@ Modpack de Minecraft **1.21.1 + Fabric 0.19.3** para ~10 amigos.
 1. Bajar `Servidor-Amiguos-Installer.zip` desde GitHub Releases y descomprimir.
 2. `1-instalar-tlauncher` (si no tenés TLauncher).
 3. En TLauncher: crear una versión **Fabric 1.21.1 (Loader 0.19.3+)** y nombrarla
-   **exactamente `Servidor Amiguos`**, con "carpetas separadas por versión" activado.
-4. `2-instalar-mods` → baja los 34 mods a `versions/Servidor Amiguos/mods/` y
+   **exactamente `servidor`** (minúsculas), con "carpetas separadas por versión" activado.
+4. `2-instalar-mods` → baja los 34 mods a `versions/servidor/mods/` y
    preconfigura el servidor `135.148.137.58:19403`.
 5. `3-accesos-directos` → crea accesos directos en el escritorio.
-6. Abrir TLauncher, login con cualquier username, seleccionar `Servidor Amiguos` y jugar.
+6. Abrir TLauncher, login con cualquier username, seleccionar `servidor` y jugar.
 
 ## Para actualizar mods
 
