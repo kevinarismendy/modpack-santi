@@ -1,6 +1,14 @@
 hash-format = "sha256"
 
 [[files]]
+file = "fuji.conf"
+hash = "065aae773055f5010680685a28b9a4c56c0ae072b9213c99a267d28a5676dfea"
+
+[[files]]
+file = "luckperms.conf"
+hash = "29a19ba7beca836ceb06650d3b0ddadbf2128efe7987830297e424ddc1826462"
+
+[[files]]
 file = "mods/accessories.pw.toml"
 hash = "0e4efaade84d715a426b14f9a5e6ad79432cec4507c4924ab27fe2309c4532c0"
 metafile = true
@@ -18,11 +26,6 @@ metafile = true
 [[files]]
 file = "mods/balm.pw.toml"
 hash = "95833033aeb630a93896d8cd836d7730c42a89e6201bfe8f8b3831d4715f3f14"
-metafile = true
-
-[[files]]
-file = "mods/carry-on.pw.toml"
-hash = "0bded480ef22b78a3899fd0ac4b39d71b59e03f910f4022b9c24354ba59176a8"
 metafile = true
 
 [[files]]
@@ -96,11 +99,6 @@ hash = "e10e639f71700a67d7f9b9d747e1685f838d703dadd432464b54e31b26f4742b"
 metafile = true
 
 [[files]]
-file = "mods/lithostitched.pw.toml"
-hash = "86ac315ccd1613e00a1425679494de0695f87dcdf524d1549d3f059bda4107a5"
-metafile = true
-
-[[files]]
 file = "mods/lootr.pw.toml"
 hash = "37c8b903abf340ab01418ae5bb8e511a3a52248eb6713a7e2b4523b2e894516b"
 metafile = true
@@ -108,11 +106,6 @@ metafile = true
 [[files]]
 file = "mods/lychee.pw.toml"
 hash = "0889d7655872dd1e01d206df3b0e8b8cdf1f812cb085c92e630fd7df5c420e21"
-metafile = true
-
-[[files]]
-file = "mods/macaws-furniture.pw.toml"
-hash = "445a6e7e645a75c5df5c8ca4428b820ec05fbc47517415ea9fe996e205d0c868"
 metafile = true
 
 [[files]]
@@ -163,11 +156,6 @@ metafile = true
 [[files]]
 file = "mods/supplementaries.pw.toml"
 hash = "91cea618c92a154786c9be7f32f43e17ac629c7d0ed1798dc6c2462ab7927853"
-metafile = true
-
-[[files]]
-file = "mods/terralith.pw.toml"
-hash = "7a3433134b7fa5a7aa0feb817ac4512f0c4a68f1aa589a63e1cb4ed9cbe30ad1"
 metafile = true
 
 [[files]]
