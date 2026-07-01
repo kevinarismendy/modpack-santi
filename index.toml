@@ -9,11 +9,6 @@ file = "luckperms.conf"
 hash = "29a19ba7beca836ceb06650d3b0ddadbf2128efe7987830297e424ddc1826462"
 
 [[files]]
-file = "mods/accessories.pw.toml"
-hash = "0e4efaade84d715a426b14f9a5e6ad79432cec4507c4924ab27fe2309c4532c0"
-metafile = true
-
-[[files]]
 file = "mods/appleskin.pw.toml"
 hash = "e2216c0a66f0c9be439804ccc9e87a10dee6cb553455bc00beb22532f4bcd0e8"
 metafile = true
@@ -121,11 +116,6 @@ metafile = true
 [[files]]
 file = "mods/mouse-tweaks.pw.toml"
 hash = "b3867f3146c96310ae620b838ed7cd58dda525f5143dc8f24713d4ae052e1d1b"
-metafile = true
-
-[[files]]
-file = "mods/mousetweaks-x-accessories-fix.pw.toml"
-hash = "80bb94bd77f8c234f20da702101936cffce321a1bc5b2549aab554c5127486fd"
 metafile = true
 
 [[files]]
