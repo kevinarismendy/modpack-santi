@@ -147,19 +147,43 @@ echo "Copiando mods..."
 cp -r "$MODS_SOURCE/"* "$MODS_DEST/"
 rm -rf "$TEMP_DIR"
 MOD_COUNT=$(ls -1 "$MODS_DEST"/*.jar 2>/dev/null | wc -l | tr -d ' ')
-echo "[OK] $MOD_COUNT archivos instalados en $MODS_DEST"
+echo "[OK] $MOD_COUNT archivos instalados en carpeta global"
+echo ""
+
+# --- Tambien copiar a cada version/perfil de TLauncher ---
+VERSIONS_DIR="$HOME/Library/Application Support/.minecraft/versions"
+VERSION_COUNT=0
+if [ -d "$VERSIONS_DIR" ]; then
+    echo "Copiando mods a perfiles de TLauncher..."
+    for V in "$VERSIONS_DIR"/*/; do
+        if [ -d "${V}minecraft" ]; then
+            mkdir -p "${V}minecraft/mods"
+            cp "$MODS_DEST"/*.jar "${V}minecraft/mods/" 2>/dev/null
+            VERSION_COUNT=$((VERSION_COUNT + 1))
+            echo "  - $(basename "$V")"
+        fi
+    done
+    if [ $VERSION_COUNT -gt 0 ]; then
+        echo "[OK] Copiado a $VERSION_COUNT perfil(es) de TLauncher"
+    else
+        echo "[!] No se encontraron perfiles en versions/"
+    fi
+fi
 echo ""
 
 echo "============================================"
 echo "  Listo. Ya podes jugar."
 echo ""
+echo "  Los mods se copiaron a:"
+echo "    - Carpeta global: $MODS_DEST"
+if [ $VERSION_COUNT -gt 0 ]; then
+    echo "    - $VERSION_COUNT perfil(es) de TLauncher"
+fi
+echo ""
 echo "  1) Abre TLauncher"
 echo "  2) Login con cualquier username (no-premium)"
-echo "  3) Crea perfil: 1.21.1 + Fabric 0.16.5"
+echo "  3) Selecciona el perfil 'Amigous' o 'Fabric 1.21.1'"
 echo "  4) Conectate a: $SERVER"
-echo ""
-echo "  NOTA: Si TLauncher no detecta los mods, copialos manualmente a:"
-echo "    ~/Library/Application Support/.minecraft/versions/<tu-perfil>/mods/"
 echo "============================================"
 echo ""
 read -p "ENTER para cerrar..."

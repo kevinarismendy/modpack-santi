@@ -112,10 +112,6 @@ file = "mods/waystones.pw.toml"
 hash = "08e56acb715fc7cee4f1dfa359df610e1e7b94c51db4d6692d6a133424d51ef5"
 metafile = true
 [[files]]
-file = "mods/when-dungeons-arise.pw.toml"
-hash = "e44070a779647ff942231989bdeea8a1943cfddfa0dc5a9310e34ff379fafbcf"
-metafile = true
-[[files]]
 file = "mods/xaeros-minimap.pw.toml"
 hash = "5a84a98fb92f13f67e213a6202424f071f62fb30d9a73256a6ec3b5d16e98cfb"
 metafile = true

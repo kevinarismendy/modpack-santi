@@ -142,7 +142,7 @@ if not exist "!MODS_TEMP!\mods" (
     set "MODS_SOURCE=!MODS_TEMP!\mods"
 )
 
-REM --- Copiar mods a la carpeta de TLauncher ---
+REM --- Copiar mods a la carpeta global de TLauncher ---
 set "MODS_DEST="
 if exist "%APPDATA%\.minecraft\mods" set "MODS_DEST=%APPDATA%\.minecraft\mods"
 if not defined MODS_DEST if exist "%APPDATA%\.minecraft" set "MODS_DEST=%APPDATA%\.minecraft\mods"
@@ -152,15 +152,42 @@ echo.
 echo Copiando mods a !MODS_DEST! ...
 xcopy /E /Y /Q "!MODS_SOURCE!\*" "!MODS_DEST!\" >nul 2>&1
 rmdir /s /q "!MODS_TEMP!" 2>nul
-echo [OK] Mods instalados.
+echo [OK] Mods instalados en carpeta global.
+echo.
+
+REM --- Tambien copiar a cada version/perfil de TLauncher ---
+set "VERSIONS_DIR=%APPDATA%\.minecraft\versions"
+set "VERSION_COUNT=0"
+if exist "!VERSIONS_DIR!" (
+    echo Copiando mods a perfiles de TLauncher...
+    for /d %%V in ("!VERSIONS_DIR!\*") do (
+        if exist "%%V\minecraft" (
+            if not exist "%%V\minecraft\mods" mkdir "%%V\minecraft\mods" 2>nul
+            xcopy /E /Y /Q "!MODS_DEST!\*.jar" "%%V\minecraft\mods\" >nul 2>&1
+            set /a VERSION_COUNT+=1
+            echo   - %%~nxV
+        )
+    )
+    if !VERSION_COUNT! gtr 0 (
+        echo [OK] Copiado a !VERSION_COUNT! perfil(es) de TLauncher.
+    ) else (
+        echo [!] No se encontraron perfiles en versions\
+    )
+)
 echo.
 
 echo ============================================
 echo   Listo. Ya podes jugar.
 echo.
+echo   Los mods se copiaron a:
+echo     - Carpeta global: !MODS_DEST!
+if !VERSION_COUNT! gtr 0 (
+    echo     - !VERSION_COUNT! perfil(es) de TLauncher
+)
+echo.
 echo   1) Abre TLauncher
 echo   2) Login con cualquier username (no-premium)
-echo   3) Crea perfil: 1.21.1 + Fabric 0.16.5
+echo   3) Selecciona el perfil "Amigous" o "Fabric 1.21.1"
 echo   4) Conectate a: %SERVER%
 echo ============================================
 echo.
