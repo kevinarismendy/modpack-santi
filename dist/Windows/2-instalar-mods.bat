@@ -151,8 +151,15 @@ if not exist "!MODS_DEST!" mkdir "!MODS_DEST!" 2>nul
 echo.
 echo Copiando mods a !MODS_DEST! ...
 xcopy /E /Y /Q "!MODS_SOURCE!\*" "!MODS_DEST!\" >nul 2>&1
-rmdir /s /q "!MODS_TEMP!" 2>nul
 echo [OK] Mods instalados en la instancia "%INSTANCE%".
+
+REM --- Copiar shaderpacks (si packwiz bajo alguno) ---
+if exist "!MODS_TEMP!\shaderpacks" (
+    if not exist "!INSTANCE_DIR!\shaderpacks" mkdir "!INSTANCE_DIR!\shaderpacks" 2>nul
+    xcopy /E /Y /Q "!MODS_TEMP!\shaderpacks\*" "!INSTANCE_DIR!\shaderpacks\" >nul 2>&1
+    echo [OK] Shaderpacks instalados.
+)
+rmdir /s /q "!MODS_TEMP!" 2>nul
 echo.
 
 REM --- Escribir servers.dat con el server preconfigurado (solo si no existe) ---

@@ -136,9 +136,16 @@ echo ""
 # --- Copiar mods ---
 echo "Copiando mods..."
 cp -r "$MODS_SOURCE/"* "$MODS_DEST/"
-rm -rf "$TEMP_DIR"
 MOD_COUNT=$(ls -1 "$MODS_DEST"/*.jar 2>/dev/null | wc -l | tr -d ' ')
 echo "[OK] $MOD_COUNT mods instalados en la instancia \"$INSTANCE\""
+
+# --- Copiar shaderpacks (si packwiz bajo alguno) ---
+if [ -d "$TEMP_DIR/shaderpacks" ]; then
+    mkdir -p "$INSTANCE_DIR/shaderpacks"
+    cp -r "$TEMP_DIR/shaderpacks/"* "$INSTANCE_DIR/shaderpacks/"
+    echo "[OK] Shaderpacks instalados."
+fi
+rm -rf "$TEMP_DIR"
 echo ""
 
 # --- Escribir servers.dat (NBT sin comprimir) con el server preconfigurado ---

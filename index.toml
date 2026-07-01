@@ -209,3 +209,8 @@ metafile = true
 file = "mods/yungs-better-mineshafts.pw.toml"
 hash = "4b59314896e7941667359dd46e492789bb4899df7862e5ec2a794e902434ba8d"
 metafile = true
+
+[[files]]
+file = "shaderpacks/complementary-reimagined.pw.toml"
+hash = "ea258ed5bf495d9017eeadc3cbf9bd67b1e672d843826bc077135548b5bc699e"
+metafile = true
