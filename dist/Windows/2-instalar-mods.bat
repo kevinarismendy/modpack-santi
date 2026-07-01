@@ -158,7 +158,27 @@ echo.
 REM --- Tambien copiar a cada version/perfil de TLauncher ---
 set "VERSIONS_DIR=%APPDATA%\.minecraft\versions"
 set "VERSION_COUNT=0"
+
+REM --- Si no hay versiones, crear "Fabric 1.21.1" automaticamente ---
 if exist "!VERSIONS_DIR!" (
+    dir /b /AD "!VERSIONS_DIR!\" 2>nul > "%TEMP%\versions_list.txt"
+    for /f "usebackq" %%L in ("%TEMP%\versions_list.txt") do set "HAS_VERSIONS=1"
+    del "%TEMP%\versions_list.txt" 2>nul
+)
+if not defined HAS_VERSIONS (
+    echo [!] No se encontraron perfiles. Creando "Fabric 1.21.1" automaticamente...
+    mkdir "!VERSIONS_DIR!\Fabric 1.21.1\minecraft\mods" 2>nul
+    (
+        echo InstanceType=OneSix
+        echo name=Fabric 1.21.1
+        echo iconKey=grass_block
+    ) > "!VERSIONS_DIR!\Fabric 1.21.1\instance.cfg"
+    set "HAS_VERSIONS=1"
+    echo [OK] Perfil "Fabric 1.21.1" creado.
+)
+
+if exist "!VERSIONS_DIR!" (
+    echo.
     echo Copiando mods a perfiles de TLauncher...
     for /d %%V in ("!VERSIONS_DIR!\*") do (
         if exist "%%V\minecraft" (
@@ -185,9 +205,12 @@ if !VERSION_COUNT! gtr 0 (
     echo     - !VERSION_COUNT! perfil(es) de TLauncher
 )
 echo.
+echo   IMPORTANTE: En TLauncher, selecciona perfil "Fabric 1.21.1"
+echo   y asegurate de usar Fabric Loader 0.19.3 o superior.
+echo.
 echo   1) Abre TLauncher
 echo   2) Login con cualquier username (no-premium)
-echo   3) Selecciona el perfil "Amigous" o "Fabric 1.21.1"
+echo   3) Selecciona el perfil "Fabric 1.21.1"
 echo   4) Conectate a: %SERVER%
 echo ============================================
 echo.
