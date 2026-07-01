@@ -1,0 +1,12 @@
+# Excluir del índice packwiz todo lo que NO son mods.
+# El cliente solo debe descargar mods/*, no los scripts/docs del repo.
+/dist/
+/README.md
+/mods.csv
+/version.txt
+/regen-index.ps1
+/packwiz.exe
+/packwiz-installer-bootstrap.jar
+/Servidor-Amiguos-Installer.zip
+/.gitignore
+/.gitattributes
