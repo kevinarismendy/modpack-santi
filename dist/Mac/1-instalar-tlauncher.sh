@@ -1,14 +1,28 @@
 #!/bin/bash
-# 1-instalar-tlauncher.sh
+# 1-instalar-tlauncher.sh (Mac)
+
 echo "============================================"
 echo "  [1/3] Instalador de TLauncher (Mac)"
 echo "============================================"
 echo ""
 
-TLAUNCHER_DIR="$HOME/Library/Application Support/.tlauncher"
-TLAUNCHER_APP="$TLAUNCHER_DIR/TLauncher.app"
+TLAUNCHER_APP=""
+TLAUNCHER_DIR=""
 
-if [ -d "$TLAUNCHER_APP" ]; then
+# Buscar TLauncher en ubicaciones comunes
+for APP in \
+    "/Applications/TLauncher.app" \
+    "$HOME/Applications/TLauncher.app" \
+    "$HOME/Library/Application Support/.tlauncher/TLauncher.app" \
+    "$HOME/Library/Application Support/.minecraft/TLauncher.app"; do
+    if [ -d "$APP" ]; then
+        TLAUNCHER_APP="$APP"
+        TLAUNCHER_DIR="$(dirname "$APP")"
+        break
+    fi
+done
+
+if [ -n "$TLAUNCHER_APP" ]; then
     echo "[OK] TLauncher ya esta instalado: $TLAUNCHER_APP"
     echo ""
     read -p "Presiona ENTER para cerrar..."
@@ -16,19 +30,32 @@ if [ -d "$TLAUNCHER_APP" ]; then
 fi
 
 echo "[!] TLauncher no encontrado."
-echo "Bajalo desde https://tlauncher.org/en/ y mueve TLauncher.app a:"
-echo "  $TLAUNCHER_DIR/"
 echo ""
-echo "O instalalo en Applications/ con el .dmg"
+echo "Opciones para instalar TLauncher:"
+echo ""
+echo "1) Descarga TLauncher desde: https://tlauncher.org/en/"
+echo "2) Mueve TLauncher.app a /Applications/ o ~/Applications/"
+echo "3) Vuelve a correr este script"
 echo ""
 read -p "Cuando termines, presiona ENTER para re-detectar..."
 
-if [ -d "/Applications/TLauncher.app" ]; then
-    echo "[OK] TLauncher encontrado en /Applications/"
-elif [ -d "$TLAUNCHER_APP" ]; then
-    echo "[OK] TLauncher en $TLAUNCHER_APP"
+# Re-detectar
+for APP in \
+    "/Applications/TLauncher.app" \
+    "$HOME/Applications/TLauncher.app" \
+    "$HOME/Library/Application Support/.tlauncher/TLauncher.app" \
+    "$HOME/Library/Application Support/.minecraft/TLauncher.app"; do
+    if [ -d "$APP" ]; then
+        TLAUNCHER_APP="$APP"
+        TLAUNCHER_DIR="$(dirname "$APP")"
+        break
+    fi
+done
+
+if [ -n "$TLAUNCHER_APP" ]; then
+    echo "[OK] TLauncher detectado: $TLAUNCHER_APP"
 else
-    echo "[!] TLauncher no detectado. Volve a correr este script despues de instalarlo."
+    echo "[!] TLauncher sigue sin detectar. Instala y vuelve a correr."
 fi
 echo ""
-read -p "Presiona ENTER para cerrar..."
+read -p "ENTER para cerrar..."
