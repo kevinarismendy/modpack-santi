@@ -1,14 +1,6 @@
 hash-format = "sha256"
 
 [[files]]
-file = "fuji.conf"
-hash = "065aae773055f5010680685a28b9a4c56c0ae072b9213c99a267d28a5676dfea"
-
-[[files]]
-file = "luckperms.conf"
-hash = "29a19ba7beca836ceb06650d3b0ddadbf2128efe7987830297e424ddc1826462"
-
-[[files]]
 file = "mods/appleskin.pw.toml"
 hash = "e2216c0a66f0c9be439804ccc9e87a10dee6cb553455bc00beb22532f4bcd0e8"
 metafile = true
