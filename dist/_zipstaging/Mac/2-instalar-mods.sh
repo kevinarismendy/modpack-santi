@@ -168,16 +168,12 @@ EOF
     fi
     echo "Copiando mods a perfiles de TLauncher..."
     for V in "$VERSIONS_DIR"/*/; do
-        # TLauncher 1.268+ usa versions\<version>\mods\
-        mkdir -p "${V}mods"
-        cp "$MODS_DEST"/*.jar "${V}mods/" 2>/dev/null
-        # TLauncher viejo usa versions\<version>\minecraft\mods\
         if [ -d "${V}minecraft" ]; then
             mkdir -p "${V}minecraft/mods"
             cp "$MODS_DEST"/*.jar "${V}minecraft/mods/" 2>/dev/null
+            VERSION_COUNT=$((VERSION_COUNT + 1))
+            echo "  - $(basename "$V")"
         fi
-        VERSION_COUNT=$((VERSION_COUNT + 1))
-        echo "  - $(basename "$V")"
     done
     if [ $VERSION_COUNT -gt 0 ]; then
         echo "[OK] Copiado a $VERSION_COUNT perfil(es) de TLauncher"
@@ -190,11 +186,18 @@ echo ""
 echo "============================================"
 echo "  Listo. Ya podes jugar."
 echo ""
-echo "  Los mods se copiaron a: $MODS_DEST"
+echo "  Los mods se copiaron a:"
+echo "    - Carpeta global: $MODS_DEST"
+if [ $VERSION_COUNT -gt 0 ]; then
+    echo "    - $VERSION_COUNT perfil(es) de TLauncher"
+fi
+echo ""
+echo "  IMPORTANTE: En TLauncher, selecciona perfil 'Fabric 1.21.1'"
+echo "  y asegurate de usar Fabric Loader 0.19.3 o superior."
 echo ""
 echo "  1) Abre TLauncher"
 echo "  2) Login con cualquier username (no-premium)"
-echo "  3) Selecciona el perfil 'Fabric 1.21.1' (con Fabric Loader 0.19.3+)"
+echo "  3) Selecciona el perfil 'Fabric 1.21.1'"
 echo "  4) Conectate a: $SERVER"
 echo "============================================"
 echo ""
