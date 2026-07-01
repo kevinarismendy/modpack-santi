@@ -92,6 +92,10 @@ file = "mods/mousetweaks-x-accessories-fix.pw.toml"
 hash = "80bb94bd77f8c234f20da702101936cffce321a1bc5b2549aab554c5127486fd"
 metafile = true
 [[files]]
+file = "mods/owo-lib.pw.toml"
+hash = "b206a3e7538b2eff63011db6080e9b6b47394f1dd5c769c68ba30aae009d2c7b"
+metafile = true
+[[files]]
 file = "mods/simple-voice-chat.pw.toml"
 hash = "4579f4c66f6a4f8fd5e3012267f89fdce86dcbb914cc611104b4e47e3a0d5f1e"
 metafile = true
