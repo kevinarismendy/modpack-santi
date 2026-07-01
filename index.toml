@@ -1,137 +1,233 @@
 hash-format = "sha256"
+
+[[files]]
+file = "README.md"
+hash = "9e300761cd49ee97787cb6585e01b15dad6e15aa30e28be8c7e96066e676033f"
+
+[[files]]
+file = "dist/Mac/1-instalar-tlauncher.sh"
+hash = "a1135200775fe8df0bf2711ab92d72d0782199b1690f39700723dab9d6fe3243"
+
+[[files]]
+file = "dist/Mac/2-instalar-mods.sh"
+hash = "0d6af0247514255b8b95cf17cbe3cffabf5bff77f33614106d736805624f16be"
+
+[[files]]
+file = "dist/Mac/3-accesos-directos.sh"
+hash = "875d5c7ca94186e8ccbeb267e6c93bddc4dd91246a6de486f839622b1ec27b23"
+
+[[files]]
+file = "dist/README.md"
+hash = "23574a1da0c72d203453b7407a8aba92aa0188de931929bdc0ace0835618aba6"
+
+[[files]]
+file = "dist/Windows/1-instalar-tlauncher.bat"
+hash = "d23d2e93805de7306a86f37f669a3516a1772edd04a7692869c50fd77793db65"
+
+[[files]]
+file = "dist/Windows/2-instalar-mods.bat"
+hash = "abb4c67aeb80d834aea26372ed18ca0ae82b3272df4a6ef9a53516147b31e1ab"
+
+[[files]]
+file = "dist/Windows/3-accesos-directos.bat"
+hash = "a7cb88d5dbc07c255c42c9990be21d9a1924cccb9939aee17cc76c275b8325d6"
+
+[[files]]
+file = "dist/docs/seeds.md"
+hash = "6a6f15482bfc4680af8d72a59f5e99faf3bc2982068a1b71d68827c10d22677a"
+
+[[files]]
+file = "mods.csv"
+hash = "20aab3d7603817157cf435376673e020b453a2731bbb344cbc38612a66f78449"
+
 [[files]]
 file = "mods/accessories.pw.toml"
 hash = "0e4efaade84d715a426b14f9a5e6ad79432cec4507c4924ab27fe2309c4532c0"
 metafile = true
+
 [[files]]
 file = "mods/appleskin.pw.toml"
 hash = "e2216c0a66f0c9be439804ccc9e87a10dee6cb553455bc00beb22532f4bcd0e8"
 metafile = true
+
 [[files]]
 file = "mods/architectury-api.pw.toml"
 hash = "e8ff554a980abc49c5b01274f737ad8cb845c32cd435d8cb366e47168d793de9"
 metafile = true
+
 [[files]]
 file = "mods/balm.pw.toml"
 hash = "95833033aeb630a93896d8cd836d7730c42a89e6201bfe8f8b3831d4715f3f14"
 metafile = true
+
 [[files]]
 file = "mods/carry-on.pw.toml"
 hash = "0bded480ef22b78a3899fd0ac4b39d71b59e03f910f4022b9c24354ba59176a8"
 metafile = true
+
 [[files]]
 file = "mods/chunky.pw.toml"
 hash = "8add5ed243a090926fb00925a608775dde81020cdf76a311edc2ef2021d060d5"
 metafile = true
+
 [[files]]
 file = "mods/cloth-config.pw.toml"
 hash = "501401e7b42a9e9fe1a28884dd3859cc88b0a8842b744a601a59432551808a7a"
 metafile = true
+
 [[files]]
 file = "mods/comforts.pw.toml"
 hash = "e52cff237e16bac892ee70591fb3a928a6422c0fe2619e1075d49c9b25302e69"
 metafile = true
+
 [[files]]
 file = "mods/customskinloader.pw.toml"
 hash = "5fbc96173b03552522be47b4c07bf85cc3bf8a4d96bccd54832e5596c9369517"
 metafile = true
+
 [[files]]
 file = "mods/dungeons-arise.pw.toml"
 hash = "e44070a779647ff942231989bdeea8a1943cfddfa0dc5a9310e34ff379fafbcf"
 metafile = true
+
 [[files]]
 file = "mods/fabric-api.pw.toml"
 hash = "e5779a586163573b0650cef6745b542d696b4c33ebe1d32901bb4153929bffa0"
 metafile = true
+
 [[files]]
 file = "mods/ferrite-core.pw.toml"
 hash = "ac7a9cd85009787d54131e5be02bf46dec75fe8d728a1266d6c735c52fa7e69b"
 metafile = true
+
 [[files]]
 file = "mods/flan.pw.toml"
 hash = "2a2a84510c31657adf5cb728d0eaddace1ec87fc64abcdae5cbd01b758d22314"
 metafile = true
+
+[[files]]
+file = "mods/iris.pw.toml"
+hash = "6ee94689dd67f0210e07feafac8140e8968bcbcd67defcfbdcd677cf78943900"
+metafile = true
+
 [[files]]
 file = "mods/jade.pw.toml"
 hash = "753682de167a00fde9d8b4eed0d42fe698187d1765bc900b37d7890413d3785f"
 metafile = true
+
 [[files]]
 file = "mods/kiwi.pw.toml"
 hash = "b13c2bd9f4417726c8d752fbfee5dbfb4cb79b52a767c30f5ec51f8a64e450ba"
 metafile = true
+
 [[files]]
 file = "mods/lithostitched.pw.toml"
 hash = "86ac315ccd1613e00a1425679494de0695f87dcdf524d1549d3f059bda4107a5"
 metafile = true
+
 [[files]]
 file = "mods/lootr.pw.toml"
 hash = "37c8b903abf340ab01418ae5bb8e511a3a52248eb6713a7e2b4523b2e894516b"
 metafile = true
+
 [[files]]
 file = "mods/lychee.pw.toml"
 hash = "0889d7655872dd1e01d206df3b0e8b8cdf1f812cb085c92e630fd7df5c420e21"
 metafile = true
+
 [[files]]
 file = "mods/macaws-furniture.pw.toml"
 hash = "445a6e7e645a75c5df5c8ca4428b820ec05fbc47517415ea9fe996e205d0c868"
 metafile = true
+
 [[files]]
 file = "mods/modernfix.pw.toml"
 hash = "7e46c6604cd80bb5df21aed92fb2843f3c37a18c0bcbf232f3c0d1d66622aede"
 metafile = true
+
 [[files]]
 file = "mods/moonlight.pw.toml"
 hash = "185bc12f6129ef3f2e50ec9c45ffa329354d8ef0b508fac689fff72e26961f0f"
 metafile = true
+
 [[files]]
 file = "mods/mouse-tweaks.pw.toml"
 hash = "b3867f3146c96310ae620b838ed7cd58dda525f5143dc8f24713d4ae052e1d1b"
 metafile = true
+
 [[files]]
 file = "mods/mousetweaks-x-accessories-fix.pw.toml"
 hash = "80bb94bd77f8c234f20da702101936cffce321a1bc5b2549aab554c5127486fd"
 metafile = true
+
 [[files]]
 file = "mods/owo-lib.pw.toml"
 hash = "b206a3e7538b2eff63011db6080e9b6b47394f1dd5c769c68ba30aae009d2c7b"
 metafile = true
+
 [[files]]
 file = "mods/simple-voice-chat.pw.toml"
 hash = "4579f4c66f6a4f8fd5e3012267f89fdce86dcbb914cc611104b4e47e3a0d5f1e"
 metafile = true
+
+[[files]]
+file = "mods/sodium.pw.toml"
+hash = "019188864eb8efd6803ba70ceb00d5a195dac16e332883a515cee1e4e15bb39f"
+metafile = true
+
 [[files]]
 file = "mods/supplementaries.pw.toml"
 hash = "91cea618c92a154786c9be7f32f43e17ac629c7d0ed1798dc6c2462ab7927853"
 metafile = true
+
 [[files]]
 file = "mods/terralith.pw.toml"
 hash = "7a3433134b7fa5a7aa0feb817ac4512f0c4a68f1aa589a63e1cb4ed9cbe30ad1"
 metafile = true
+
 [[files]]
 file = "mods/travelersbackpack.pw.toml"
 hash = "3a5dd60ddf4cb0e1b21a5dec92122d342277bc230296ef05a077836ef6d82b1a"
 metafile = true
+
 [[files]]
 file = "mods/waystones.pw.toml"
 hash = "08e56acb715fc7cee4f1dfa359df610e1e7b94c51db4d6692d6a133424d51ef5"
 metafile = true
+
 [[files]]
 file = "mods/xaeros-minimap.pw.toml"
 hash = "5a84a98fb92f13f67e213a6202424f071f62fb30d9a73256a6ec3b5d16e98cfb"
 metafile = true
+
 [[files]]
 file = "mods/xaeros-world-map.pw.toml"
 hash = "bd25f00145c7c25b310981f7a9857fb64ae7bb6bd331ec96a1a89c67afc6652d"
 metafile = true
+
 [[files]]
 file = "mods/yungs-api.pw.toml"
 hash = "433e1f934423dbc3190f4f12d468d7be5982dfe99b9391986d1cf687319fc71b"
 metafile = true
+
 [[files]]
 file = "mods/yungs-better-dungeons.pw.toml"
 hash = "7dde02f7c057772a39c0220f8af5d63c137b119c94f3ff4e7c9cd41bce9fae02"
 metafile = true
+
 [[files]]
 file = "mods/yungs-better-mineshafts.pw.toml"
 hash = "4b59314896e7941667359dd46e492789bb4899df7862e5ec2a794e902434ba8d"
 metafile = true
+
+[[files]]
+file = "packwiz-installer-bootstrap.jar"
+hash = "a8fbb24dc604278e97f4688e82d3d91a318b98efc08d5dbfcbcbcab6443d116c"
+
+[[files]]
+file = "regen-index.ps1"
+hash = "b1d51e5f0f1015ff6fe2fe8ad41d50fcf1295721049d85cd165add67fb3edcc9"
+
+[[files]]
+file = "version.txt"
+hash = "a929fa8bbe6cc5b5435d2b3e77376a9bbdfc874aa05c1018b4b7e363ab7e3e7b"

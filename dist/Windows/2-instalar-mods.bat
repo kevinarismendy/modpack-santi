@@ -119,7 +119,7 @@ if exist "%TEMP%\pw_zip" rmdir /s /q "%TEMP%\pw_zip" 2>nul
 if exist "%TEMP%\pw_test" rmdir /s /q "%TEMP%\pw_test" 2>nul
 
 REM --- Bajar mods via packwiz-installer ---
-echo Descargando 34 mods Fabric desde GitHub (cache-bust)...
+echo Descargando 36 mods Fabric desde GitHub (cache-bust)...
 set "MODS_TEMP=%TEMP%\santicraft-mods-%RANDOM%"
 mkdir "!MODS_TEMP!" 2>nul
 pushd "!MODS_TEMP!"
