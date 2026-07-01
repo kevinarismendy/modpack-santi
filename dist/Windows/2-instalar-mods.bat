@@ -11,11 +11,12 @@ set CACHE_BUST=%RANDOM%%RANDOM%
 set BOOTSTRAP_URL=%RAW_BASE%/pack.toml?cb=%CACHE_BUST%
 set BOOTSTRAP_JAR_URL=%RAW_BASE%/packwiz-installer-bootstrap.jar?cb=%CACHE_BUST%
 set BOOTSTRAP_JAR=packwiz-installer-bootstrap.jar
-set SERVER=amiguos.holy.gg
+set "INSTANCE=Servidor Amiguos"
+set "SERVER_IP=135.148.137.58:19403"
 
 echo ============================================
 echo   [2/3] Instalador de Mods
-echo   MC 1.21.1 + Fabric 0.16.5
+echo   MC 1.21.1 + Fabric 0.19.3
 echo ============================================
 echo.
 
@@ -117,7 +118,7 @@ if exist "%TEMP%\pw_zip" rmdir /s /q "%TEMP%\pw_zip" 2>nul
 if exist "%TEMP%\pw_test" rmdir /s /q "%TEMP%\pw_test" 2>nul
 
 REM --- Bajar mods via packwiz-installer ---
-echo Descargando 31 mods Fabric desde GitHub (cache-bust)...
+echo Descargando 34 mods Fabric desde GitHub (cache-bust)...
 set "MODS_TEMP=%TEMP%\santicraft-mods-%RANDOM%"
 mkdir "!MODS_TEMP!" 2>nul
 pushd "!MODS_TEMP!"
@@ -142,17 +143,44 @@ if not exist "!MODS_TEMP!\mods" (
     set "MODS_SOURCE=!MODS_TEMP!\mods"
 )
 
-REM --- Copiar mods a la carpeta global de TLauncher ---
-set "MODS_DEST="
-if exist "%APPDATA%\.minecraft\mods" set "MODS_DEST=%APPDATA%\.minecraft\mods"
-if not defined MODS_DEST if exist "%APPDATA%\.minecraft" set "MODS_DEST=%APPDATA%\.minecraft\mods"
-if not defined MODS_DEST set "MODS_DEST=%LOCALAPPDATA%\TLauncher\mods"
+REM --- Copiar mods a la instancia aislada versions\Servidor Amiguos\mods ---
+set "INSTANCE_DIR=%APPDATA%\.minecraft\versions\%INSTANCE%"
+set "MODS_DEST=%INSTANCE_DIR%\mods"
 if not exist "!MODS_DEST!" mkdir "!MODS_DEST!" 2>nul
 echo.
 echo Copiando mods a !MODS_DEST! ...
 xcopy /E /Y /Q "!MODS_SOURCE!\*" "!MODS_DEST!\" >nul 2>&1
 rmdir /s /q "!MODS_TEMP!" 2>nul
-echo [OK] Mods instalados en carpeta global.
+echo [OK] Mods instalados en la instancia "%INSTANCE%".
+echo.
+
+REM --- Escribir servers.dat con el server preconfigurado (solo si no existe) ---
+echo Configurando servidor %SERVER_IP% ...
+if exist "!INSTANCE_DIR!\servers.dat" (
+    echo [OK] servers.dat ya existe, no se sobrescribe.
+    goto :after_servers
+)
+set "SRV_PS=%TEMP%\gen_servers_%RANDOM%.ps1"
+> "%SRV_PS%" echo $ip = '%SERVER_IP%'
+>> "%SRV_PS%" echo $name = '%INSTANCE%'
+>> "%SRV_PS%" echo $ms = New-Object System.IO.MemoryStream
+>> "%SRV_PS%" echo function W($b){ $y=[byte[]]$b; $ms.Write($y,0,$y.Length) }
+>> "%SRV_PS%" echo function WStr($s){ $x=[Text.Encoding]::UTF8.GetBytes($s); W @([byte](($x.Length -shr 8) -band 0xFF),[byte]($x.Length -band 0xFF)); W $x }
+>> "%SRV_PS%" echo W @([byte]0x0A,[byte]0x00,[byte]0x00)
+>> "%SRV_PS%" echo W @([byte]0x09); WStr 'servers'; W @([byte]0x0A,[byte]0x00,[byte]0x00,[byte]0x00,[byte]0x01)
+>> "%SRV_PS%" echo W @([byte]0x08); WStr 'ip'; WStr $ip
+>> "%SRV_PS%" echo W @([byte]0x08); WStr 'name'; WStr $name
+>> "%SRV_PS%" echo W @([byte]0x01); WStr 'hidden'; W @([byte]0x00)
+>> "%SRV_PS%" echo W @([byte]0x00,[byte]0x00)
+>> "%SRV_PS%" echo [IO.File]::WriteAllBytes((Join-Path '!INSTANCE_DIR!' 'servers.dat'), $ms.ToArray())
+powershell -NoProfile -ExecutionPolicy Bypass -File "%SRV_PS%" >nul 2>&1
+del "%SRV_PS%" 2>nul
+if exist "!INSTANCE_DIR!\servers.dat" (
+    echo [OK] Servidor agregado: %SERVER_IP%
+) else (
+    echo [!] No se pudo escribir servers.dat. Agrega el server manualmente.
+)
+:after_servers
 echo.
 
 echo ============================================
@@ -162,8 +190,10 @@ echo   Los mods se copiaron a: !MODS_DEST!
 echo.
 echo   1) Abre TLauncher
 echo   2) Login con cualquier username (no-premium)
-echo   3) Selecciona el perfil "Fabric 1.21.1" (con Fabric Loader 0.19.3+)
-echo   4) Conectate a: %SERVER%
+echo   3) Crea/selecciona una version Fabric 1.21.1 (Loader 0.19.3+)
+echo      y nombrala EXACTAMENTE:  %INSTANCE%
+echo      (con "carpetas separadas por version" activado)
+echo   4) El servidor %SERVER_IP% ya aparece en la lista
 echo ============================================
 echo.
 echo Presiona una tecla para cerrar (o espera 60 segundos)...

@@ -11,11 +11,12 @@ BOOTSTRAP_JAR="packwiz-installer-bootstrap.jar"
 CACHE_BUST="$RANDOM$RANDOM"
 BOOTSTRAP_URL="${BASE_URL}/pack.toml?cb=${CACHE_BUST}"
 BOOTSTRAP_JAR_URL="${BASE_URL}/${BOOTSTRAP_JAR}?cb=${CACHE_BUST}"
-SERVER="amiguos.holy.gg"
+INSTANCE="Servidor Amiguos"
+SERVER_IP="135.148.137.58:19403"
 
 echo "============================================"
 echo "  [2/3] Instalador de Mods (Mac)"
-echo "  MC 1.21.1 + Fabric 0.16.5"
+echo "  MC 1.21.1 + Fabric 0.19.3"
 echo "============================================"
 echo ""
 
@@ -122,24 +123,13 @@ if [ -z "$MODS_SOURCE" ]; then
     exit 1
 fi
 
-# --- Determinar carpeta destino de mods ---
-# TLauncher en Mac puede usar:
-#   ~/Library/Application Support/.minecraft/mods  (portable)
-#   ~/Library/Application Support/minecraft/mods    (oficial)
-MODS_DEST=""
-if [ -d "$HOME/Library/Application Support/.minecraft/mods" ]; then
-    MODS_DEST="$HOME/Library/Application Support/.minecraft/mods"
-elif [ -d "$HOME/Library/Application Support/.minecraft" ]; then
-    MODS_DEST="$HOME/Library/Application Support/.minecraft/mods"
-elif [ -d "$HOME/Library/Application Support/minecraft" ]; then
-    MODS_DEST="$HOME/Library/Application Support/minecraft/mods"
-else
-    # Default: crear la carpeta portable de TLauncher
-    MODS_DEST="$HOME/Library/Application Support/.minecraft/mods"
-fi
+# --- Destino: instancia aislada versions/Servidor Amiguos/mods ---
+MC_DIR="$HOME/Library/Application Support/.minecraft"
+INSTANCE_DIR="$MC_DIR/versions/$INSTANCE"
+MODS_DEST="$INSTANCE_DIR/mods"
 mkdir -p "$MODS_DEST"
 echo ""
-echo "Carpeta de mods: $MODS_DEST"
+echo "Instancia: $INSTANCE_DIR"
 echo ""
 
 # --- Copiar mods ---
@@ -147,42 +137,26 @@ echo "Copiando mods..."
 cp -r "$MODS_SOURCE/"* "$MODS_DEST/"
 rm -rf "$TEMP_DIR"
 MOD_COUNT=$(ls -1 "$MODS_DEST"/*.jar 2>/dev/null | wc -l | tr -d ' ')
-echo "[OK] $MOD_COUNT archivos instalados en carpeta global"
+echo "[OK] $MOD_COUNT mods instalados en la instancia \"$INSTANCE\""
 echo ""
 
-# --- Tambien copiar a cada version/perfil de TLauncher ---
-VERSIONS_DIR="$HOME/Library/Application Support/.minecraft/versions"
-VERSION_COUNT=0
-
-# Si no hay versiones, crear "Fabric 1.21.1" automaticamente
-if [ -d "$VERSIONS_DIR" ]; then
-    if [ -z "$(ls -A "$VERSIONS_DIR" 2>/dev/null)" ]; then
-        echo "[!] No se encontraron perfiles. Creando 'Fabric 1.21.1' automaticamente..."
-        mkdir -p "$VERSIONS_DIR/Fabric 1.21.1/minecraft/mods"
-        cat > "$VERSIONS_DIR/Fabric 1.21.1/instance.cfg" <<EOF
-InstanceType=OneSix
-name=Fabric 1.21.1
-iconKey=grass_block
-EOF
-        echo "[OK] Perfil 'Fabric 1.21.1' creado."
-    fi
-    echo "Copiando mods a perfiles de TLauncher..."
-    for V in "$VERSIONS_DIR"/*/; do
-        # TLauncher 1.268+ usa versions\<version>\mods\
-        mkdir -p "${V}mods"
-        cp "$MODS_DEST"/*.jar "${V}mods/" 2>/dev/null
-        # TLauncher viejo usa versions\<version>\minecraft\mods\
-        if [ -d "${V}minecraft" ]; then
-            mkdir -p "${V}minecraft/mods"
-            cp "$MODS_DEST"/*.jar "${V}minecraft/mods/" 2>/dev/null
-        fi
-        VERSION_COUNT=$((VERSION_COUNT + 1))
-        echo "  - $(basename "$V")"
-    done
-    if [ $VERSION_COUNT -gt 0 ]; then
-        echo "[OK] Copiado a $VERSION_COUNT perfil(es) de TLauncher"
+# --- Escribir servers.dat (NBT sin comprimir) con el server preconfigurado ---
+echo "Configurando servidor $SERVER_IP ..."
+if [ -f "$INSTANCE_DIR/servers.dat" ]; then
+    echo "[OK] servers.dat ya existe, no se sobrescribe."
+else
+    write_len() { printf "\\x$(printf %02x $(( $1 >> 8 )))\\x$(printf %02x $(( $1 & 255 )))"; }
+    {
+        printf '\x0a\x00\x00\x09\x00\x07servers\x0a\x00\x00\x00\x01'
+        printf '\x08\x00\x02ip'; write_len ${#SERVER_IP}; printf '%s' "$SERVER_IP"
+        printf '\x08\x00\x04name'; write_len ${#INSTANCE}; printf '%s' "$INSTANCE"
+        printf '\x01\x00\x06hidden\x00'
+        printf '\x00\x00'
+    } > "$INSTANCE_DIR/servers.dat"
+    if [ -f "$INSTANCE_DIR/servers.dat" ]; then
+        echo "[OK] Servidor agregado: $SERVER_IP"
     else
-        echo "[!] No se encontraron perfiles en versions/"
+        echo "[!] No se pudo escribir servers.dat. Agrega el server manualmente."
     fi
 fi
 echo ""
@@ -194,8 +168,10 @@ echo "  Los mods se copiaron a: $MODS_DEST"
 echo ""
 echo "  1) Abre TLauncher"
 echo "  2) Login con cualquier username (no-premium)"
-echo "  3) Selecciona el perfil 'Fabric 1.21.1' (con Fabric Loader 0.19.3+)"
-echo "  4) Conectate a: $SERVER"
+echo "  3) Crea/selecciona una version Fabric 1.21.1 (Loader 0.19.3+)"
+echo "     y nombrala EXACTAMENTE:  $INSTANCE"
+echo "     (con 'carpetas separadas por version' activado)"
+echo "  4) El servidor $SERVER_IP ya aparece en la lista"
 echo "============================================"
 echo ""
 read -p "ENTER para cerrar..."
