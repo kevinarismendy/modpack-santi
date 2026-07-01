@@ -6,7 +6,7 @@ Modpack de Minecraft **1.21.1 + Fabric 0.19.3** para ~10 amigos.
 
 - El repo se sirve desde **GitHub raw** (con cache-bust `?cb=random`).
 - El cliente (TLauncher + Fabric) baja los mods con **packwiz** directo desde GitHub.
-- El cliente instala **36 mods** (incluye Sodium + Iris para shaders, client-side).
+- El cliente instala **42 mods** (incluye Sodium + Iris para shaders, client-side).
 - El servidor de Minecraft (`135.148.137.58:19403`, HolyHosting) corre Fabric con los mods no-cliente (Sodium/Iris/minimapa no se suben al server).
 - Los mods se instalan en una **instancia aislada** de TLauncher: `.minecraft/versions/servidor/mods/`.
 
@@ -41,7 +41,7 @@ Modpack de Minecraft **1.21.1 + Fabric 0.19.3** para ~10 amigos.
 2. `1-instalar-tlauncher` (si no tenés TLauncher).
 3. En TLauncher: crear una versión **Fabric 1.21.1 (Loader 0.19.3+)** y nombrarla
    **exactamente `servidor`** (minúsculas), con "carpetas separadas por versión" activado.
-4. `2-instalar-mods` → baja los 36 mods a `versions/servidor/mods/` y
+4. `2-instalar-mods` → baja los 42 mods a `versions/servidor/mods/` y
    preconfigura el servidor `135.148.137.58:19403`.
 5. `3-accesos-directos` → crea accesos directos en el escritorio.
 6. Abrir TLauncher, login con cualquier username, seleccionar `servidor` y jugar.

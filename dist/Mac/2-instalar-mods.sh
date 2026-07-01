@@ -1,7 +1,7 @@
 #!/bin/bash
 # 2-instalar-mods.sh (Mac)
 # Detecta TLauncher + Java, baja packwiz bootstrap desde GitHub raw,
-# descarga los 36 mods Fabric y los copia a la carpeta de mods de TLauncher.
+# descarga los 42 mods Fabric y los copia a la carpeta de mods de TLauncher.
 
 set -e
 cd "$(dirname "$0")"
@@ -94,7 +94,7 @@ rm -rf "$TMPDIR/pw_zip" 2>/dev/null
 rm -rf "$TMPDIR/pw_test" 2>/dev/null
 
 # --- Bajar mods via packwiz-installer ---
-echo "Descargando 36 mods Fabric desde GitHub (cache-bust)..."
+echo "Descargando 42 mods Fabric desde GitHub (cache-bust)..."
 TEMP_DIR="$TMPDIR/santicraft-mods-$$"
 mkdir -p "$TEMP_DIR"
 cd "$TEMP_DIR"

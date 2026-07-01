@@ -2,7 +2,7 @@ hash-format = "sha256"
 
 [[files]]
 file = "README.md"
-hash = "9e300761cd49ee97787cb6585e01b15dad6e15aa30e28be8c7e96066e676033f"
+hash = "51c774e21f7d7dbf0183aa98cd3b75bde04f0df0d2a379355b30a43fc6557d7b"
 
 [[files]]
 file = "dist/Mac/1-instalar-tlauncher.sh"
@@ -10,7 +10,7 @@ hash = "a1135200775fe8df0bf2711ab92d72d0782199b1690f39700723dab9d6fe3243"
 
 [[files]]
 file = "dist/Mac/2-instalar-mods.sh"
-hash = "0d6af0247514255b8b95cf17cbe3cffabf5bff77f33614106d736805624f16be"
+hash = "080ad8691894e5561ac85de5e4d77b175dba53ad9efe86c4b3547ffb79fa4b9b"
 
 [[files]]
 file = "dist/Mac/3-accesos-directos.sh"
@@ -26,7 +26,7 @@ hash = "d23d2e93805de7306a86f37f669a3516a1772edd04a7692869c50fd77793db65"
 
 [[files]]
 file = "dist/Windows/2-instalar-mods.bat"
-hash = "abb4c67aeb80d834aea26372ed18ca0ae82b3272df4a6ef9a53516147b31e1ab"
+hash = "5f4dc5410627189618e110d632b4b9b11784f40e12a0663ae466dd240b724016"
 
 [[files]]
 file = "dist/Windows/3-accesos-directos.bat"
@@ -91,6 +91,21 @@ hash = "e44070a779647ff942231989bdeea8a1943cfddfa0dc5a9310e34ff379fafbcf"
 metafile = true
 
 [[files]]
+file = "mods/dynamic-fps.pw.toml"
+hash = "582070fa54fe1743a837c0351eee7ea4a79080e647d5438656d372ae9433b272"
+metafile = true
+
+[[files]]
+file = "mods/emi.pw.toml"
+hash = "a0a3d38daafb58117aaf29bb0b0520534abb7175e8d98f63cb47a65c75afac79"
+metafile = true
+
+[[files]]
+file = "mods/entityculling.pw.toml"
+hash = "f23a0d6d48cc27e24e8c4cacf9231fe146f82e9ff27c90b2fd96e1de4482e765"
+metafile = true
+
+[[files]]
 file = "mods/fabric-api.pw.toml"
 hash = "e5779a586163573b0650cef6745b542d696b4c33ebe1d32901bb4153929bffa0"
 metafile = true
@@ -118,6 +133,11 @@ metafile = true
 [[files]]
 file = "mods/kiwi.pw.toml"
 hash = "b13c2bd9f4417726c8d752fbfee5dbfb4cb79b52a767c30f5ec51f8a64e450ba"
+metafile = true
+
+[[files]]
+file = "mods/lithium.pw.toml"
+hash = "e10e639f71700a67d7f9b9d747e1685f838d703dadd432464b54e31b26f4742b"
 metafile = true
 
 [[files]]
@@ -166,8 +186,18 @@ hash = "b206a3e7538b2eff63011db6080e9b6b47394f1dd5c769c68ba30aae009d2c7b"
 metafile = true
 
 [[files]]
+file = "mods/reeses-sodium-options.pw.toml"
+hash = "fc29b2201ee5db5c3139c6b07b47bc7b30ae18174de8d2502d426e2c0286ccce"
+metafile = true
+
+[[files]]
 file = "mods/simple-voice-chat.pw.toml"
 hash = "4579f4c66f6a4f8fd5e3012267f89fdce86dcbb914cc611104b4e47e3a0d5f1e"
+metafile = true
+
+[[files]]
+file = "mods/sodium-extra.pw.toml"
+hash = "a1d480c169158c9fdd151631b1a9b0999b2a640b7df555f5eb0cf8b13639d1ff"
 metafile = true
 
 [[files]]
@@ -230,4 +260,4 @@ hash = "b1d51e5f0f1015ff6fe2fe8ad41d50fcf1295721049d85cd165add67fb3edcc9"
 
 [[files]]
 file = "version.txt"
-hash = "a929fa8bbe6cc5b5435d2b3e77376a9bbdfc874aa05c1018b4b7e363ab7e3e7b"
+hash = "12c6cdcd87861ef3f46466fadaf2433f9374d89134d53f247dd494fd29825fd5"
