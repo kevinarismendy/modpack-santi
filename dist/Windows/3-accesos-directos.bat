@@ -45,25 +45,31 @@ echo TLauncher: !TLAUNCHER_EXE!
 echo.
 echo Creando accesos directos en el escritorio...
 
-REM Use PowerShell directly to create shortcuts (avoids VBS escaping issues)
-powershell -NoProfile -ExecutionPolicy Bypass -Command ^
-    "$ws = New-Object -ComObject WScript.Shell; ^
-     $d = [Environment]::GetFolderPath('Desktop'); ^
-     $l1 = $ws.CreateShortcut((Join-Path $d 'Servidor Amiguos - TLauncher.lnk')); ^
-     $l1.TargetPath = '!TLAUNCHER_EXE!'; ^
-     $l1.WorkingDirectory = '!TLAUNCHER_DIR!'; ^
-     $l1.Save(); ^
-     $l2 = $ws.CreateShortcut((Join-Path $d 'Servidor Amiguos - Actualizar.lnk')); ^
-     $l2.TargetPath = '%~dp02-instalar-mods.bat'; ^
-     $l2.WorkingDirectory = '%~dp0'; ^
-     $l2.IconLocation = '!TLAUNCHER_EXE!'; ^
-     $l2.Save()"
+REM --- Write PowerShell script to a temp .ps1 file (avoids all escaping issues) ---
+set "PS_SCRIPT=%TEMP%\create_shortcuts_%RANDOM%.ps1"
+> "%PS_SCRIPT%" echo $ws = New-Object -ComObject WScript.Shell
+>> "%PS_SCRIPT%" echo $d = [Environment]::GetFolderPath('Desktop')
+>> "%PS_SCRIPT%" echo $l1 = $ws.CreateShortcut((Join-Path $d 'Servidor Amiguos - TLauncher.lnk'))
+>> "%PS_SCRIPT%" echo $l1.TargetPath = '!TLAUNCHER_EXE!'
+>> "%PS_SCRIPT%" echo $l1.WorkingDirectory = '!TLAUNCHER_DIR!'
+>> "%PS_SCRIPT%" echo $l1.Save()
+>> "%PS_SCRIPT%" echo $l2 = $ws.CreateShortcut((Join-Path $d 'Servidor Amiguos - Actualizar.lnk'))
+>> "%PS_SCRIPT%" echo $l2.TargetPath = '%~dp02-instalar-mods.bat'
+>> "%PS_SCRIPT%" echo $l2.WorkingDirectory = '%~dp0'
+>> "%PS_SCRIPT%" echo $l2.IconLocation = '!TLAUNCHER_EXE!'
+>> "%PS_SCRIPT%" echo $l2.Save()
 
-if errorlevel 1 (
+REM --- Run the PowerShell script ---
+powershell -NoProfile -ExecutionPolicy Bypass -File "%PS_SCRIPT%"
+set PS_RC=%errorlevel%
+del "%PS_SCRIPT%" 2>nul
+
+if %PS_RC% neq 0 (
     echo [ERROR] No se pudieron crear los accesos directos.
 ) else (
     echo [OK] Accesos directos creados en el escritorio.
 )
 echo.
-pause
+echo Presiona una tecla para cerrar (o espera 30 segundos)...
+timeout /t 30 /nobreak >nul 2>&1
 exit /b 0

@@ -191,5 +191,6 @@ echo   3) Selecciona el perfil "Amigous" o "Fabric 1.21.1"
 echo   4) Conectate a: %SERVER%
 echo ============================================
 echo.
-pause
+echo Presiona una tecla para cerrar (o espera 60 segundos)...
+timeout /t 60 /nobreak >nul 2>&1
 exit /b 0
